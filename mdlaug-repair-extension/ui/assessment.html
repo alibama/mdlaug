@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mDLAUG Assessment</title>
+<style>
+  :root{--ink:#12211d;--paper:#f3f1e9;--pine:#12332e;--teal:#1f9e8f;--berry:#b1315e;--gold:#f4c542;--line:#d7ddd8;--mut:#5a6a63}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{background:var(--pine);color:#eef7f4;padding:16px 24px;position:sticky;top:0;z-index:5;border-bottom:2px solid var(--gold)}
+  header h1{margin:0;font-size:18px}
+  header .meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+  header input{padding:7px 9px;border:0;border-radius:7px;font:inherit;min-width:180px}
+  header .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  button{font:inherit;font-weight:600;border:0;border-radius:8px;padding:8px 13px;cursor:pointer}
+  .primary{background:var(--gold);color:#3a2c00}.ghost{background:transparent;color:#eef7f4;border:1px solid rgba(255,255,255,.5)}
+  button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  #status{font-size:13px;color:#dfeee9}
+  main{max-width:900px;margin:0 auto;padding:22px}
+  .sit{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .sit h2{font-size:16px;margin:0 0 2px}
+  .sit .sub{font-size:12.5px;color:var(--mut);margin:0 0 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .lvl{font:600 11px/1 ui-monospace,monospace;padding:3px 7px;border-radius:999px;background:#eef3f1;color:#12332e}
+  .lvl.A{background:#d8f0ea}.lvl.AA{background:#fdeecd}.lvl.AAA{background:#f6d9e2}
+  .auto{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0 12px}
+  @media(max-width:640px){.auto{grid-template-columns:1fr}}
+  .auto .box{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px}
+  .auto .box.v{border-left:4px solid var(--berry)} .auto .box.g{border-left:4px solid var(--teal)}
+  .auto .box h3{margin:0 0 6px;font:600 11px/1 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+  .auto ul{margin:0;padding-left:1.1em}.auto li{margin:2px 0}
+  .auto .none{color:var(--mut)}
+  .scale{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0 12px}
+  .scale label{display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--mut);cursor:pointer}
+  .scale input{width:20px;height:20px;accent-color:var(--pine)}
+  .scale .ends{font-size:11px;color:var(--mut)}
+  .auto-hint{font-size:12px;color:var(--teal);margin-left:6px}
+  label.fld{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+  textarea{width:100%;min-height:56px;padding:8px;border:1px solid var(--line);border-radius:8px;font:inherit;resize:vertical}
+  .drop{border:2px dashed #a9bcb5;border-radius:10px;padding:12px;text-align:center;font-size:13px;color:var(--mut);margin-top:8px}
+  .drop.drag{border-color:var(--teal);background:#effaf7}
+  .ev{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .ev figure{margin:0;width:120px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fbfaf5}
+  .ev img{width:100%;height:70px;object-fit:cover;display:block}
+  .ev figcaption{font-size:11px;padding:4px 6px;word-break:break-all}
+  .ev .k{font:600 10px/1 ui-monospace,monospace;padding:1px 5px;border-radius:4px;background:var(--berry);color:#fff}
+  .ev .k.good{background:var(--teal);color:#04231f}
+  .hist{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+  .hist table{width:100%;border-collapse:collapse;font-size:13px}.hist th,.hist td{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+  a{color:#0d5c50}
+  .warn{background:#fff6e6;border:1px solid #f0d9a0;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>mDLAUG audit</h1>
+  <div class="meta">
+    <input id="m-name" placeholder="Digital library name">
+    <input id="m-url" placeholder="Digital library URL" style="min-width:280px">
+    <input id="m-assessor" placeholder="Your name">
+  </div>
+  <div class="actions">
+    <button class="primary" id="save">Save audit</button>
+    <button class="ghost" id="test">Check storage</button>
+    <button class="ghost" id="history">History</button>
+    <button class="ghost" id="settings">Storage settings</button>
+    <span id="status" role="status" aria-live="polite"></span>
+  </div>
+</header>
+<main id="main"></main>
+
+<script src="../engine/assessment.js"></script>
+<script src="../engine/turso.js"></script>
+<script src="../engine/store.js"></script>
+<script src="assessment-page.js"></script>
+</body>
+</html>
