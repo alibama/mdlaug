@@ -4,6 +4,13 @@ A Manifest V3 browser extension that repairs, on the fly, the 24 screen-reader
 "help-seeking situations" catalogued in the **Mobile Digital Library Accessibility
 and Usability Guidelines** (https://sites.uwm.edu/mdlaug/), and converts inaccessible
 PDF/Word files into accessible formats — all client-side, no server, no uploads.
+<img width="400" height="400" alt="plugin dashboard" src="https://github.com/user-attachments/assets/82af9eb5-0993-492c-98c6-f2871886446a" />
+<img width="400" height="400" alt="the plugin attempts to find issues automatically when possible" src="https://github.com/user-attachments/assets/9f8d7332-3749-49e6-978f-c368e5779b12" />
+<img width="400" height="400" alt="there is a survey instrument under the hood" src="https://github.com/user-attachments/assets/b2097060-6b19-47b5-b42d-cec04fcabbb8" />
+<img width="400" height="400" alt="the surveys can be aggregated for convenience" src="https://github.com/user-attachments/assets/eef95030-c489-40e0-8ab6-14ea8917ea69" />
+
+
+
 
 ## Why this exists
 
