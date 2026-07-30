@@ -1,0 +1,13 @@
+name = "mdlaug-relay"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# This Worker needs secrets — set them once with wrangler (not committed):
+#   wrangler secret put TURSO_URL      # https URL of your Turso database
+#   wrangler secret put TURSO_TOKEN    # Turso database auth token
+#   wrangler secret put AUTH_KEY       # optional: shared key the extension sends
+#
+# Optional plain vars can go here instead of secrets:
+# [vars]
+# ALLOW_ORIGIN = "*"
+# APPEND_ONLY = "1"

@@ -1,0 +1,20 @@
+mDLAUG Repair
+Copyright 2026 mDLAUG Repair contributors
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product bundles the following third-party software in extension/vendor/,
+each under its own license:
+
+  - pdf.js (https://github.com/mozilla/pdf.js)
+    Copyright Mozilla Foundation and contributors
+    Apache License, Version 2.0
+
+  - mammoth.js (https://github.com/mwilliamson/mammoth.js)
+    Copyright Michael Williamson
+    BSD 2-Clause License
+
+This project is an independent, community effort inspired by the publicly
+published Mobile Digital Library Accessibility & Usability Guidelines (mDLAUG).
+It is not affiliated with, authorized, approved, or endorsed by the authors of
+those guidelines or their institution.
