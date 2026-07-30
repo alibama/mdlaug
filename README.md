@@ -5,6 +5,14 @@ A Manifest V3 browser extension that repairs, on the fly, the 24 screen-reader
 and Usability Guidelines** (https://sites.uwm.edu/mdlaug/), and converts inaccessible
 PDF/Word files into accessible formats — all client-side, no server, no uploads.
 
+<tldr>
+to install in chrome and test
+go to the mdlaug-a11y direectory and download the extension directory - go to chrome and add the unpacked extension.  it's preconfigured to write to a cloud database for everyone's convenience.  if that ceases to be a convenience... idk... do things
+
+</tldr>
+
+
+
 <p></p>
 <img width="400" height="400" alt="plugin dashboard" src="https://github.com/user-attachments/assets/82af9eb5-0993-492c-98c6-f2871886446a" /><br>
 <img width="400" height="400" alt="the plugin attempts to find issues automatically when possible" src="https://github.com/user-attachments/assets/9f8d7332-3749-49e6-978f-c368e5779b12" /><br>
