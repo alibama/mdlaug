@@ -5,11 +5,14 @@ A Manifest V3 browser extension that repairs, on the fly, the 24 screen-reader
 "help-seeking situations" catalogued in the **Mobile Digital Library Accessibility
 and Usability Guidelines** (mDLAUG), and converts inaccessible
 PDF/Word files into accessible formats — all client-side, no server, no uploads.
+<br><br>
+here's a document before remediation<br>
 
-here's a document before remediation
 <img  style="float: left; margin-right: 15px;" width="345" height="245" alt="a document being linked to" src="https://github.com/user-attachments/assets/a49ad538-377c-4f12-9c5c-82e644db5c74" />
+
+<br><br>
 <br>
-here's the same document with the plugin installed and the file is now visible inline instead of being linked to on a 3rd party server
+here's the same document with the plugin installed and the file is now visible inline instead of being linked to on a 3rd party server<br>
 <img  style="float: left; margin-right: 15px;" width="500" height="320" alt="a document being rendered in html" src="https://github.com/user-attachments/assets/ce185db6-f736-489e-8ebf-83cbc821067e" />
 
 
