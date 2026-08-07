@@ -1,0 +1,1442 @@
+{
+  "schema": "mdlaug-bdd/1",
+  "generatedAt": "2026-08-07",
+  "ontology": "User Story -> Narrative + Scenarios (Given/When/Then Steps) -> Behaviors on Interaction Elements over Data",
+  "classification": {
+    "algorithmic": "DOM-remediable by the extension",
+    "hybrid": "structure automatable, content human/service",
+    "manual": "authored content / app-layer / QA"
+  },
+  "situations": [
+    {
+      "code": "ACC1",
+      "title": "Difficulty directly accessing files",
+      "level": "A",
+      "wcag": "2.4.4, 3.2.2, 4.1.2",
+      "elements": [
+        "Link",
+        "Button"
+      ],
+      "engineRules": [
+        "file-links"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "linked files to announce their type, size, and new-window behaviour, and to be previewable inline",
+        "benefit": "I know what a link will do before I activate it, and can read it without losing my place"
+      },
+      "core": [
+        {
+          "name": "A file link lacking format information is repaired",
+          "given": [
+            "a link to \"guide.pdf\" with the text \"Reading room guide\""
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the link's accessible name announces it is a \"PDF file\"",
+            "a link opening in a new window announces \"opens in new window\"",
+            "an inline-view control is offered"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Provide a preview of file contents before download.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "The ACC1 rule already injects an inline viewer for supported formats (PDF/DOCX) via the converter; no server change needed.",
+          "scenario": {
+            "name": "A supported file can be previewed inline",
+            "given": [
+              "a link to a PDF or DOCX file"
+            ],
+            "when": [
+              "the user activates \"View inline\""
+            ],
+            "then": [
+              "the file is rendered as accessible HTML in place, without a download"
+            ]
+          }
+        },
+        {
+          "text": "Offer accessible alternative formats (HTML, EPUB, tagged PDF) whenever possible.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "Client-side conversion to accessible HTML/DOCX is algorithmic (the converter does it); EPUB and tagged-PDF generation, or serving them as canonical assets, is an app-layer/authoring task.",
+          "scenario": null
+        },
+        {
+          "text": "Preserve users' navigation context after viewing or downloading a file.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "Rendering inline (rather than navigating away) preserves context; focus is returned on close.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "ACC2/COM3",
+      "title": "Difficulty accessing/comprehending images",
+      "level": "A",
+      "wcag": "1.1.1",
+      "elements": [
+        "Image",
+        "SVG",
+        "Canvas",
+        "CSS background"
+      ],
+      "engineRules": [
+        "images-alt",
+        "images-nontag"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "every meaningful image to have a text alternative, at a level of detail I can choose",
+        "benefit": "I can understand what an image conveys"
+      },
+      "core": [
+        {
+          "name": "A content image without a usable alt is flagged, and non-<img> images are found",
+          "given": [
+            "an <img> with no alt, a filename-like alt, an empty alt on a large image, or an SVG/canvas/CSS-background image"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the element is exposed as an image needing a text alternative (data-mdlaug-needs-alt)",
+            "the tool never invents the alt text"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Allow users to choose between brief and detailed image descriptions.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "A brief/detailed toggle is algorithmic UI; the two description texts must come from authored alt/longdesc or from a description service prompted at two levels.",
+          "scenario": null
+        },
+        {
+          "text": "Provide image descriptions at different levels (overview, detailed, scholarly context).",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "Overview/detailed can be model-drafted, but scholarly/curatorial context is authored knowledge the tool must not fabricate.",
+          "scenario": null
+        },
+        {
+          "text": "Allow users to request AI-generated supplemental descriptions, clearly identified as AI-generated.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "Implemented pattern: with a configured description endpoint the Reading Room fills a description and labels it \"unverified\". The request UI and labelling are algorithmic; the model is a service.",
+          "scenario": {
+            "name": "An AI description is offered and labelled",
+            "given": [
+              "an image needing a description and a configured description service"
+            ],
+            "when": [
+              "the user requests a description"
+            ],
+            "then": [
+              "a description is inserted and clearly labelled as auto-generated / unverified"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "code": "ACC3/COM4",
+      "title": "Difficulty accessing/comprehending graphs",
+      "level": "AA",
+      "wcag": "1.1.1",
+      "elements": [
+        "SVG chart",
+        "Canvas",
+        "Image chart"
+      ],
+      "engineRules": [
+        "graphs-longdesc"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "a graph's data and meaning available as text and as a table",
+        "benefit": "I can understand the data without seeing the chart"
+      },
+      "core": [
+        {
+          "name": "A graph is exposed as needing a data description",
+          "given": [
+            "a chart rendered as SVG/canvas/image"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the graph is given role=img and flagged as needing a data description/table"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Provide downloadable data tables corresponding to every graph.",
+          "classification": "hybrid",
+          "status": "app-layer",
+          "rationale": "If the underlying data is present in the DOM (e.g. an SVG's data attributes or an adjacent hidden table) the tool can extract and surface it; a chart rendered as a flat image has no data to extract, so the author/app must supply the table.",
+          "scenario": null
+        },
+        {
+          "text": "Present textual summaries highlighting trends, comparisons, and outliers.",
+          "classification": "manual",
+          "status": "service",
+          "rationale": "Requires analysis of the data; a model can draft a summary (service), otherwise authored.",
+          "scenario": null
+        },
+        {
+          "text": "Allow users to ask natural-language questions about graph content.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "A Q&A interface over the data is an application feature, not a DOM remediation.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "ACC4",
+      "title": "Difficulty accessing collection items",
+      "level": "AA",
+      "wcag": "1.3.1",
+      "elements": [
+        "List",
+        "List item",
+        "Breadcrumb"
+      ],
+      "engineRules": [
+        "collection-items"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "a collection exposed as a navigable list with clear hierarchy",
+        "benefit": "I can move through items and understand where I am"
+      },
+      "core": [
+        {
+          "name": "A results/collection container is exposed as a list",
+          "given": [
+            "a container of repeated item cards"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the container gets role=list and each item role=listitem"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Present breadcrumb navigation showing collection hierarchy.",
+          "classification": "hybrid",
+          "status": "implemented",
+          "rationale": "Labelling an existing breadcrumb as a nav landmark is algorithmic (see EXE3); constructing a hierarchy where none exists is app-layer.",
+          "scenario": null
+        },
+        {
+          "text": "Provide collection statistics (number of items, formats, dates, subjects).",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Not reliably derivable from the DOM; comes from the catalogue/backend.",
+          "scenario": null
+        },
+        {
+          "text": "Allow direct navigation to popular or recently added items.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Requires usage/recency data from the application.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "ACC5",
+      "title": "Difficulty accessing expandable/collapsed content",
+      "level": "A",
+      "wcag": "4.1.2, 4.1.3",
+      "elements": [
+        "Disclosure/Accordion",
+        "Button"
+      ],
+      "engineRules": [
+        "disclosure"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "disclosures to expose and announce their expanded/collapsed state",
+        "benefit": "I know whether content is open or closed"
+      },
+      "core": [
+        {
+          "name": "A custom disclosure gets state semantics",
+          "given": [
+            "a header that toggles a panel with no aria-expanded"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the control gets role=button, aria-expanded, and aria-controls to its panel"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Automatically announce expanded/collapsed status changes.",
+          "classification": "algorithmic",
+          "status": "proposed",
+          "rationale": "The tool wires aria-expanded; adding a live-region announcement on toggle is a small proposed extension.",
+          "scenario": {
+            "name": "A toggle announces its new state",
+            "given": [
+              "a remediated disclosure"
+            ],
+            "when": [
+              "the user activates it"
+            ],
+            "then": [
+              "the new expanded/collapsed state is announced politely"
+            ]
+          }
+        },
+        {
+          "text": "Remember users' expansion preferences during the browsing session.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "The extension can persist open/closed state in session storage and reapply it — algorithmic but stateful and opt-in.",
+          "scenario": null
+        },
+        {
+          "text": "Provide \"Expand all\" and \"Collapse all\" options.",
+          "classification": "algorithmic",
+          "status": "proposed",
+          "rationale": "When a group of disclosures is detected, inject accessible Expand-all/Collapse-all controls.",
+          "scenario": {
+            "name": "Group controls are offered",
+            "given": [
+              "two or more sibling disclosures"
+            ],
+            "when": [
+              "the page is remediated"
+            ],
+            "then": [
+              "accessible \"Expand all\" and \"Collapse all\" buttons are added and operate the group"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "code": "ACC6",
+      "title": "Difficulty accessing a query suggestion",
+      "level": "AAA",
+      "wcag": "4.1.2",
+      "elements": [
+        "Autocomplete/Combobox",
+        "Listbox",
+        "Option"
+      ],
+      "engineRules": [
+        "autocomplete"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "search autocomplete exposed as a proper combobox with announced options",
+        "benefit": "I can use suggestions with a screen reader"
+      },
+      "core": [
+        {
+          "name": "An autocomplete gets combobox semantics",
+          "given": [
+            "a search box with a custom suggestions panel"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the input becomes role=combobox with aria-expanded and the list role=listbox / options role=option"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Rank suggestions according to search history and collection popularity.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Ranking is a backend/search concern.",
+          "scenario": null
+        },
+        {
+          "text": "Provide semantic query suggestions (broader, narrower, related terms).",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Requires a thesaurus/knowledge source in the application.",
+          "scenario": null
+        },
+        {
+          "text": "Allow users to disable or customize auto-suggestions.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "The extension can add an accessible control to suppress the suggestions panel; honouring it across a session is stateful.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "COM1",
+      "title": "Difficulty understanding a digital library structure",
+      "level": "A",
+      "wcag": "1.3.1, 2.4.1",
+      "elements": [
+        "Landmark",
+        "Heading",
+        "Skip link"
+      ],
+      "engineRules": [
+        "landmarks"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "clear landmarks, one main heading, and a skip link",
+        "benefit": "I can orient myself and jump to the content"
+      },
+      "core": [
+        {
+          "name": "Missing structure is added",
+          "given": [
+            "a page with no <main>, no skip link, or a broken heading start"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "a main landmark and a skip-to-content link are ensured and the heading order is sane"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Provide a site overview or orientation page for first-time users.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "An authored page/feature.",
+          "scenario": null
+        },
+        {
+          "text": "Offer an accessible sitemap.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "A sitemap can be generated from the site's navigation landmarks (algorithmic first pass); a canonical sitemap is app-layer.",
+          "scenario": null
+        },
+        {
+          "text": "Maintain consistent page layouts across collections.",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "A design/authoring policy, not a per-page remediation.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "COM2/NAV1",
+      "title": "Difficulty understanding/navigating the search filtering structure",
+      "level": "AAA",
+      "wcag": "1.3.1",
+      "elements": [
+        "Facet region",
+        "Checkbox group",
+        "Filter chip"
+      ],
+      "engineRules": [
+        "filter-groups"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "the filter panel exposed as a labelled region with grouped controls",
+        "benefit": "I can understand and operate the filters"
+      },
+      "core": [
+        {
+          "name": "A facet panel becomes a labelled region",
+          "given": [
+            "a filters sidebar with no region semantics"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the panel gets role=region with an accessible label and grouped controls"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Display currently applied filters in an easily reviewable summary.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Active filter chips present in the DOM can be collected into a labelled \"applied filters\" summary region (algorithmic); if the app doesn't render them, it's app-layer.",
+          "scenario": null
+        },
+        {
+          "text": "Explain how each filter affects search results.",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "Explanatory content is authored.",
+          "scenario": null
+        },
+        {
+          "text": "Provide one-click removal of individual filters and \"Clear all filters.\"",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Where removable filter chips exist, the tool can ensure each has an accessible remove control and add a \"Clear all\"; wiring removal to the app is app-layer.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "EVA1",
+      "title": "Difficulty assessing relevance of a collection or an item",
+      "level": "A",
+      "wcag": "2.4.4",
+      "elements": [
+        "Result item",
+        "Snippet",
+        "Link"
+      ],
+      "engineRules": [
+        "result-relevance"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "result titles and snippets that make each item's relevance clear",
+        "benefit": "I can decide what to open"
+      },
+      "core": [
+        {
+          "name": "Result items get descriptive link semantics",
+          "given": [
+            "a list of result rows"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "each result's primary link has a meaningful accessible name"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Explain why an item appears in search results.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Match rationale comes from the search engine.",
+          "scenario": null
+        },
+        {
+          "text": "Highlight matching query terms within snippets.",
+          "classification": "algorithmic",
+          "status": "proposed",
+          "rationale": "The tool can read the query (from the URL or the search box) and wrap matches in result snippets with <mark>, exposing them to assistive tech.",
+          "scenario": {
+            "name": "Query terms are highlighted in snippets",
+            "given": [
+              "a results page reached with a query \"harbor\""
+            ],
+            "when": [
+              "the page is remediated"
+            ],
+            "then": [
+              "occurrences of \"harbor\" in each snippet are marked and announced as highlighted"
+            ]
+          }
+        },
+        {
+          "text": "Provide AI-generated summaries that explain an item's relevance.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "A model can draft a relevance summary (service); the trigger/labelling is algorithmic.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "EXE1",
+      "title": "Difficulty clearing a search box",
+      "level": "A",
+      "wcag": "2.1.1",
+      "elements": [
+        "Clear button",
+        "Search input"
+      ],
+      "engineRules": [
+        "clear-search"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "an accessible, keyboard-operable clear control with feedback",
+        "benefit": "I can clear my query and know it worked"
+      },
+      "core": [
+        {
+          "name": "A clear affordance is named and operable",
+          "given": [
+            "a search box with an unlabelled × control"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the clear control gets a name and is keyboard-operable"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Confirm successful clearing of search terms through accessible feedback.",
+          "classification": "algorithmic",
+          "status": "proposed",
+          "rationale": "On clear, announce \"search cleared\" via a live region.",
+          "scenario": {
+            "name": "Clearing is confirmed",
+            "given": [
+              "a remediated clear control"
+            ],
+            "when": [
+              "the user activates it"
+            ],
+            "then": [
+              "the search box is emptied and \"search cleared\" is announced"
+            ]
+          }
+        },
+        {
+          "text": "Offer recent searches after clearing the query.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Requires search history from the application.",
+          "scenario": null
+        },
+        {
+          "text": "Provide an undo option after accidental clearing.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "The extension can stash the last query and offer an accessible \"undo\"; within-page only.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "EXE2",
+      "title": "Difficulty exiting an open item",
+      "level": "A",
+      "wcag": "2.1.2, 4.1.2",
+      "elements": [
+        "Dialog/Modal",
+        "Close button"
+      ],
+      "engineRules": [
+        "dialog-escape"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "a way out of any open item or modal by button and Escape, with focus managed",
+        "benefit": "I never get trapped"
+      },
+      "core": [
+        {
+          "name": "A modal gets exit semantics",
+          "given": [
+            "an open modal with no aria-modal and no keyboard close"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the dialog gets role=dialog/aria-modal, a labelled close control, and Escape closes it"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Restore the user's previous reading position automatically.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "The extension can remember scroll/focus position on open and restore it on close — within-session, algorithmic.",
+          "scenario": null
+        },
+        {
+          "text": "Provide multiple exit methods (Back, Close, Escape gesture, voice command).",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "Escape-to-close and a labelled Close control are added; voice is provided by the assistive technology once the control is named.",
+          "scenario": null
+        },
+        {
+          "text": "Warn users before leaving when annotations or edits may be lost.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "The app must signal that unsaved state exists.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "EXE3",
+      "title": "Difficulty returning to a previous page",
+      "level": "AA",
+      "wcag": "2.4.8",
+      "elements": [
+        "Breadcrumb",
+        "Back control"
+      ],
+      "engineRules": [
+        "back-affordance"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "a clear, labelled way back and a breadcrumb trail",
+        "benefit": "I can retrace my steps"
+      },
+      "core": [
+        {
+          "name": "A breadcrumb becomes a labelled landmark",
+          "given": [
+            "a breadcrumb trail with no nav semantics"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the breadcrumb gets role=navigation with an accessible label \"Breadcrumb\""
+          ]
+        }
+      ],
+      "guidelines": []
+    },
+    {
+      "code": "FIL1",
+      "title": "Difficulty finding/locating an icon-based search feature",
+      "level": "A",
+      "wcag": "4.1.2",
+      "elements": [
+        "Icon button",
+        "Search control"
+      ],
+      "engineRules": [
+        "icon-buttons"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "icon-only controls (like a magnifier) to have names",
+        "benefit": "I can find and use them"
+      },
+      "core": [
+        {
+          "name": "An icon-only button is named",
+          "given": [
+            "a button whose only content is an icon glyph"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the button gets a sensible accessible name (e.g. \"Search\")"
+          ]
+        }
+      ],
+      "guidelines": []
+    },
+    {
+      "code": "FIL2/RED3",
+      "title": "Difficulty finding/locating/distinguishing search features at different levels",
+      "level": "AA",
+      "wcag": "1.3.1",
+      "elements": [
+        "Search region",
+        "Search input"
+      ],
+      "engineRules": [
+        "search-regions"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "each search feature clearly scoped and labelled",
+        "benefit": "I know what I'm searching"
+      },
+      "core": [
+        {
+          "name": "Search controls are grouped into labelled regions",
+          "given": [
+            "multiple search inputs at different scopes"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "each search is placed in a labelled search region"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Clearly announce the scope of every search (site, collection, results).",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Where scope is inferable from the input's placeholder/label/container, the tool can add a scope to the accessible name; otherwise authored.",
+          "scenario": null
+        },
+        {
+          "text": "Allow users to switch search scope without losing entered queries.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Query preservation across scope changes is application behaviour.",
+          "scenario": null
+        },
+        {
+          "text": "Maintain consistent terminology across all search interfaces.",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "Authoring/content policy.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "FIL3/HEP1",
+      "title": "Difficulty finding/locating/using mobile-specific help information",
+      "level": "A",
+      "wcag": "4.1.2",
+      "elements": [
+        "Help control",
+        "Help region"
+      ],
+      "engineRules": [
+        "help-affordance"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "help to be findable and usable",
+        "benefit": "I can get assistance when stuck"
+      },
+      "core": [
+        {
+          "name": "A help affordance is exposed",
+          "given": [
+            "a help/FAQ control"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the help control is named and reachable"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Provide contextual help that adapts to the current task.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "Task-aware help is an application feature.",
+          "scenario": null
+        },
+        {
+          "text": "Include short accessible video or audio tutorials.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "Authoring the tutorials is manual; captioning/transcribing them is algorithmic via the media rule (MED1) with a transcription service.",
+          "scenario": null
+        },
+        {
+          "text": "Offer searchable help documentation.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "A documentation/search feature.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "INT1",
+      "title": "Difficulty interacting with multi-layered windows",
+      "level": "A",
+      "wcag": "2.1.2, 4.1.2",
+      "elements": [
+        "Dialog/Modal",
+        "Layered windows"
+      ],
+      "engineRules": [
+        "dialog-escape"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "stacked windows to trap focus correctly and expose the active layer",
+        "benefit": "I don't get lost between layers"
+      },
+      "core": [
+        {
+          "name": "A layered modal is made modal",
+          "given": [
+            "a modal stacked over page content"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the top layer gets aria-modal and focus semantics so background content is inert to AT"
+          ]
+        }
+      ],
+      "guidelines": []
+    },
+    {
+      "code": "NAV2",
+      "title": "Difficulty navigating paginated sections",
+      "level": "AA",
+      "wcag": "1.3.1, 2.4.1",
+      "elements": [
+        "Pagination",
+        "Page link"
+      ],
+      "engineRules": [
+        "pagination"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "pagination exposed as a labelled nav landmark with the current page marked",
+        "benefit": "I can move between pages"
+      },
+      "core": [
+        {
+          "name": "A pager becomes a labelled landmark",
+          "given": [
+            "a pagination control with no nav semantics"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the pager gets role=navigation with a label and the active page gets aria-current=page"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Allow users to choose between pagination and continuous scrolling.",
+          "classification": "manual",
+          "status": "app-layer",
+          "rationale": "A rendering mode of the application.",
+          "scenario": null
+        },
+        {
+          "text": "Preserve reading position when returning from an item.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Within-session scroll/position restore is algorithmic.",
+          "scenario": null
+        },
+        {
+          "text": "Announce page transitions and total pages.",
+          "classification": "algorithmic",
+          "status": "proposed",
+          "rationale": "On page change, announce \"page N of M\" via a live region; total is read from the pager.",
+          "scenario": {
+            "name": "A page change is announced",
+            "given": [
+              "a remediated pager showing N of M pages"
+            ],
+            "when": [
+              "the user moves to another page"
+            ],
+            "then": [
+              "\"page N of M\" is announced politely"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "code": "NAV3",
+      "title": "Difficulty navigating through search results",
+      "level": "AA",
+      "wcag": "4.1.3",
+      "elements": [
+        "Results region",
+        "Live region"
+      ],
+      "engineRules": [
+        "results-status"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "result updates and structure announced as I move through them",
+        "benefit": "I can navigate results confidently"
+      },
+      "core": [
+        {
+          "name": "The results region announces status",
+          "given": [
+            "a results container that updates dynamically"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "a polite live region announces result availability and updates"
+          ]
+        }
+      ],
+      "guidelines": []
+    },
+    {
+      "code": "NAV4",
+      "title": "Difficulty navigating within an item",
+      "level": "AA",
+      "wcag": "2.4.1, 2.4.5",
+      "elements": [
+        "Heading",
+        "In-item TOC",
+        "Jump link"
+      ],
+      "engineRules": [
+        "within-item-nav"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "an automatic table of contents and heading navigation inside a document",
+        "benefit": "I can jump around a long item"
+      },
+      "core": [
+        {
+          "name": "An in-item contents list is generated",
+          "given": [
+            "a long item with a heading outline"
+          ],
+          "when": [
+            "the page is remediated (or opened in the Reading Room)"
+          ],
+          "then": [
+            "a Contents list of jump links to the item's headings is provided"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Allow users to bookmark sections within documents.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Within-session anchors/bookmarks are algorithmic; persistent cross-session bookmarks are app-layer.",
+          "scenario": null
+        },
+        {
+          "text": "Provide automatically generated tables of contents for OCR documents.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "TOC-from-headings is algorithmic (implemented); an OCR document first needs OCR (service) to recover headings.",
+          "scenario": null
+        },
+        {
+          "text": "Support heading navigation even in converted documents.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "The converter/Reading Room preserves real headings, so AT heading navigation works on converted content.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "NAV5",
+      "title": "Difficulty navigating to a search result section",
+      "level": "A",
+      "wcag": "4.1.3",
+      "elements": [
+        "Skip link",
+        "Results region"
+      ],
+      "engineRules": [
+        "results-status"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "a shortcut to the results and a focus move when results arrive",
+        "benefit": "I can get to results quickly"
+      },
+      "core": [
+        {
+          "name": "A skip-to-results shortcut is added",
+          "given": [
+            "a page with a results section below filters"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "a \"Skip to search results\" link is provided"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Automatically move focus to search results after search completion (optional).",
+          "classification": "algorithmic",
+          "status": "proposed",
+          "rationale": "On search submit, move focus to the results region — offered as an opt-in to avoid surprising focus jumps.",
+          "scenario": {
+            "name": "Focus moves to results on search",
+            "given": [
+              "a search that reloads or updates results",
+              "the move-focus option enabled"
+            ],
+            "when": [
+              "a search completes"
+            ],
+            "then": [
+              "focus is placed on the results region and the count is announced"
+            ]
+          }
+        },
+        {
+          "text": "Announce the location and number of search results.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "The results-status live region announces availability/count.",
+          "scenario": null
+        },
+        {
+          "text": "Provide a \"Skip to search results\" shortcut.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "A skip-to-results link is injected.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "RED1",
+      "title": "Difficulty recognizing the availability of search results",
+      "level": "A",
+      "wcag": "4.1.3",
+      "elements": [
+        "Results region",
+        "Live region",
+        "Status"
+      ],
+      "engineRules": [
+        "results-status"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "clear, announced status for searching, results, no-results, and errors",
+        "benefit": "I know what's happening"
+      },
+      "core": [
+        {
+          "name": "Result availability is announced",
+          "given": [
+            "a results container"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "a polite live region announces when results are available or updated"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Provide progressive feedback during long-running searches.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "If a loading state is detectable in the DOM, announce \"searching…\"; otherwise the app must signal progress.",
+          "scenario": null
+        },
+        {
+          "text": "Clearly distinguish \"no results\" from loading or network errors.",
+          "classification": "hybrid",
+          "status": "app-layer",
+          "rationale": "The tool can label a detectable empty state as \"no results\", but distinguishing an error requires the app's state.",
+          "scenario": null
+        },
+        {
+          "text": "Announce when search results have been updated dynamically.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "The live region announces dynamic updates.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "RED2",
+      "title": "Difficulty distinguishing collection titles from thumbnails",
+      "level": "AA",
+      "wcag": "1.3.1",
+      "elements": [
+        "Thumbnail image",
+        "Title",
+        "Figure group"
+      ],
+      "engineRules": [
+        "images-alt"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "titles read before decorative thumbnails, cleanly separated",
+        "benefit": "I hear the title, not image noise"
+      },
+      "core": [
+        {
+          "name": "Decorative thumbnails are hidden and titles kept",
+          "given": [
+            "result cards where a thumbnail duplicates the title link"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "purely decorative thumbnails are hidden from AT so the title is what's announced"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Allow users to suppress decorative images entirely.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "Decorative/duplicative thumbnails are hidden with aria-hidden; a global suppress toggle is a small proposed extension.",
+          "scenario": null
+        },
+        {
+          "text": "Present titles before thumbnail descriptions consistently.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Reading order can be corrected with aria-describedby/ordering; visual reordering is riskier and left to the app.",
+          "scenario": null
+        },
+        {
+          "text": "Separate title and image description with semantic grouping.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Wrapping a title+image pair in a figure/group with a caption is algorithmic where the pairing is unambiguous.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "RED4",
+      "title": "Difficulty recognizing authorized features",
+      "level": "AAA",
+      "wcag": "4.1.2",
+      "elements": [
+        "Restricted control",
+        "Disabled control"
+      ],
+      "engineRules": [
+        "authorized-features"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "restricted controls to announce that they're unavailable and why",
+        "benefit": "I don't waste effort on features I can't use"
+      },
+      "core": [
+        {
+          "name": "A restricted control is marked",
+          "given": [
+            "a control that is visually gated/locked"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the control is marked unavailable (aria-disabled) with its reason if detectable"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Explain why a feature is unavailable.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "If a reason (e.g. \"log in to access\") is present nearby, associate it; otherwise the reason must be authored.",
+          "scenario": null
+        },
+        {
+          "text": "Indicate what actions are needed to gain access.",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "The required-action text is authored content.",
+          "scenario": null
+        },
+        {
+          "text": "Avoid presenting inaccessible controls as fully interactive.",
+          "classification": "algorithmic",
+          "status": "implemented",
+          "rationale": "Gated controls are marked aria-disabled so AT doesn't present them as operable.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "USE1",
+      "title": "Difficulty using screen readers and voice activated commands",
+      "level": "AAA",
+      "wcag": "4.1.2",
+      "elements": [
+        "All interactive elements"
+      ],
+      "engineRules": [
+        "icon-buttons"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "the whole interface to work with my assistive technology and voice control",
+        "benefit": "I can use the library the way I use everything else"
+      },
+      "core": [
+        {
+          "name": "Controls carry names/roles that AT and voice control can target",
+          "given": [
+            "interactive controls lacking names/roles"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "controls gain the names and roles that screen readers and voice-control (\"click <name>\") rely on"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Test compatibility across major assistive technologies (VoiceOver, TalkBack, Narrator, JAWS, NVDA).",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "Cross-AT verification is a QA process, not a DOM remediation. The tool's automated pass is a first pass; manual screen-reader testing remains necessary.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "FORM1",
+      "title": "Accessible form fields (login / registration / account)",
+      "level": "A",
+      "wcag": "1.3.1, 3.3.2, 4.1.2",
+      "elements": [
+        "Input",
+        "Select",
+        "Textarea",
+        "Label"
+      ],
+      "engineRules": [
+        "form-fields"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "every form field to have a programmatic label and clear required/invalid state",
+        "benefit": "I can complete forms like sign-in and registration"
+      },
+      "core": [
+        {
+          "name": "Fields are labelled and required state reflected",
+          "given": [
+            "a form with an unlabelled field, a field with only a placeholder, and a required field"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "an adjacent label is associated, or the placeholder is used as a fallback name, and required fields get aria-required",
+            "a field with no label and no fallback is flagged for a human-written label"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Identify and describe form errors in text, associated with their field.",
+          "classification": "hybrid",
+          "status": "proposed",
+          "rationale": "Where an error message sits near an invalid field, the tool can wire aria-describedby + aria-invalid; the message wording is authored/app-supplied. (Candidate FORM2.)",
+          "scenario": null
+        },
+        {
+          "text": "Provide a human-written label when none exists anywhere.",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "If no label, placeholder, or adjacent text exists, the accessible name must be authored — the tool only flags it.",
+          "scenario": null
+        }
+      ]
+    },
+    {
+      "code": "MED1",
+      "title": "Multimedia captions and transcripts (beyond the 24)",
+      "level": "A",
+      "wcag": "1.2.1, 1.2.2, 1.2.3",
+      "elements": [
+        "Video",
+        "Audio",
+        "Embedded player"
+      ],
+      "engineRules": [
+        "media-captions"
+      ],
+      "userStory": {
+        "role": "a screen-reader or low-vision user",
+        "feature": "video and audio to have captions and a transcript",
+        "benefit": "I can access multimedia content"
+      },
+      "core": [
+        {
+          "name": "Uncaptioned media is detected and, with a service, captioned",
+          "given": [
+            "a <video>/<audio> with no captions track, or a YouTube/Vimeo embed"
+          ],
+          "when": [
+            "the page is remediated"
+          ],
+          "then": [
+            "the player is named and flagged",
+            "with a transcription service, a WebVTT caption track and a visible transcript are added and labelled unverified",
+            "third-party embeds are flagged with guidance"
+          ]
+        }
+      ],
+      "guidelines": [
+        {
+          "text": "Provide captions/subtitles for video.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "Detection, player naming, and building a WebVTT track from returned segments are algorithmic; the transcription itself is a service (or authored captions).",
+          "scenario": null
+        },
+        {
+          "text": "Provide a transcript for audio and video.",
+          "classification": "hybrid",
+          "status": "service",
+          "rationale": "The transcript panel is injected algorithmically; its text comes from a transcription service or is authored.",
+          "scenario": null
+        },
+        {
+          "text": "Provide audio description for video.",
+          "classification": "manual",
+          "status": "manual",
+          "rationale": "Described-video narration is authored/produced content.",
+          "scenario": null
+        }
+      ]
+    }
+  ]
+}
