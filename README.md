@@ -2,25 +2,8 @@
 
 A Manifest V3 browser extension that repairs, on the fly, the 24 screen-reader
 "help-seeking situations" catalogued in the **Mobile Digital Library Accessibility
-and Usability Guidelines** (https://sites.uwm.edu/mdlaug/), and converts inaccessible
+and Usability Guidelines** (mDLAUG), and converts inaccessible
 PDF/Word files into accessible formats — all client-side, no server, no uploads.
-
-<b>tldr</b>
-to install in chrome and test
-go to the mdlaug-a11y direectory and download the extension directory - go to chrome and add the unpacked extension.  it's preconfigured to write to a cloud database for everyone's convenience.  if that ceases to be a convenience... idk... do things
-
-/tldr
-
-
-
-<p></p>
-<img width="400" height="400" alt="plugin dashboard" src="https://github.com/user-attachments/assets/82af9eb5-0993-492c-98c6-f2871886446a" /><br>
-<img width="400" height="400" alt="the plugin attempts to find issues automatically when possible" src="https://github.com/user-attachments/assets/9f8d7332-3749-49e6-978f-c368e5779b12" /><br>
-<img width="400" height="400" alt="there is a survey instrument under the hood" src="https://github.com/user-attachments/assets/b2097060-6b19-47b5-b42d-cec04fcabbb8" /><br>
-<img width="400" height="400" alt="the surveys can be aggregated for convenience" src="https://github.com/user-attachments/assets/eef95030-c489-40e0-8ab6-14ea8917ea69" /><br>
-
-
-
 
 ## Why this exists
 
@@ -212,3 +195,10 @@ fabricate an image description and present it as authored). A captioning hook
 
 MIT for this code. Vendored pdf.js (Apache-2.0) and mammoth (BSD-2-Clause) keep
 their own licenses.
+
+## Acknowledgements
+
+With thanks to Dr. Iris Xie (University of Wisconsin–Milwaukee) and colleagues,
+whose mDLAUG guidelines (https://sites.uwm.edu/mdlaug/) this project implements.
+An independent implementation. Bundles pdf.js (Apache-2.0) and mammoth.js
+(BSD-2-Clause).

@@ -31,14 +31,14 @@
   var $=function(id){return document.getElementById(id);};
   var st=$("cfg-status");
   try{
-    chrome.storage.sync.get({describeUrl:"",describeHeaders:"",transcribeUrl:"",transcribeHeaders:"",ocrEnabled:false,concurrency:2,
+    chrome.storage.sync.get({describeUrl:"",describeHeaders:"",transcribeUrl:"",transcribeHeaders:"",ocrEnabled:false,autoDescribe:false,concurrency:2,
       budget:{describeImage:"ask",describeGraph:"ask",ocr:"ask",reflowPdf:"auto",transcribe:"ask"}}, function(cfg){
       $("cfg-url").value=cfg.describeUrl||""; $("cfg-headers").value=cfg.describeHeaders||"";
       $("cfg-turl").value=cfg.transcribeUrl||""; $("cfg-theaders").value=cfg.transcribeHeaders||"";
       $("cfg-img").value=(cfg.budget&&cfg.budget.describeImage)||"ask";
       $("cfg-graph").value=(cfg.budget&&cfg.budget.describeGraph)||"ask";
       $("cfg-media").value=(cfg.budget&&cfg.budget.transcribe)||"ask";
-      $("cfg-conc").value=cfg.concurrency||2; $("cfg-ocr").checked=!!cfg.ocrEnabled;
+      $("cfg-conc").value=cfg.concurrency||2; $("cfg-ocr").checked=!!cfg.ocrEnabled; if($("cfg-auto")) $("cfg-auto").checked=!!cfg.autoDescribe;
     });
   }catch(e){ st.textContent="Settings available only inside the extension."; }
   $("cfg-save").addEventListener("click", function(){
@@ -48,7 +48,7 @@
     if(theaders){ try{ JSON.parse(theaders); }catch(e){ st.textContent="Transcription headers must be valid JSON."; return; } }
     var cfg={ describeUrl:$("cfg-url").value.trim(), describeHeaders:headers,
       transcribeUrl:$("cfg-turl").value.trim(), transcribeHeaders:theaders,
-      ocrEnabled:$("cfg-ocr").checked, concurrency:Math.max(1,Math.min(6,parseInt($("cfg-conc").value,10)||2)),
+      ocrEnabled:$("cfg-ocr").checked, autoDescribe:($("cfg-auto")?$("cfg-auto").checked:false), concurrency:Math.max(1,Math.min(6,parseInt($("cfg-conc").value,10)||2)),
       budget:{ describeImage:$("cfg-img").value, describeGraph:$("cfg-graph").value, transcribe:$("cfg-media").value, ocr:"ask", reflowPdf:"auto" } };
     try{ chrome.storage.sync.set(cfg, function(){ st.textContent="Saved. Reload the digital-library tab to apply."; }); }
     catch(e){ st.textContent="Could not save: "+e.message; }

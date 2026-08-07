@@ -198,7 +198,7 @@ their own licenses.
 
 ## Acknowledgements
 
-Independent, community project inspired by the publicly published mDLAUG
-guidelines; not affiliated with, authorized, or endorsed by the guidelines'
-authors or their institution. Bundles pdf.js (Apache-2.0) and mammoth.js
-(BSD-2-Clause). See the repo NOTICE and README.
+With thanks to Dr. Iris Xie (University of Wisconsin–Milwaukee) and colleagues,
+whose mDLAUG guidelines (https://sites.uwm.edu/mdlaug/) this project implements.
+An independent implementation. Bundles pdf.js (Apache-2.0) and mammoth.js
+(BSD-2-Clause).

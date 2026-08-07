@@ -157,12 +157,25 @@
     return h.join("");
   }
 
-  async function docxToHtml(source) {
-    var mammoth = CONFIG.mammoth || root.mammoth;
-    if (!mammoth) {
-      await loadScript(CONFIG.mammothUrl);
-      mammoth = root.mammoth;
+  async function ensureMammoth() {
+    if (CONFIG.mammoth || root.mammoth) return CONFIG.mammoth || root.mammoth;
+    // Preferred: ask the background to inject the bundled mammoth into THIS
+    // (content-script) isolated world, so root.mammoth becomes defined. Works on
+    // pages with a strict CSP, unlike injecting a <script> into the page.
+    if (root.chrome && root.chrome.runtime && root.chrome.runtime.sendMessage) {
+      await new Promise(function (res) {
+        try { root.chrome.runtime.sendMessage({ type: "mdlaug-inject", files: ["vendor/mammoth.browser.min.js"] }, function () { res(); }); }
+        catch (e) { res(); }
+      });
+      if (root.mammoth) return root.mammoth;
     }
+    // Fallback (e.g. the standalone demo, no extension APIs): load into the page.
+    try { await loadScript(CONFIG.mammothUrl); } catch (e) {}
+    return CONFIG.mammoth || root.mammoth;
+  }
+  async function docxToHtml(source) {
+    var mammoth = await ensureMammoth();
+    if (!mammoth) throw new Error("DOCX converter (mammoth) could not be loaded");
     var buf = await toArrayBuffer(source);
     var res = await mammoth.convertToHtml({ arrayBuffer: buf });
     return res.value; // already semantic (h1/p/table/ul)
@@ -328,7 +341,8 @@
     var html, title = "Document";
     if (ext === "docx") { html = await docxToHtml(url); title = "Word document"; }
     else {
-      var txt = await (await fetch(url)).text();
+      var buf = await fetchBytesSmart(url);
+      var txt = new TextDecoder("utf-8").decode(new Uint8Array(buf));
       html = ext === "csv" ? csvToHtml(txt) : textToHtml(txt);
       title = ext.toUpperCase() + " document";
     }
@@ -398,10 +412,33 @@
     if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
     return rows.filter(function (r) { return r.some(function (c) { return c.trim(); }); });
   }
+  async function fetchBytesSmart(url) {
+    // 1) direct fetch — upgrade http->https on an https page to avoid mixed content
+    var direct = url;
+    if (/^http:\/\//i.test(url) && root.location && root.location.protocol === "https:") direct = url.replace(/^http:/i, "https:");
+    try {
+      var r = await fetch(direct);
+      if (r.ok) return await r.arrayBuffer();
+    } catch (e) { /* fall through to background */ }
+    // 2) via the extension background: cross-origin allowed, http->https handled
+    if (root.chrome && root.chrome.runtime && root.chrome.runtime.sendMessage) {
+      var resp = await new Promise(function (res) {
+        try { root.chrome.runtime.sendMessage({ type: "mdlaug-fetch-bytes", url: url }, function (x) { res(x || { ok: false }); }); }
+        catch (e) { res({ ok: false }); }
+      });
+      if (resp && resp.ok && resp.b64) {
+        var bin = atob(resp.b64), bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return bytes.buffer;
+      }
+      throw new Error(resp && resp.error ? resp.error : "could not fetch file");
+    }
+    throw new Error("could not fetch this file (cross-origin or unreachable)");
+  }
   async function toArrayBuffer(source) {
     if (source instanceof ArrayBuffer) return source;
     if (source && source.arrayBuffer) return await source.arrayBuffer(); // Blob/File
-    if (typeof source === "string") { var r = await fetch(source); return await r.arrayBuffer(); }
+    if (typeof source === "string") return await fetchBytesSmart(source);
     if (source instanceof Uint8Array) return source.buffer;
     throw new Error("Unsupported source");
   }

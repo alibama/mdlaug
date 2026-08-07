@@ -1,6 +1,14 @@
 /* mDLAUG Repair — popup logic */
 function tab(cb){ chrome.tabs.query({active:true,currentWindow:true},function(t){ cb(t[0]); }); }
 function send(msg, cb){ tab(function(t){ chrome.tabs.sendMessage(t.id, msg, cb); }); }
+(function initLauncherToggle(){
+  var box=document.getElementById("showLauncher"); if(!box) return;
+  try{ chrome.storage.sync.get({hideLauncher:false}, function(c){ box.checked=!c.hideLauncher; }); }catch(e){}
+  box.addEventListener("change", function(){
+    if(box.checked){ send({type:"mdlaug-show-launcher"}); try{chrome.storage.sync.set({hideLauncher:false});}catch(e){} }
+    else { try{chrome.storage.sync.set({hideLauncher:true});}catch(e){} send({type:"mdlaug-undo"}); /* hide takes effect on next load or via page close button */ }
+  });
+})();
 
 var runBtn = document.getElementById("run");
 var reportEl = document.getElementById("report");

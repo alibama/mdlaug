@@ -24,6 +24,36 @@ chrome.runtime.onMessage.addListener(function (msg, sender, reply) {
     if (winId != null) doCapture(winId);
     else chrome.windows.getLastFocused(function (w) { doCapture(w && w.id); });
     return true; // async
+  } else if (msg.type === "mdlaug-fetch-bytes") {
+    // Fetch a linked file's bytes for on-page conversion. The background can read
+    // cross-origin responses (host_permissions), and we upgrade http->https first
+    // so an http file on an https page doesn't hit the mixed-content block.
+    var tries = [];
+    if (/^http:\/\//i.test(msg.url)) tries.push(msg.url.replace(/^http:/i, "https:"));
+    tries.push(msg.url);
+    (function attempt(i) {
+      if (i >= tries.length) { reply({ ok: false, error: "could not fetch file (cross-origin or unreachable)" }); return; }
+      fetch(tries[i]).then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.arrayBuffer();
+      }).then(function (buf) {
+        var bytes = new Uint8Array(buf), bin = "", CH = 0x8000;
+        for (var j = 0; j < bytes.length; j += CH) bin += String.fromCharCode.apply(null, bytes.subarray(j, j + CH));
+        reply({ ok: true, b64: btoa(bin), url: tries[i] });
+      }).catch(function () { attempt(i + 1); });
+    })(0);
+    return true; // async
+  } else if (msg.type === "mdlaug-inject") {
+    // Inject a bundled library (e.g. mammoth) into the SAME isolated world the
+    // content scripts run in, so the converter can see window.<lib>. This avoids
+    // the page's CSP (which blocks injecting a <script> into the page) and the
+    // isolated/main-world split that leaves root.<lib> undefined.
+    var itab = sender.tab && sender.tab.id;
+    if (itab == null) { reply({ ok: false, error: "no tab" }); return true; }
+    chrome.scripting.executeScript({ target: { tabId: itab }, files: msg.files, world: "ISOLATED" })
+      .then(function () { reply({ ok: true }); })
+      .catch(function (e) { reply({ ok: false, error: String(e && e.message || e) }); });
+    return true; // async
   } else if (msg.type === "mdlaug-open-assessment") {
     chrome.tabs.create({ url: chrome.runtime.getURL("ui/assessment.html") });
   }

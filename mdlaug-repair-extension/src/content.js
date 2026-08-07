@@ -36,9 +36,10 @@
     });
     try {
       chrome.storage && chrome.storage.sync.get(
-        { describeUrl: "", describeHeaders: "", transcribeUrl: "", transcribeHeaders: "", ocrEnabled: false, concurrency: 2,
+        { describeUrl: "", describeHeaders: "", transcribeUrl: "", transcribeHeaders: "", ocrEnabled: false, autoDescribe: false, concurrency: 2,
           budget: { describeImage: "ask", describeGraph: "ask", ocr: "ask", reflowPdf: "auto", transcribe: "ask" } },
         function (cfg) {
+          autoDescribe = !!cfg.autoDescribe;
           if (cfg.describeUrl) {
             var hdrs = {}; try { hdrs = cfg.describeHeaders ? JSON.parse(cfg.describeHeaders) : {}; } catch (e) {}
             var describer = CM.endpointDescriber({ name: "description service", url: cfg.describeUrl, headers: hdrs });
@@ -53,7 +54,8 @@
             var v = chrome.runtime.getURL("vendor/tesseract/");
             manager.registerProvider("ocr", CM.tesseractOcr({
               scriptUrl: v + "tesseract.min.js", workerPath: v + "worker.min.js",
-              corePath: v + "tesseract-core.wasm.js", langPath: v
+              corePath: v + "tesseract-core.wasm.js", langPath: v,
+              injectFiles: ["vendor/tesseract/tesseract.min.js"]
             }));
           }
           if (cfg.concurrency) manager.configure({ concurrency: cfg.concurrency });
@@ -70,6 +72,34 @@
   } catch (e) {}
 
   var state = { on: false, result: null };
+  var autoDescribe = false;
+  var autoAlted = [];
+
+  // Automatically fill alt text on images that lack it — no per-image tap needed
+  // (important on mobile). Requires a description service (recommended) or local
+  // OCR. A description endpoint fetches the image URL server-side, so it also
+  // works for cross-origin images where local OCR would be blocked by canvas taint.
+  function autoDescribeImages() {
+    if (!autoDescribe || !manager || !manager.hasProvider) return;
+    var cap = manager.hasProvider("describeImage") ? "describeImage" : (manager.hasProvider("ocr") ? "ocr" : null);
+    if (!cap) return;
+    try { manager.setPolicy(cap, "auto"); } catch (e) {}
+    var imgs = document.querySelectorAll("img[data-mdlaug-needs-alt]");
+    Array.prototype.slice.call(imgs).forEach(function (img) {
+      var src = img.currentSrc || img.getAttribute("src") || "";
+      if (!src) return;
+      manager.enqueue(cap, { src: src, hashSource: src, imageEl: img, prompt: "Transcribe any text in this image, or briefly describe it for a blind reader." },
+        { label: "Describe image" }).promise
+        .then(function (res) {
+          var t = String((res && (res.description || res.text || res.alt)) || "").trim();
+          if (!t) return;
+          img.setAttribute("alt", t);
+          img.setAttribute("data-mdlaug-auto-alt", "1");
+          img.removeAttribute("data-mdlaug-needs-alt");
+          autoAlted.push(img);
+        }).catch(function () {});
+    });
+  }
 
   function run() {
     var transcribe = (manager && manager.hasProvider && manager.hasProvider("transcribe"))
@@ -77,6 +107,7 @@
       : null;
     state.result = R.remediate({ inlineViewers: true, transcribe: transcribe });
     state.on = true;
+    autoDescribeImages();
     updatePanel();
     var hl = panel && panel.querySelector("#mdlaug-hl");
     R.highlight(hl ? hl.checked : true);
@@ -85,6 +116,8 @@
   }
   function stop() {
     R.undo();
+    autoAlted.forEach(function (img) { img.removeAttribute("alt"); img.removeAttribute("data-mdlaug-auto-alt"); });
+    autoAlted = [];
     state.on = false;
     updatePanel();
     R.announce("Accessibility repairs removed.");
@@ -92,12 +125,15 @@
 
   // ---- floating launcher + panel ----------------------------------------
   var panel;
+  var launcherHidden = false;
   function buildPanel() {
+    if (panel) return;
     panel = document.createElement("div");
     panel.id = "mdlaug-panel";
     panel.setAttribute("role", "region");
     panel.setAttribute("aria-label", "mDLAUG accessibility repair");
     panel.innerHTML =
+      '<button id="mdlaug-close" class="mdlaug-close" title="Hide this on-page button" aria-label="Hide this on-page button — reopen it from the extension icon">\u00d7</button>' +
       '<button id="mdlaug-toggle" class="mdlaug-btn" aria-pressed="false">Repair this page</button>' +
       '<button id="mdlaug-reader" class="mdlaug-btn mdlaug-secondary">Open Reading Room</button>' +
       '<div id="mdlaug-hlrow" hidden>' +
@@ -107,6 +143,7 @@
       '<button id="mdlaug-open" class="mdlaug-btn mdlaug-secondary" hidden>Show report</button>' +
       '<div id="mdlaug-report" hidden></div>';
     document.body.appendChild(panel);
+    panel.querySelector("#mdlaug-close").addEventListener("click", hideLauncher);
     panel.querySelector("#mdlaug-toggle").addEventListener("click", function () {
       state.on ? stop() : run();
     });
@@ -122,7 +159,19 @@
       r.hidden = !r.hidden;
     });
   }
+  function hideLauncher() {
+    launcherHidden = true;
+    if (panel) { panel.remove(); panel = null; }
+    try { chrome.storage && chrome.storage.sync.set({ hideLauncher: true }); } catch (e) {}
+    R.announce("On-page button hidden. Reopen it from the extension icon.");
+  }
+  function showLauncher() {
+    launcherHidden = false;
+    try { chrome.storage && chrome.storage.sync.set({ hideLauncher: false }); } catch (e) {}
+    buildPanel(); updatePanel();
+  }
   function updatePanel() {
+    if (launcherHidden) return;
     if (!panel) buildPanel();
     var t = panel.querySelector("#mdlaug-toggle");
     t.textContent = state.on ? "Undo repairs" : "Repair this page";
@@ -168,15 +217,18 @@
           reply && reply({ ok: true, scorecard: card, dlTitle: document.title, dlUrl: location.href });
         } catch (e) { reply && reply({ ok: false, error: e.message }); }
       }
-      else if (msg.type === "mdlaug-status") { reply && reply({ on: state.on, count: state.result ? state.result.fixesApplied : 0 }); }
+      else if (msg.type === "mdlaug-status") { reply && reply({ on: state.on, count: state.result ? state.result.fixesApplied : 0, launcherHidden: launcherHidden }); }
+      else if (msg.type === "mdlaug-show-launcher") { showLauncher(); reply && reply({ ok: true }); }
       return true;
     });
   } catch (e) {}
 
-  // auto-run if user opted in
+  // auto-run if user opted in; honor the hidden-launcher preference
   try {
-    chrome.storage && chrome.storage.sync.get({ autoRun: false }, function (cfg) {
-      if (cfg.autoRun) run(); else buildPanel();
+    chrome.storage && chrome.storage.sync.get({ autoRun: false, hideLauncher: false }, function (cfg) {
+      launcherHidden = !!cfg.hideLauncher;
+      if (cfg.autoRun) run();
+      else if (!launcherHidden) buildPanel();
     });
   } catch (e) { buildPanel(); }
 })();

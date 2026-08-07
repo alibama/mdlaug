@@ -26,3 +26,9 @@
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
 
 .mdlaug-wcag{display:inline-block;font:600 10px/1.4 ui-monospace,monospace;color:#0d5c50;background:#e4f3ef;border-radius:4px;padding:1px 5px;margin-inline-end:4px}
+
+#mdlaug-panel{padding-top:20px}
+.mdlaug-close{position:absolute;top:2px;right:6px;width:22px;height:22px;line-height:20px;
+  border:0;background:transparent;color:#9fb0ac;font-size:16px;cursor:pointer;border-radius:5px}
+.mdlaug-close:hover{background:rgba(255,255,255,.15);color:#fff}
+.mdlaug-close:focus-visible{outline:3px solid #ffd166;outline-offset:1px}

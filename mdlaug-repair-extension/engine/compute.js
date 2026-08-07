@@ -257,13 +257,27 @@
         function ensure() {
           if (root.Tesseract) { lib = root.Tesseract; return Promise.resolve(lib); }
           if (!opts.scriptUrl) return Promise.reject(new Error("OCR engine not installed"));
-          return new Promise(function (res, rej) {
-            var s = (root.document && root.document.createElement) ? root.document.createElement("script") : null;
-            if (!s) return rej(new Error("no DOM to load OCR engine"));
-            s.src = opts.scriptUrl; s.onload = function () { lib = root.Tesseract; res(lib); };
-            s.onerror = function () { rej(new Error("failed to load OCR engine")); };
-            root.document.head.appendChild(s);
-          });
+          // Preferred: inject the bundled engine into this isolated world via the
+          // background (CSP-safe, correct world) — same approach as the DOCX lib.
+          function pageLoad() {
+            return new Promise(function (res, rej) {
+              var s = (root.document && root.document.createElement) ? root.document.createElement("script") : null;
+              if (!s) return rej(new Error("no DOM to load OCR engine"));
+              s.src = opts.scriptUrl; s.onload = function () { lib = root.Tesseract; res(lib); };
+              s.onerror = function () { rej(new Error("failed to load OCR engine")); };
+              root.document.head.appendChild(s);
+            });
+          }
+          if (opts.injectFiles && root.chrome && root.chrome.runtime && root.chrome.runtime.sendMessage) {
+            return new Promise(function (res) {
+              try { root.chrome.runtime.sendMessage({ type: "mdlaug-inject", files: opts.injectFiles }, function () { res(); }); }
+              catch (e) { res(); }
+            }).then(function () {
+              if (root.Tesseract) { lib = root.Tesseract; return lib; }
+              return pageLoad();
+            });
+          }
+          return pageLoad();
         }
         return ensure().then(function (T) {
           return T.recognize(input.dataUrl || input.src, opts.lang || "eng", {

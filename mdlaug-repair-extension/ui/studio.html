@@ -71,6 +71,7 @@
       <label>Max concurrent jobs
         <input id="cfg-conc" type="number" min="1" max="6" value="2" style="display:block;margin-top:4px;width:80px;padding:7px;border-radius:8px;border:1px solid #bcccc6"></label>
       <label style="align-self:end"><input id="cfg-ocr" type="checkbox"> OCR engine installed in <code>vendor/tesseract/</code></label>
+      <label style="align-self:end"><input id="cfg-auto" type="checkbox"> Auto-add alt text to images without alt (needs a description service; more reliable than local OCR for cross-origin images)</label>
     </div>
     <div style="margin-top:16px"><button id="cfg-save">Save settings</button> <span id="cfg-status" role="status" aria-live="polite" class="hint"></span></div>
   </section>

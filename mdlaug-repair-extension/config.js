@@ -11,6 +11,6 @@
  * sends it as a bearer token so only your relay accepts the writes.
  */
 window.MDLAUG_CONFIG = {
-  centralUrl: "",     // e.g. "https://mdlaug-relay.YOURNAME.workers.dev"
-  centralToken: ""    // e.g. a shared key matching the relay's AUTH_KEY (optional)
+  centralUrl: "https://mdlaug-relay.adp6j.workers.dev",     // e.g. "https://mdlaug-relay.YOURNAME.workers.dev"
+  centralToken: "testingauth"    // e.g. a shared key matching the relay's AUTH_KEY (optional)
 };

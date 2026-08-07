@@ -225,19 +225,26 @@
     btn.setAttribute("aria-expanded", "true");
     btn.textContent = "Hide inline view";
 
-    // Delegate to the converter for an accessible reflowed view when possible;
-    // fall back to a titled iframe (mDLAUG ACC1 technique 1.2).
     var conv = root.mDLAUG && root.mDLAUG.converter;
     if (ext === "pdf" && conv && conv.mountAccessiblePdf) {
       host.textContent = "Loading accessible view…";
       conv.mountAccessiblePdf(a.href, host).then(function () { host.focus(); })
-        .catch(function () { fallbackIframe(); });
+        .catch(function () { fallbackIframe(); }); // browsers render PDF in an iframe
     } else if ((ext === "docx" || ext === "txt" || ext === "csv") && conv && conv.mountAccessibleDoc) {
       host.textContent = "Loading accessible view…";
       conv.mountAccessibleDoc(a.href, ext, host).then(function () { host.focus(); })
-        .catch(function () { fallbackIframe(); });
+        .catch(function () { showFetchError(); }); // never iframe a .docx — that just downloads
     } else { fallbackIframe(); }
 
+    function showFetchError() {
+      host.textContent = "";
+      var p = document.createElement("p");
+      p.style.margin = "0 0 .4rem";
+      p.textContent = "Couldn't fetch this file to convert it — it may be blocked cross-origin, or served over http on an https page.";
+      var link = document.createElement("a");
+      link.href = a.href; link.textContent = "Open the original file"; link.setAttribute("rel", "noopener");
+      host.appendChild(p); host.appendChild(link); host.focus();
+    }
     function fallbackIframe() {
       host.textContent = "";
       var f = document.createElement("iframe");
@@ -278,8 +285,20 @@
             if (opts.onNeedAltText) { try { opts.onNeedAltText(img); } catch (e) {} }
           }
           n++;
-        } else if (alt.trim() === "" ) {
-          // explicitly decorative — leave as is
+        } else if (alt.trim() === "") {
+          // alt="" declares the image decorative — correct for spacers/icons, but
+          // a LARGE image marked decorative is usually a mistake (real content
+          // shown as an image, e.g. a screenshot). Flag it for human review; do
+          // not fabricate a description or strip the author's alt="".
+          var szc = _size(img);
+          if (!looksDecorative && szc.w >= 150 && szc.h >= 100 && szc.w * szc.h >= 30000) {
+            setAttr(img, "data-mdlaug-needs-alt", "1");
+            mark(img, "ACC2");
+            flagged++;
+            log({ code: "ACC2/COM3", level: "A", kind: "flag", el: img.src || "(inline)",
+              msg: 'Large image marked decorative (alt="") — confirm it is not conveying content.' });
+            n++;
+          }
         } else if (/\.(jpe?g|png|gif|webp|svg)$/i.test(alt.trim()) || /^(image|img|dsc|screenshot)[-_ ]?\d*$/i.test(alt.trim())) {
           // alt is a filename → not a real description
           setAttr(img, "data-mdlaug-needs-alt", "1");
@@ -962,6 +981,75 @@
     }
   });
 
+  // ---- ACC2/COM3 (extended): images that aren't <img> --------------------
+  // Real pages carry meaningful images as inline SVG, <canvas> (incl. rendered
+  // PDF pages), or CSS background-image on a sized box. The <img> rule can't see
+  // those, so flag them for a text alternative too. Conservative: skips tiny/
+  // decorative/hidden/already-named elements and boxes that carry their own text.
+  function _px(v) { v = parseFloat(v); return isNaN(v) ? 0 : v; }
+  function _size(el) {
+    var w = 0, h = 0;
+    try { var r = el.getBoundingClientRect(); w = r.width; h = r.height; } catch (e) {}
+    if (!w || !h) { try { var cs = root.getComputedStyle(el); w = w || _px(cs.width); h = h || _px(cs.height); } catch (e) {} }
+    if (!w) w = _px(el.getAttribute && el.getAttribute("width")) || el.clientWidth || 0;
+    if (!h) h = _px(el.getAttribute && el.getAttribute("height")) || el.clientHeight || 0;
+    return { w: w, h: h };
+  }
+  function _decorative(el) {
+    if (el.getAttribute("aria-hidden") === "true") return true;
+    var r = (el.getAttribute("role") || "").toLowerCase();
+    return r === "presentation" || r === "none";
+  }
+  function _imgNamed(el) {
+    if (hasName(el)) return true;
+    var t = el.querySelector && el.querySelector("title");
+    return !!(t && text(t));
+  }
+  // For SVG/canvas, only an EXPLICIT name counts — inner <text> is image content,
+  // not an accessible name, so it must not suppress the flag.
+  function _explicitName(el) {
+    if ((el.getAttribute("aria-label") || "").trim()) return true;
+    if (el.getAttribute("aria-labelledby")) return true;
+    if ((el.getAttribute("title") || "").trim()) return true;
+    var t = el.querySelector && el.querySelector("title");
+    return !!(t && text(t));
+  }
+  rule({
+    id: "images-nontag", code: "ACC2/COM3", level: "A", kind: "flag",
+    describe: "Images conveyed as SVG, <canvas>, or a CSS background (not <img>) are detected and flagged for a text alternative.",
+    run: function () {
+      var n = 0;
+      $all("svg, canvas").forEach(function (el) {
+        if ((el.getAttribute(MARK) || "").indexOf("ACC2") > -1) return;
+        if ((el.getAttribute(MARK) || "").indexOf("ACC3") > -1) return; // already handled as a graphic
+        if (_decorative(el) || _explicitName(el)) return;
+        var sz = _size(el);
+        var hasText = el.tagName.toLowerCase() === "svg" && el.querySelector("text");
+        if (!(hasText || (sz.w >= 48 && sz.h >= 48))) return; // skip small/decorative icons
+        setAttr(el, "data-mdlaug-needs-alt", "1"); mark(el, "ACC2"); n++;
+      });
+      var els = $all("*"), scanned = 0;
+      for (var i = 0; i < els.length && scanned < 5000; i++) {
+        var el = els[i]; scanned++;
+        var tag = el.tagName.toLowerCase();
+        if (tag === "img" || tag === "svg" || tag === "canvas" || tag === "script" || tag === "style" || tag === "body" || tag === "html") continue;
+        if ((el.getAttribute(MARK) || "").indexOf("ACC2") > -1) continue;
+        var bg = "";
+        try { bg = root.getComputedStyle(el).backgroundImage || ""; } catch (e) { continue; }
+        if (!bg || bg === "none" || bg.indexOf("url(") === -1) continue;
+        if (_decorative(el) || _imgNamed(el)) continue;
+        var txt = text(el); if (txt && txt.length > 2) continue; // has its own text -> bg is decorative
+        var sz = _size(el);
+        if (!(sz.w >= 48 && sz.h >= 48 && sz.w * sz.h >= 8000)) continue;
+        setAttr(el, "data-mdlaug-needs-alt", "1");
+        setAttr(el, "role", el.getAttribute("role") || "img");
+        mark(el, "ACC2"); n++;
+      }
+      if (n) log({ code: "ACC2/COM3", level: "A", kind: "flag", count: n, msg: n + " non-<img> image(s) (SVG / canvas / CSS background) need a text alternative." });
+      return n;
+    }
+  });
+
   // ---- FORM1: accessible form fields (WCAG 1.3.1 / 3.3.2 / 4.1.2) ---------
   // From reviewer feedback: login/registration/account forms are a common BVI
   // pain point not covered by the 24 situations. Associate labels, fall back to
@@ -1304,7 +1392,7 @@
     setPackEnabled: setPackEnabled,
     packs: packsList,
     matchedPacks: matchedPacks,
-    version: "0.9.5"
+    version: "0.9.10"
   };
 
   root.mDLAUG = root.mDLAUG || {};
