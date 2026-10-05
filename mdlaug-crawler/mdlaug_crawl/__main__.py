@@ -50,6 +50,7 @@ def main(argv=None):
     cp.add_argument("--max-width", type=int, default=1000, help="screenshot width (px) after compression")
     cl = csub.add_parser("pull", help="import crowd consensus into the local DB")
     cl.add_argument("--include-single", action="store_true", help="also import findings with only one review")
+    cl.add_argument("--include-open", action="store_true", help="also count self-reported reviews from review_app.py")
     cu = csub.add_parser("user", help="manage the allowlist")
     cu.add_argument("action", choices=["add", "remove", "list"])
     cu.add_argument("email", nargs="?")
@@ -116,7 +117,7 @@ def main(argv=None):
                                 progress=lambda i, n: print(f"  images {i}/{n} pages", end="\r", flush=True))
             print("\npublished", res)
         elif args.ccmd == "pull":
-            print(f"imported {crowd.pull(store, db, include_single=args.include_single)} crowd decision(s)")
+            print(f"imported {crowd.pull(store, db, include_single=args.include_single, include_open=args.include_open)} crowd decision(s)")
         elif args.ccmd == "user":
             crowd.init(db)
             if args.action == "list":

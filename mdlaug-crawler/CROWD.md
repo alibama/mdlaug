@@ -96,6 +96,32 @@ localhost). Two simple options:
    single-review findings.
 5. Download each library's **improved site pack** from the crowd app's Sites tab.
 
+## Open reviewer (no sign-in)
+
+`review_app.py` is a simpler, open-access app over the same published data — useful for
+sharing widely (workshops, the guideline authors' wider community) without adding anyone
+to the allowlist. Visitors identify themselves in the sidebar (name required; affiliation,
+email, and an "about you" note optional), then:
+
+* **Review findings** — one at a time, in plain language: the situation's question, what
+  the tool decided and why, the screenshot marked for that situation, and "how a person
+  would check this". Answers: right / should be scored differently / doesn't apply / not
+  sure, with an optional comment and an optional suggested fix.
+* **Browse libraries** — before/after screenshots for every page.
+* **Notes for the team** — anything else.
+
+**What keeps it safe to leave open:** open reviews are stored with
+`channel='open'` and the self-reported identity. They **never** count toward the
+verified two-review consensus, can't accept fixes, and aren't pulled into your local
+database unless you run `crowd pull --include-open`. Suggested fixes arrive as notes for
+a verified reviewer to act on. Text is length-limited and each browser session is capped
+at 300 submissions. You read everything in the crowd app's **Admin → Open reviews &
+notes**. (Anyone with the link can still submit nonsense — it just can't change results.)
+
+**Deploying on Streamlit Community Cloud:** new app → main file `crawler/review_app.py` →
+*Secrets*: `TURSO_URL` and `TURSO_TOKEN` only (no `[auth]` section needed). Use the same
+Turso database the crowd app uses so open feedback sits alongside verified reviews.
+
 ## Rules of the game
 
 * **Consensus:** each flagged finding gets 2 reviews (`TARGET_REVIEWS`). Agreed = a

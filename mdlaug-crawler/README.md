@@ -174,7 +174,7 @@ Publish a run to Turso and invite reviewers to a separate web app (`crowd_app.py
 Google sign-in plus an allowlist you manage, two independent reviews per flagged
 finding with consensus, and proposals + votes for the content fixes automation can't
 write (alt text, names, labels). Accepted fixes produce each library's improved site
-pack; agreed decisions pull back into the local database. Setup: [`CROWD.md`](CROWD.md).
+pack; agreed decisions pull back into the local database. For wider, sign-in-free feedback, `review_app.py` is an open reviewer whose self-identified reviews are kept separate from verified results. Setup for both: [`CROWD.md`](CROWD.md).
 
 ## Tests
 

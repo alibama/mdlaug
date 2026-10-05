@@ -334,6 +334,35 @@ if is_admin:
                 crowd.decide(db, x["id"], "accepted", email); st.rerun()
             if c[2].button("Reject", key=f"rej_{x['id']}"):
                 crowd.decide(db, x["id"], "rejected", email); st.rerun()
+        st.subheader("Open reviews & notes (self-reported)")
+        st.caption("From the open reviewer (review_app.py). Not counted in consensus; `crowd pull --include-open` "
+                   "imports agreed ones if you choose to.")
+        orv = db.query("SELECT datetime(r.ts,'unixepoch') AS time, r.reviewer, r.identity, r.decision, r.score, r.note, "
+                       "f.code, s.institution FROM crowd_reviews r JOIN crowd_findings f ON f.id=r.finding_id "
+                       "JOIN crowd_sites s ON s.id=f.site_id WHERE r.channel='open' ORDER BY r.ts DESC LIMIT 300")
+        if orv:
+            for r in orv:
+                try:
+                    idn = json.loads(r.pop("identity") or "{}")
+                except Exception:
+                    idn = {}
+                r["who"] = " · ".join(x for x in (idn.get("name"), idn.get("affiliation"), idn.get("email")) if x)
+                r["about"] = idn.get("about", "")
+            show_df(pd.DataFrame(orv)[["time", "who", "about", "institution", "code", "decision", "score", "note"]],
+                    hide_index=True)
+        fb = db.query("SELECT datetime(b.ts,'unixepoch') AS time, b.author, b.identity, b.text, s.institution "
+                      "FROM crowd_feedback b LEFT JOIN crowd_sites s ON s.id=b.site_id ORDER BY b.ts DESC LIMIT 300")
+        if fb:
+            for r in fb:
+                try:
+                    idn = json.loads(r.pop("identity") or "{}")
+                except Exception:
+                    idn = {}
+                r["who"] = " · ".join(x for x in (idn.get("name"), idn.get("affiliation"), idn.get("email")) if x)
+            st.markdown("**Notes**")
+            show_df(pd.DataFrame(fb)[["time", "who", "institution", "text"]], hide_index=True)
+        if not orv and not fb:
+            st.caption("Nothing from the open reviewer yet.")
         st.subheader("Audit log")
         show_df(pd.DataFrame(db.query("SELECT datetime(ts,'unixepoch') AS time, actor, action, target FROM crowd_audit "
                                       "ORDER BY id DESC LIMIT 200")), hide_index=True)
