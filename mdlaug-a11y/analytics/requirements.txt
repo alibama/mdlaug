@@ -1,3 +1,9 @@
+curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && chmod +x /tmp/dotnet-install.sh
+sudo /tmp/dotnet-install.sh --channel 10.0 --runtime dotnet --install-dir /usr/local/share/dotnet
+# side-by-side gotcha: installing 10.0.11 does NOT remove 10.0.10, and Qualys flags every
+# vulnerable version present -- so delete the old runtime folder explicitly:
+sudo rm -rf /usr/local/share/dotnet/shared/Microsoft.NETCore.App/10.0.10
+sudo rm -rf /usr/local/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.10
 streamlit>=1.36
 pandas>=2.0
 requests>=2.31
