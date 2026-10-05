@@ -1,0 +1,5 @@
+# Just the crowd app (no Playwright needed) — e.g. for hosting
+streamlit[auth]>=1.42
+pandas>=2.0
+requests>=2.31
+Pillow>=10.0

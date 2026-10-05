@@ -1,0 +1,7 @@
+playwright>=1.45
+streamlit[auth]>=1.42   # [auth] = Google sign-in for crowd_app.py
+pandas>=2.0
+openpyxl>=3.1
+altair>=5.0
+requests>=2.31
+Pillow>=10.0
