@@ -62,7 +62,9 @@ def test_crawl_fixture(tmp_path):
     assert any(x["check_id"] == "probe.search_present" and x["outcome"] == "partial" for x in by["FIL2/RED3"])  # placeholder-only
     assert any(x["check_id"] == "probe.icon_submit" and x["outcome"] == "fail" for x in by["FIL1"])            # unnamed icon button
     assert "EXE1" in by and "RED1" in by and "NAV2" in by and "NAV3" in by and "COM2/NAV1" in by and "RED2" in by
-    assert any(x["check_id"] == "probe.dialog_escape" for x in by["EXE2"])      # cookie dialog closed by Escape
+    ov = [x for x in by["EXE2"] if x["check_id"] == "probe.overlay"]             # cookie dialog closed by Escape
+    assert ov and json.loads(st.query("SELECT evidence FROM findings WHERE run_id=? AND check_id='probe.overlay'",
+                                      (rid,))[0]["evidence"])["escape_closes"] is True
     assert any(x["method"] == "probe" for x in by["USE1"])
     # LLM judgments routed through findings
     for code, chk in (("EVA1", "llm.snippet_relevance"), ("ACC2/COM3", "llm.alt_quality"),
@@ -127,7 +129,110 @@ def test_search_behind_consent_overlay(tmp_path):
         srv.shutdown()
     outcomes = [json.loads(e["data"]) for e in st.query("SELECT data FROM events WHERE run_id=? AND stage='search_outcome'", (rid,))]
     assert outcomes and outcomes[-1]["outcome"] == "ok" and outcomes[-1]["method"] == "keyboard", outcomes
-    ov = st.query("SELECT outcome, message, evidence FROM findings WHERE run_id=? AND check_id='probe.blocking_overlay'", (rid,))
-    assert ov and ov[0]["outcome"] == "fail"
-    assert json.loads(ov[0]["evidence"])["dismissal"]["label"] == "Reject all"      # privacy-preferring choice
+    ov = st.query("SELECT outcome, evidence FROM findings WHERE run_id=? AND check_id='probe.overlay' AND code='INT1'", (rid,))
+    assert ov and ov[0]["outcome"] != "pass"
+    ev = json.loads(ov[0]["evidence"])
+    assert ev["escape_closes"] is False and ev["dismissal"]["label"] == "Reject all"   # privacy-preferring choice
     assert any(p["page_type"] == "results" for p in st.query("SELECT page_type FROM pages WHERE run_id=?", (rid,)))
+
+
+def _crawl_one(tmp_path, url, platform="Digital commons", name="t"):
+    cfg = Config(db_path=str(tmp_path / f"{name}.db"), artifacts_dir=str(tmp_path / "art"), logs_dir=str(tmp_path / "logs"))
+    cfg.polite_delay_s = 0; cfg.llm_enabled = False
+    st = Store(cfg.db_path, cfg.logs_dir)
+    rid = asyncio.run(runner.run_crawl(cfg, st, None, [{"collection_url": url, "platform": platform,
+                      "library_type": "Academic library", "institution": name, "library_page": url, "listings": []}]))
+    return st, rid
+
+
+def test_consent_manager_dismissed_with_its_own_reject_control(tmp_path):
+    """Regression (Digital Commons / OneTrust): the dismisser used to search the whole page and click
+    'Skip to main content'. It must use the consent manager's own reject control, before anything is measured,
+    and the script-rendered results ('Loading...' for 3 s) must be waited for."""
+    srv, base = server.serve()
+    try:
+        st, rid = _crawl_one(tmp_path, base + "onetrust/", name="ot")
+    finally:
+        srv.shutdown()
+    ov = st.query("SELECT evidence FROM findings WHERE run_id=? AND check_id='probe.overlay' AND code='INT1'", (rid,))
+    assert len(ov) == 1, ov                                   # banner scored once; its backdrop isn't a second overlay
+    ev = json.loads(ov[0]["evidence"])
+    assert ev["cmp"] == "OneTrust" and ev["kind"] == "consent" and ev["escape_closes"] is False
+    assert ev["dismissal"]["via"] == "cmp-control" and ev["dismissal"]["label"] == "Reject All" and not ev["still_visible"]
+    assert ev["criteria"]["exposed_as_dialog"] is False
+    home = st.query("SELECT overlays, fingerprint FROM pages WHERE run_id=? AND page_type='home'", (rid,))[0]
+    assert json.loads(home["fingerprint"])["platform"] == "Digital commons"
+    # nothing measured on the home page saw the banner: axe/engine ran after it was gone
+    assert not st.query("SELECT 1 FROM events WHERE run_id=? AND stage='overlay' AND message LIKE '%late overlay%'", (rid,))
+    out = [json.loads(e["data"]) for e in st.query("SELECT data FROM events WHERE run_id=? AND stage='search_outcome'", (rid,))]
+    assert out[-1]["outcome"] == "ok" and out[-1]["method"] == "keyboard", out
+    assert not st.query("SELECT 1 FROM findings WHERE run_id=? AND check_id='probe.blocking_overlay'", (rid,))
+
+
+def test_accept_only_banner_rejected_through_its_api(tmp_path):
+    """The real Digital Commons banner offers only 'Accept all cookies': use OneTrust's own RejectAll()
+    before ever clicking accept, and record that the banner has no named reject/close control."""
+    srv, base = server.serve()
+    try:
+        st, rid = _crawl_one(tmp_path, base + "onetrust-accept-only/", name="oa")
+    finally:
+        srv.shutdown()
+    ev = json.loads(st.query("SELECT evidence FROM findings WHERE run_id=? AND check_id='probe.overlay' AND code='INT1'",
+                             (rid,))[0]["evidence"])
+    assert ev["dismissal"]["via"] == "cmp-api" and "RejectAll" in ev["dismissal"]["label"], ev["dismissal"]
+    assert ev["criteria"]["named_dismiss_control"] is False
+
+
+def test_bot_challenge_recorded_not_measured(tmp_path):
+    srv, base = server.serve()
+    try:
+        st, rid = _crawl_one(tmp_path, base + "guarded/", platform="Omeka", name="g")
+    finally:
+        srv.shutdown()
+    out = [json.loads(e["data"]) for e in st.query("SELECT data FROM events WHERE run_id=? AND stage='search_outcome'", (rid,))]
+    assert out[-1]["outcome"] == "bot_challenge", out
+    pg = st.query("SELECT id, status FROM pages WHERE run_id=? AND status='bot_challenge'", (rid,))
+    assert pg and not st.query("SELECT 1 FROM findings WHERE page_id=?", (pg[0]["id"],))
+    cov = analysis.coverage(st, rid)
+    assert cov.iloc[0]["status"] == "search behind bot check"
+
+
+def test_shadow_dom_notice_dialog_measured_and_dismissed(tmp_path):
+    """Regression (GSU / Islandora <notice-dialog>): a web component drawing its modal inside a shadow root
+    was invisible to the overlay probe, so it stayed over the page and was never scored."""
+    srv, base = server.serve()
+    try:
+        st, rid = _crawl_one(tmp_path, base + "notice/", platform="CONTENTdm", name="nd")
+    finally:
+        srv.shutdown()
+    ov = st.query("SELECT evidence FROM findings WHERE run_id=? AND check_id='probe.overlay' AND code='INT1'", (rid,))
+    assert ov, "shadow-DOM dialog not detected"
+    ev = json.loads(ov[0]["evidence"])
+    assert ev["shadow"] is True and ev["escape_closes"] is False and not ev["still_visible"]
+    assert ev["dismissal"]["label"] == "Continue" and ev["criteria"]["exposed_as_dialog"] is False
+
+
+def test_closed_shadow_root_overlay_detected_and_hidden(tmp_path):
+    """GSU's <notice-dialog> uses a closed shadow root: nothing inside is readable, the host has no size.
+    Hit-testing still finds it; unobservable criteria are recorded as unknown, not as failures."""
+    srv, base = server.serve()
+    try:
+        st, rid = _crawl_one(tmp_path, base + "notice-closed/", platform="CONTENTdm", name="nc")
+    finally:
+        srv.shutdown()
+    ov = st.query("SELECT evidence FROM findings WHERE run_id=? AND check_id='probe.overlay' AND code='INT1'", (rid,))
+    assert ov, "closed-shadow dialog not detected"
+    ev = json.loads(ov[0]["evidence"])
+    assert ev["closed_shadow"] is True and ev["coverage"] > 0.5 and not ev["still_visible"]
+    assert ev["criteria"]["exposed_as_dialog"] is None and ev["criteria"]["escape_closes"] is False
+
+
+def test_failed_browser_check_page_is_a_bot_challenge(tmp_path):
+    srv, base = server.serve()
+    try:
+        st, rid = _crawl_one(tmp_path, base + "notbot/", platform="DSpace", name="nb")
+    finally:
+        srv.shutdown()
+    pg = st.query("SELECT status FROM pages WHERE run_id=?", (rid,))
+    assert [p["status"] for p in pg] == ["bot_challenge"], pg
+    assert analysis.coverage(st, rid).iloc[0]["status"] == "blocked by bot check"

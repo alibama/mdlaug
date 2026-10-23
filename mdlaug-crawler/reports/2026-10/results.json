@@ -1,0 +1,6878 @@
+{
+ "coverage": {
+  "run": {
+   "id": 4,
+   "status": "done",
+   "note": "full re-run: overlay pass v2, bot-check detection, results wait, platform fingerprint, vision QA (iPhone 13)",
+   "device": "iPhone 13"
+  },
+  "replicate": {
+   "id": 1,
+   "status": "running",
+   "note": "testing for content accessibility",
+   "device": "desktop"
+  },
+  "patches": [
+   {
+    "id": 5,
+    "status": "done",
+    "note": "patch of run 4: shadow-DOM overlays + more bot-check phrasings (sites where vision QA saw an overlay the DOM probe missed)",
+    "device": "iPhone 13",
+    "sites": 19
+   },
+   {
+    "id": 6,
+    "status": "done",
+    "note": "patch of run 4: closed-shadow-root overlay (GSU notice-dialog)",
+    "device": "iPhone 13",
+    "sites": 1
+   }
+  ],
+  "sites_listed": {
+   "CONTENTdm": 29,
+   "DSpace": 30,
+   "Digital commons": 28,
+   "Islandora": 32,
+   "Omeka": 22,
+   "Samvera": 28
+  },
+  "sites_listed_by_type": {
+   "Academic library": 52,
+   "Large-scale library / consortium": 34,
+   "Museum": 28,
+   "Organizational library": 34,
+   "Public library": 21
+  },
+  "primary_by_platform": {
+   "CONTENTdm": 20,
+   "DSpace": 17,
+   "Digital commons": 25,
+   "Islandora": 2,
+   "Omeka": 16,
+   "Samvera": 10
+  },
+  "crawled_by_listed_platform": {
+   "CONTENTdm": 28,
+   "DSpace": 22,
+   "Digital commons": 26,
+   "Islandora": 16,
+   "Omeka": 17,
+   "Samvera": 23
+  },
+  "primary_by_type": {
+   "Academic library": 38,
+   "Large-scale library / consortium": 26,
+   "Museum": 23,
+   "Organizational library": 27,
+   "Public library": 18
+  },
+  "primary_crosstab": {
+   "Academic library": {
+    "CONTENTdm": 5,
+    "DSpace": 9,
+    "Digital commons": 6,
+    "Islandora": 1,
+    "Omeka": 2,
+    "Samvera": 4
+   },
+   "Large-scale library / consortium": {
+    "CONTENTdm": 7,
+    "DSpace": 4,
+    "Digital commons": 3,
+    "Islandora": 0,
+    "Omeka": 4,
+    "Samvera": 3
+   },
+   "Museum": {
+    "CONTENTdm": 1,
+    "DSpace": 1,
+    "Digital commons": 6,
+    "Islandora": 1,
+    "Omeka": 4,
+    "Samvera": 1
+   },
+   "Organizational library": {
+    "CONTENTdm": 2,
+    "DSpace": 2,
+    "Digital commons": 6,
+    "Islandora": 0,
+    "Omeka": 3,
+    "Samvera": 1
+   },
+   "Public library": {
+    "CONTENTdm": 5,
+    "DSpace": 1,
+    "Digital commons": 4,
+    "Islandora": 0,
+    "Omeka": 3,
+    "Samvera": 1
+   }
+  },
+  "replicate_by_platform": {
+   "CONTENTdm": 20,
+   "DSpace": 16,
+   "Digital commons": 25,
+   "Islandora": 2,
+   "Omeka": 16,
+   "Samvera": 6
+  },
+  "platform_checks": {
+   "confirmed": 87,
+   "not fingerprinted": 35,
+   "unverified": 20,
+   "unverified (Drupal)": 5,
+   "other software: Primo": 5,
+   "unverified (WordPress)": 4,
+   "unverified (Samvera)": 4,
+   "relabeled (listed Islandora)": 3,
+   "other software: Preservica": 2,
+   "relabeled (listed Digital commons)": 1,
+   "other software: Quartex": 1,
+   "unverified (CONTENTdm)": 1,
+   "other software: Archive-It": 1
+  },
+  "relabels": [
+   {
+    "institution": "West Texas Digital Archives",
+    "collection_url": "http://wtda.alc.org/",
+    "listed_platform": "DSpace",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Duke University (DukeSpace)",
+    "collection_url": "https://dukespace.lib.duke.edu/",
+    "listed_platform": "DSpace",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "University of Illinois Urbana-Champaign (IDEALS)",
+    "collection_url": "https://www.ideals.illinois.edu/",
+    "listed_platform": "DSpace",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Society of Fire Protection Engineers (SFPE)",
+    "collection_url": "https://www.sfpe.org/",
+    "listed_platform": "DSpace",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "National Evolutionary Synthesis Center (Dryad project)",
+    "collection_url": "https://datadryad.org/",
+    "listed_platform": "DSpace",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Cottonwood Research Foundation (Digital Library)",
+    "collection_url": "https://www.crfdl.org/",
+    "listed_platform": "DSpace",
+    "platform_check": "unverified (WordPress)"
+   },
+   {
+    "institution": "Papers of the War Department 1784\u20131800",
+    "collection_url": "https://wardepartmentpapers.org/",
+    "listed_platform": "Omeka",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Bangor Public Library, Maine (Bangor Community: Digital Commons@bpl)",
+    "collection_url": "https://digicom.bpl.lib.me.us/",
+    "listed_platform": "Digital commons",
+    "platform_check": "relabeled (listed Digital commons)"
+   },
+   {
+    "institution": "University of California, Berkeley",
+    "collection_url": "https://escholarship.org/uc/ucb",
+    "listed_platform": "Digital commons",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "University of Southern California (USC Digital Library)",
+    "collection_url": "https://digitallibrary.usc.edu/CS.aspx?VP3=CMS3&VF=CollectionPage",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Duke University Libraries",
+    "collection_url": "https://repository.duke.edu/dc",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "unverified (Samvera)"
+   },
+   {
+    "institution": "Denver Public Library (Denver Public Digital Collections)",
+    "collection_url": "https://digital.denverlibrary.org/",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "National Library of Medicine (NLM Digital Collections)",
+    "collection_url": "https://collections.nlm.nih.gov/",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "unverified (Samvera)"
+   },
+   {
+    "institution": "Wisconsin Historical Society (WHS Digital Collections)",
+    "collection_url": "https://www.wisconsinhistory.org/research/explore-our-collections/digital-collections/",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "other software: Preservica"
+   },
+   {
+    "institution": "The Newberry Library",
+    "collection_url": "https://collections.newberry.org/",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "The National WWII Museum (Digital Collections)",
+    "collection_url": "https://www.ww2online.org/",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "unverified (Drupal)"
+   },
+   {
+    "institution": "The Historic New Orlean collection",
+    "collection_url": "https://catalog.hnoc.org/#/",
+    "listed_platform": "CONTENTdm",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Digital Commonwealth Consortium (Digital Commonwealth)",
+    "collection_url": "https://www.digitalcommonwealth.org/collections",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified (Samvera)"
+   },
+   {
+    "institution": "Keystone library network",
+    "collection_url": "https://digital.klnpa.org/",
+    "listed_platform": "Islandora",
+    "platform_check": "relabeled (listed Islandora)"
+   },
+   {
+    "institution": "University of Neveda Digital Archives",
+    "collection_url": "https://library.unr.edu/collections/unique-collections/digital-collections/digital-archive",
+    "listed_platform": "Islandora",
+    "platform_check": "other software: Primo"
+   },
+   {
+    "institution": "Virginia Commonwealth University Library",
+    "collection_url": "https://scholarscompass.vcu.edu/digital_collections/",
+    "listed_platform": "Islandora",
+    "platform_check": "relabeled (listed Islandora)"
+   },
+   {
+    "institution": "University of Rochester (RBSCP Digital Collections)",
+    "collection_url": "https://uorrcl.access.preservica.com/",
+    "listed_platform": "Islandora",
+    "platform_check": "other software: Preservica"
+   },
+   {
+    "institution": "Arizona State University (KEEP Digital Repository)",
+    "collection_url": "https://keep.lib.asu.edu/",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified (Drupal)"
+   },
+   {
+    "institution": "American University",
+    "collection_url": "https://digitalcollections.american.edu/",
+    "listed_platform": "Islandora",
+    "platform_check": "other software: Quartex"
+   },
+   {
+    "institution": "Villanova University",
+    "collection_url": "https://digital.library.villanova.edu/",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Georgia State University",
+    "collection_url": "https://digitalcollections.library.gsu.edu/",
+    "listed_platform": "Islandora",
+    "platform_check": "relabeled (listed Islandora)"
+   },
+   {
+    "institution": "University of Oklahoma Libraries",
+    "collection_url": "https://digitalcollections.libraries.ou.edu/",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Smithsonian Institution (Smithsonian Libraries & Archives)",
+    "collection_url": "https://library.si.edu/collections",
+    "listed_platform": "Islandora",
+    "platform_check": "other software: Primo"
+   },
+   {
+    "institution": "Science History Institute (Science History Digital Collections)",
+    "collection_url": "https://digital.sciencehistory.org/",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified (Samvera)"
+   },
+   {
+    "institution": "Massachusetts Historical Society (MHS Digital Collections)",
+    "collection_url": "https://www.masshist.org/collection-guides/",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Art Institute of Chicago (Archival & Digital Collections)",
+    "collection_url": "https://www.artic.edu/archival-collections",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified (CONTENTdm)"
+   },
+   {
+    "institution": "Smithsonian National Museum of American History",
+    "collection_url": "https://americanhistory.si.edu/collections",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified (Drupal)"
+   },
+   {
+    "institution": "Yale Center for British Art (YCBA Collections)",
+    "collection_url": "https://collections.britishart.yale.edu/",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified (Drupal)"
+   },
+   {
+    "institution": "National Gallery of Art (NGA Digital Images)",
+    "collection_url": "https://www.nga.gov/artworks",
+    "listed_platform": "Islandora",
+    "platform_check": "unverified (Drupal)"
+   },
+   {
+    "institution": "National Agricultural Library - USDA (PubAg Digital Repository)",
+    "collection_url": "https://search.nal.usda.gov/discovery/collectionDiscovery?vid=01NAL_INST:MAIN&lang=en",
+    "listed_platform": "Samvera",
+    "platform_check": "other software: Primo"
+   },
+   {
+    "institution": "Northwestern University (Northwestern Digital Collections)",
+    "collection_url": "https://dc.library.northwestern.edu/",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "University of Virginia",
+    "collection_url": "https://library.virginia.edu/libra",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified (WordPress)"
+   },
+   {
+    "institution": "University of Utah",
+    "collection_url": "https://hive.utah.edu/",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Science History Institute (Science History Collections)",
+    "collection_url": "https://www.sciencehistory.org/collections/",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified (WordPress)"
+   },
+   {
+    "institution": "Rock and Roll Hall of Fame (Rock Hall Library & Archives)",
+    "collection_url": "https://catalog.rockhall.com/rrhof-ais/search/simple",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Internet Archive & Partner Orgs (Archive-It Collections)",
+    "collection_url": "https://archive-it.org/explore/",
+    "listed_platform": "Samvera",
+    "platform_check": "other software: Archive-It"
+   },
+   {
+    "institution": "The Getty Research Institute Research collections",
+    "collection_url": "https://www.getty.edu/research/collections/collections",
+    "listed_platform": "Samvera",
+    "platform_check": "other software: Primo"
+   },
+   {
+    "institution": "Whitney Museum of American Art (Whitney Digital Assets)",
+    "collection_url": "https://collection.whitney.org/",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Museum of Modern Art - MoMA (MoMA Exhibition Records & Archives)",
+    "collection_url": "https://www.moma.org/collection/",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Cleveland Museum of Art (CMA Collection Online)",
+    "collection_url": "https://www.clevelandart.org/art/collection/search",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified"
+   },
+   {
+    "institution": "Solomon R. Guggenheim Museum (Guggenheim Collection Online)",
+    "collection_url": "https://www.guggenheim.org/collection-online",
+    "listed_platform": "Samvera",
+    "platform_check": "unverified (WordPress)"
+   },
+   {
+    "institution": "The Getty Research Institute Museum",
+    "collection_url": "https://www.getty.edu/art/collection/",
+    "listed_platform": "Samvera",
+    "platform_check": "other software: Primo"
+   }
+  ],
+  "search_by_platform": {
+   "CONTENTdm": {
+    "sites": 28,
+    "reached_results": 20,
+    "via_search_box": 20,
+    "via_platform_url": 0,
+    "bot_challenge": 0
+   },
+   "DSpace": {
+    "sites": 22,
+    "reached_results": 18,
+    "via_search_box": 17,
+    "via_platform_url": 1,
+    "bot_challenge": 0
+   },
+   "Digital commons": {
+    "sites": 26,
+    "reached_results": 1,
+    "via_search_box": 1,
+    "via_platform_url": 0,
+    "bot_challenge": 25
+   },
+   "Islandora": {
+    "sites": 16,
+    "reached_results": 9,
+    "via_search_box": 7,
+    "via_platform_url": 2,
+    "bot_challenge": 3
+   },
+   "Omeka": {
+    "sites": 17,
+    "reached_results": 14,
+    "via_search_box": 11,
+    "via_platform_url": 3,
+    "bot_challenge": 0
+   },
+   "Samvera": {
+    "sites": 23,
+    "reached_results": 15,
+    "via_search_box": 14,
+    "via_platform_url": 1,
+    "bot_challenge": 5
+   }
+  },
+  "overlay_kinds_by_platform": {
+   "CONTENTdm": {
+    "dialog": 3,
+    "consent": 2,
+    "CookieYes": 1
+   },
+   "DSpace": {
+    "Klaro": 11,
+    "consent": 5,
+    "CookieConsent": 1
+   },
+   "Digital commons": {
+    "OneTrust": 25,
+    "app_banner": 25,
+    "Klaro": 1
+   },
+   "Islandora": {
+    "CookieYes": 1,
+    "Osano": 1,
+    "CookieConsent": 1,
+    "consent": 1
+   },
+   "Omeka": {},
+   "Samvera": {
+    "CookieYes": 2,
+    "consent": 2,
+    "OneTrust": 1
+   }
+  },
+  "n_primary": 132,
+  "n_verified": 90,
+  "n_replicate": 125,
+  "n_both": 115,
+  "reviews_in_db": 0,
+  "vision_qa": {
+   "pages": 132,
+   "dom_and_vision_overlay": 56,
+   "dom_only": 1,
+   "vision_only": 14,
+   "neither": 61,
+   "residual_after_dismissal": 28
+  }
+ },
+ "primary": [
+  {
+   "sample": "run 4",
+   "metric": "axe_rules_violated",
+   "family": "home",
+   "description": "WCAG 2.2 A/AA rules failed on the home page (axe-core)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 0.20410801195855918,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.9936012797440512,
+   "p_controlling_other": 0.9958008398320336,
+   "p_without_dc": 0.9815092453773113,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 2.0,
+     "mean": 2.2
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 2.0,
+     "mean": 2.0588235294117645
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 2.0,
+     "mean": 2.08
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 2.0,
+     "mean": 2.0625
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 1.5,
+     "mean": 2.4
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.9145161225190395,
+     "q": 1.0
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.9092817881458246,
+     "q": 1.0
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.907151030303791,
+     "q": 1.0
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 1.5,
+     "rest_value": 2.0,
+     "diff": -0.5,
+     "p": 0.6657583018820907,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 1.0,
+   "q_controlling_other": 1.0,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe_rules_violated",
+   "family": "home",
+   "description": "WCAG 2.2 A/AA rules failed on the home page (axe-core)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 130,
+   "groups": 5,
+   "statistic": 6.560642571689051,
+   "effect": 0.02048514057351241,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.14757048590281943,
+   "p_controlling_other": 0.15976804639072187,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 1.0,
+     "mean": 1.6486486486486487
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 2.0,
+     "mean": 2.1153846153846154
+    },
+    "Museum": {
+     "n": 23,
+     "value": 2.0,
+     "mean": 2.0
+    },
+    "Organizational library": {
+     "n": 26,
+     "value": 2.0,
+     "mean": 1.6923076923076923
+    },
+    "Public library": {
+     "n": 18,
+     "value": 2.5,
+     "mean": 2.888888888888889
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 1.0,
+     "rest_value": 2.0,
+     "diff": -1.0,
+     "p": 0.07916424403601068,
+     "q": 0.1979106100900267
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.34211322810240885,
+     "q": 0.5117712897700649
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.8027966673536092,
+     "q": 0.8027966673536092
+    },
+    {
+     "group": "Organizational library",
+     "n": 26,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.40941703181605194,
+     "q": 0.5117712897700649
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 2.5,
+     "rest_value": 2.0,
+     "diff": 0.5,
+     "p": 0.06157486103431439,
+     "q": 0.1979106100900267
+    }
+   ],
+   "n_per_group_for_80pct_power": 60.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.26909912135220015,
+   "q_controlling_other": 0.3001702689765077,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe_failing_elements",
+   "family": "home",
+   "description": "Elements failing WCAG on the home page (axe-core)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 5.001390237817765,
+   "effect": 0.012064942624310425,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.28594281143771244,
+   "p_controlling_other": 0.3101379724055189,
+   "p_without_dc": 0.4867566216891554,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 10.0,
+     "mean": 13.8
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 4.0,
+     "mean": 7.529411764705882
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 3.0,
+     "mean": 5.2
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 7.0,
+     "mean": 7.375
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 8.0,
+     "mean": 17.9
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 10.0,
+     "rest_value": 4.5,
+     "diff": 5.5,
+     "p": 0.043550732280687156,
+     "q": 0.21775366140343577
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 4.0,
+     "rest_value": 7.0,
+     "diff": -3.0,
+     "p": 0.4356423211404138,
+     "q": 0.726070535234023
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 3.0,
+     "rest_value": 8.0,
+     "diff": -5.0,
+     "p": 0.17670501263144123,
+     "q": 0.44176253157860307
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 7.0,
+     "rest_value": 6.0,
+     "diff": 1.0,
+     "p": 0.9567094003830955,
+     "q": 0.9567094003830954
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 8.0,
+     "rest_value": 6.5,
+     "diff": 1.5,
+     "p": 0.8793993151886538,
+     "q": 0.9567094003830954
+    }
+   ],
+   "n_per_group_for_80pct_power": 60.0,
+   "final_review": false,
+   "excluded_because": "element counts scale with page length; axe_rules_violated is the comparable measure",
+   "q": 0.47502078531662084,
+   "q_controlling_other": 0.5196906564633019,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe_failing_elements",
+   "family": "home",
+   "description": "Elements failing WCAG on the home page (axe-core)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 130,
+   "groups": 5,
+   "statistic": 5.042668349860341,
+   "effect": 0.008341346798882725,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.28954209158168365,
+   "p_controlling_other": 0.34853029394121177,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 3.0,
+     "mean": 7.486486486486487
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 6.5,
+     "mean": 13.884615384615385
+    },
+    "Museum": {
+     "n": 23,
+     "value": 5.0,
+     "mean": 7.173913043478261
+    },
+    "Organizational library": {
+     "n": 26,
+     "value": 3.0,
+     "mean": 6.0
+    },
+    "Public library": {
+     "n": 18,
+     "value": 7.0,
+     "mean": 11.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 3.0,
+     "rest_value": 5.0,
+     "diff": -2.0,
+     "p": 0.14697667028295663,
+     "q": 0.3674416757073916
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 6.5,
+     "rest_value": 4.0,
+     "diff": 2.5,
+     "p": 0.10183042956425012,
+     "q": 0.3674416757073916
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 5.0,
+     "rest_value": 4.0,
+     "diff": 1.0,
+     "p": 0.9608513922935839,
+     "q": 0.9608513922935839
+    },
+    {
+     "group": "Organizational library",
+     "n": 26,
+     "group_value": 3.0,
+     "rest_value": 5.0,
+     "diff": -2.0,
+     "p": 0.41921821141366633,
+     "q": 0.5240227642670829
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 7.0,
+     "rest_value": 4.0,
+     "diff": 3.0,
+     "p": 0.32064359002666853,
+     "q": 0.5240227642670829
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": false,
+   "excluded_because": "element counts scale with page length; axe_rules_violated is the comparable measure",
+   "q": 0.47502078531662084,
+   "q_controlling_other": 0.5686546901146087,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "small_targets_2.5.8",
+   "family": "home",
+   "description": "Tap targets under 24\u00d724 px on the home page (WCAG 2.5.8)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 2.9171446152235174,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.5682863427314537,
+   "p_controlling_other": 0.5454909018196361,
+   "p_without_dc": 0.4832583708145927,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 6.5,
+     "mean": 20.85
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 3.0,
+     "mean": 2.823529411764706
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 2.0,
+     "mean": 5.84
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 4.0,
+     "mean": 6.1875
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 3.5,
+     "mean": 11.6
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 6.5,
+     "rest_value": 3.0,
+     "diff": 3.5,
+     "p": 0.37330323466179605,
+     "q": 0.800740457775263
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 3.0,
+     "rest_value": 4.0,
+     "diff": -1.0,
+     "p": 0.13078637752113909,
+     "q": 0.6539318876056954
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 2.0,
+     "rest_value": 3.0,
+     "diff": -1.0,
+     "p": 0.5372511328389266,
+     "q": 0.800740457775263
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 4.0,
+     "rest_value": 3.0,
+     "diff": 1.0,
+     "p": 0.7224102550090478,
+     "q": 0.800740457775263
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 3.5,
+     "rest_value": 3.0,
+     "diff": 0.5,
+     "p": 0.800740457775263,
+     "q": 0.800740457775263
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7046750649870026,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "small_targets_2.5.8",
+   "family": "home",
+   "description": "Tap targets under 24\u00d724 px on the home page (WCAG 2.5.8)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 10.550733465317958,
+   "effect": 0.05158057846707053,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.03059388122375525,
+   "p_controlling_other": 0.033993201359728054,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 3.0,
+     "mean": 8.763157894736842
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 2.0,
+     "mean": 14.153846153846153
+    },
+    "Museum": {
+     "n": 23,
+     "value": 5.0,
+     "mean": 9.08695652173913
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 5.0,
+     "mean": 7.592592592592593
+    },
+    "Public library": {
+     "n": 18,
+     "value": 8.5,
+     "mean": 11.88888888888889
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 3.0,
+     "rest_value": 5.0,
+     "diff": -2.0,
+     "p": 0.4375837653760182,
+     "q": 0.7293062756266969
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 2.0,
+     "rest_value": 5.0,
+     "diff": -3.0,
+     "p": 0.05270091988818088,
+     "q": 0.13175229972045222
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 5.0,
+     "rest_value": 4.0,
+     "diff": 1.0,
+     "p": 0.6420646467713906,
+     "q": 0.8025808084642383
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 5.0,
+     "rest_value": 3.0,
+     "diff": 2.0,
+     "p": 0.9547315112225384,
+     "q": 0.9547315112225384
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 8.5,
+     "rest_value": 3.0,
+     "diff": 5.5,
+     "p": 0.004717326201492273,
+     "q": 0.02358663100746137
+    }
+   ],
+   "n_per_group_for_80pct_power": 30.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.07587282543491301,
+   "q_controlling_other": 0.08781577017929747,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "reflow_fail_1.4.10",
+   "family": "home",
+   "description": "Home page does not fit a phone screen (WCAG 1.4.10)",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 31.761801016702975,
+   "effect": 0.6007741314404178,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.4117647058823529,
+     "mean": 0.4117647058823529
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.0,
+     "rest_value": 0.10294117647058823,
+     "diff": -0.10294117647058823,
+     "p": 0.3431900386964566,
+     "q": 0.42898754837057074
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.4117647058823529,
+     "rest_value": 0.0,
+     "diff": 0.4117647058823529,
+     "p": 3.063479297124736e-06,
+     "q": 1.531739648562368e-05
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.0,
+     "rest_value": 0.1111111111111111,
+     "diff": -0.1111111111111111,
+     "p": 0.1844602214755401,
+     "q": 0.42898754837057074
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.09722222222222222,
+     "diff": -0.09722222222222222,
+     "p": 0.34174767552081453,
+     "q": 0.42898754837057074
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.0,
+     "rest_value": 0.08974358974358974,
+     "diff": -0.08974358974358974,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "reflow_fail_1.4.10",
+   "family": "home",
+   "description": "Home page does not fit a phone screen (WCAG 1.4.10)",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 130,
+   "groups": 5,
+   "statistic": 3.4528347465781195,
+   "effect": 0.1629732103180463,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.509498100379924,
+   "p_controlling_other": 0.6868626274745051,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 0.10810810810810811,
+     "mean": 0.10810810810810811
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.038461538461538464,
+     "mean": 0.038461538461538464
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.043478260869565216,
+     "mean": 0.043478260869565216
+    },
+    "Organizational library": {
+     "n": 26,
+     "value": 0.038461538461538464,
+     "mean": 0.038461538461538464
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 0.10810810810810811,
+     "rest_value": 0.03225806451612903,
+     "diff": 0.07585004359197908,
+     "p": 0.10092679912104006,
+     "q": 0.5046339956052003
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.038461538461538464,
+     "rest_value": 0.057692307692307696,
+     "diff": -0.019230769230769232,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.043478260869565216,
+     "rest_value": 0.056074766355140186,
+     "diff": -0.01259650548557497,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 26,
+     "group_value": 0.038461538461538464,
+     "rest_value": 0.057692307692307696,
+     "diff": -0.019230769230769232,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.0,
+     "rest_value": 0.0625,
+     "diff": -0.0625,
+     "p": 0.59234829194882,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7019751605234509,
+   "q_controlling_other": 0.7973442348567323,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "search_in_landmark",
+   "family": "home",
+   "description": "Search box is inside a search landmark",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 46.514285714285705,
+   "effect": 0.7270291799999697,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.75,
+     "mean": 0.75
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.625,
+     "mean": 0.625
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.7,
+     "mean": 0.7
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.75,
+     "rest_value": 0.25,
+     "diff": 0.5,
+     "p": 0.00010356684419485125,
+     "q": 0.00025891711048712813
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.0,
+     "rest_value": 0.4507042253521127,
+     "diff": -0.4507042253521127,
+     "p": 0.00018261432118981525,
+     "q": 0.0003043572019830254
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.0,
+     "rest_value": 0.5079365079365079,
+     "diff": -0.5079365079365079,
+     "p": 1.0753906581380131e-06,
+     "q": 5.376953290690065e-06
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.625,
+     "rest_value": 0.3055555555555556,
+     "diff": 0.3194444444444444,
+     "p": 0.02239734966430853,
+     "q": 0.027996687080385663
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.7,
+     "rest_value": 0.32051282051282054,
+     "diff": 0.3794871794871794,
+     "p": 0.032510590466558915,
+     "q": 0.032510590466558915
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "search_in_landmark",
+   "family": "home",
+   "description": "Search box is inside a search landmark",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 4.252718505044972,
+   "effect": 0.17949251915374878,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.38452309538092383,
+   "p_controlling_other": 0.5530893821235753,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.23684210526315788,
+     "mean": 0.23684210526315788
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.4230769230769231,
+     "mean": 0.4230769230769231
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.30434782608695654,
+     "mean": 0.30434782608695654
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.25925925925925924,
+     "mean": 0.25925925925925924
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.4444444444444444,
+     "mean": 0.4444444444444444
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.23684210526315788,
+     "rest_value": 0.35106382978723405,
+     "diff": -0.11422172452407617,
+     "p": 0.22295867553795015,
+     "q": 0.4606489315538285
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.4230769230769231,
+     "rest_value": 0.29245283018867924,
+     "diff": 0.13062409288824384,
+     "p": 0.2415399247658959,
+     "q": 0.4606489315538285
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.30434782608695654,
+     "rest_value": 0.3211009174311927,
+     "diff": -0.016753091344236137,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.25925925925925924,
+     "rest_value": 0.3333333333333333,
+     "diff": -0.07407407407407407,
+     "p": 0.643582012220119,
+     "q": 0.8044775152751488
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.4444444444444444,
+     "rest_value": 0.2982456140350877,
+     "diff": 0.14619883040935672,
+     "p": 0.2763893589322971,
+     "q": 0.4606489315538285
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.5814739491126165,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "search_placeholder_only",
+   "family": "home",
+   "description": "Search box is labelled only by placeholder text",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 7.889655172413793,
+   "effect": 0.2994247358081712,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.11217756448710257,
+   "p_controlling_other": 0.07458508298340331,
+   "p_without_dc": 0.15792103948025987,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.1,
+     "mean": 0.1
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.0,
+     "rest_value": 0.014705882352941176,
+     "diff": -0.014705882352941176,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.0,
+     "rest_value": 0.014084507042253521,
+     "diff": -0.014084507042253521,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.0,
+     "rest_value": 0.015873015873015872,
+     "diff": -0.015873015873015872,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.013888888888888888,
+     "diff": -0.013888888888888888,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.1,
+     "rest_value": 0.0,
+     "diff": 0.1,
+     "p": 0.11363636363636365,
+     "q": 0.5681818181818182
+    }
+   ],
+   "n_per_group_for_80pct_power": 60.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.22435512897420515,
+   "q_controlling_other": 0.15945776361968986,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "search_placeholder_only",
+   "family": "home",
+   "description": "Search box is labelled only by placeholder text",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 8.144099378881988,
+   "effect": 0.24839026262574743,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0643871225754849,
+   "p_controlling_other": 0.07098580283943211,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.13043478260869565,
+     "mean": 0.13043478260869565
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.1111111111111111,
+     "mean": 0.1111111111111111
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.05555555555555555,
+     "mean": 0.05555555555555555
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.0,
+     "rest_value": 0.07446808510638298,
+     "diff": -0.07446808510638298,
+     "p": 0.19173791743595353,
+     "q": 0.3195631957265892
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.0,
+     "rest_value": 0.0660377358490566,
+     "diff": -0.0660377358490566,
+     "p": 0.3441758112385783,
+     "q": 0.43021976404822293
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.13043478260869565,
+     "rest_value": 0.03669724770642202,
+     "diff": 0.09373753490227363,
+     "p": 0.10115166361284086,
+     "q": 0.3195631957265892
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.1111111111111111,
+     "rest_value": 0.0380952380952381,
+     "diff": 0.073015873015873,
+     "p": 0.1505706617874955,
+     "q": 0.3195631957265892
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.05555555555555555,
+     "rest_value": 0.05263157894736842,
+     "diff": 0.0029239766081871343,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": 60.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.1355462240885156,
+   "q_controlling_other": 0.15718284914445682,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_ACC2/COM3",
+   "family": "home",
+   "description": "mDLAUG ACC2/COM3 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 55,
+   "groups": 5,
+   "statistic": 12.750000000000144,
+   "effect": 0.17500000000000288,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.0655868826234753,
+   "p_controlling_other": 0.10137972405518897,
+   "p_without_dc": 0.10044977511244378,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 16,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "DSpace": {
+     "n": 11,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "Digital commons": {
+     "n": 17,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "Omeka": {
+     "n": 7,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "Samvera": {
+     "n": 4,
+     "value": 7.0,
+     "mean": 6.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 16,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.5481860016777049,
+     "q": 0.7434206976952524
+    },
+    {
+     "group": "DSpace",
+     "n": 11,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.6494362837267547,
+     "q": 0.7434206976952524
+    },
+    {
+     "group": "Digital commons",
+     "n": 17,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.5290141897745606,
+     "q": 0.7434206976952524
+    },
+    {
+     "group": "Omeka",
+     "n": 7,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.7434206976952524,
+     "q": 0.7434206976952524
+    },
+    {
+     "group": "Samvera",
+     "n": 4,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.0004640375320753494,
+     "q": 0.0023201876603767472
+    }
+   ],
+   "n_per_group_for_80pct_power": 20.0,
+   "final_review": false,
+   "excluded_because": "nearly every site scores 7; differences are a few outliers, not a usable claim",
+   "q": 0.1355462240885156,
+   "q_controlling_other": 0.19758548290341932,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_ACC2/COM3",
+   "family": "home",
+   "description": "mDLAUG ACC2/COM3 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 76,
+   "groups": 5,
+   "statistic": 11.552666346384875,
+   "effect": 0.10637558234344895,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.02439512097580484,
+   "p_controlling_other": 0.03079384123175365,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 23,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "Large-scale library / consortium": {
+     "n": 15,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "Museum": {
+     "n": 13,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "Organizational library": {
+     "n": 16,
+     "value": 7.0,
+     "mean": 6.4375
+    },
+    "Public library": {
+     "n": 9,
+     "value": 7.0,
+     "mean": 7.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 23,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.2544979964122194,
+     "q": 0.5356080571708803
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 15,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.39475107019435274,
+     "q": 0.5356080571708803
+    },
+    {
+     "group": "Museum",
+     "n": 13,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.437238088301782,
+     "q": 0.5356080571708803
+    },
+    {
+     "group": "Organizational library",
+     "n": 16,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.0007247568889918579,
+     "q": 0.0036237844449592896
+    },
+    {
+     "group": "Public library",
+     "n": 9,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.5356080571708803,
+     "q": 0.5356080571708803
+    }
+   ],
+   "n_per_group_for_80pct_power": 30.0,
+   "final_review": false,
+   "excluded_because": "nearly every site scores 7; differences are a few outliers, not a usable claim",
+   "q": 0.06870292608145037,
+   "q_controlling_other": 0.08300948505950984,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_ACC5",
+   "family": "home",
+   "description": "mDLAUG ACC5 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 81,
+   "groups": 5,
+   "statistic": 24.47462380641791,
+   "effect": 0.2694029448212883,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0005998800239952009,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 19,
+     "value": 4.0,
+     "mean": 3.8421052631578947
+    },
+    "DSpace": {
+     "n": 16,
+     "value": 3.0,
+     "mean": 2.875
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 4.0,
+     "mean": 3.48
+    },
+    "Omeka": {
+     "n": 11,
+     "value": 7.0,
+     "mean": 5.909090909090909
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 3.0,
+     "mean": 2.9
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 19,
+     "group_value": 4.0,
+     "rest_value": 4.0,
+     "diff": 0.0,
+     "p": 0.22678743571473126,
+     "q": 0.28348429464341407
+    },
+    {
+     "group": "DSpace",
+     "n": 16,
+     "group_value": 3.0,
+     "rest_value": 4.0,
+     "diff": -1.0,
+     "p": 0.009548921217639754,
+     "q": 0.023872303044099385
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 4.0,
+     "rest_value": 4.0,
+     "diff": 0.0,
+     "p": 0.7597178133892297,
+     "q": 0.7597178133892297
+    },
+    {
+     "group": "Omeka",
+     "n": 11,
+     "group_value": 7.0,
+     "rest_value": 4.0,
+     "diff": 3.0,
+     "p": 6.564596953752584e-05,
+     "q": 0.00032822984768762916
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 3.0,
+     "rest_value": 4.0,
+     "diff": -1.0,
+     "p": 0.03237560713962318,
+     "q": 0.0539593452327053
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0023245350929814034,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_ACC5",
+   "family": "home",
+   "description": "mDLAUG ACC5 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 114,
+   "groups": 5,
+   "statistic": 15.609243482649877,
+   "effect": 0.10650682094174199,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.0021995600879824036,
+   "p_controlling_other": 0.0061987602479504095,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 34,
+     "value": 3.0,
+     "mean": 3.2941176470588234
+    },
+    "Large-scale library / consortium": {
+     "n": 22,
+     "value": 3.5,
+     "mean": 3.1363636363636362
+    },
+    "Museum": {
+     "n": 22,
+     "value": 4.0,
+     "mean": 4.7272727272727275
+    },
+    "Organizational library": {
+     "n": 20,
+     "value": 4.0,
+     "mean": 4.2
+    },
+    "Public library": {
+     "n": 16,
+     "value": 4.0,
+     "mean": 4.125
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 34,
+     "group_value": 3.0,
+     "rest_value": 4.0,
+     "diff": -1.0,
+     "p": 0.008737349154529419,
+     "q": 0.02184337288632355
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 22,
+     "group_value": 3.5,
+     "rest_value": 4.0,
+     "diff": -0.5,
+     "p": 0.07259498719151261,
+     "q": 0.12099164531918767
+    },
+    {
+     "group": "Museum",
+     "n": 22,
+     "group_value": 4.0,
+     "rest_value": 4.0,
+     "diff": 0.0,
+     "p": 0.006961608684572382,
+     "q": 0.02184337288632355
+    },
+    {
+     "group": "Organizational library",
+     "n": 20,
+     "group_value": 4.0,
+     "rest_value": 4.0,
+     "diff": 0.0,
+     "p": 0.24332448284101993,
+     "q": 0.2519938723715731
+    },
+    {
+     "group": "Public library",
+     "n": 16,
+     "group_value": 4.0,
+     "rest_value": 4.0,
+     "diff": 0.0,
+     "p": 0.2519938723715731,
+     "q": 0.2519938723715731
+    }
+   ],
+   "n_per_group_for_80pct_power": 20.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.007576262525272724,
+   "q_controlling_other": 0.021351285298495854,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_COM1",
+   "family": "home",
+   "description": "mDLAUG COM1 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 75,
+   "groups": 5,
+   "statistic": 3.574496678998932,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.489502099580084,
+   "p_controlling_other": 0.47230553889222154,
+   "p_without_dc": 0.9295352323838081,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 17,
+     "value": 5.0,
+     "mean": 4.588235294117647
+    },
+    "DSpace": {
+     "n": 15,
+     "value": 5.0,
+     "mean": 4.666666666666667
+    },
+    "Digital commons": {
+     "n": 24,
+     "value": 4.0,
+     "mean": 4.416666666666667
+    },
+    "Omeka": {
+     "n": 11,
+     "value": 5.0,
+     "mean": 4.636363636363637
+    },
+    "Samvera": {
+     "n": 8,
+     "value": 4.5,
+     "mean": 4.625
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 17,
+     "group_value": 5.0,
+     "rest_value": 5.0,
+     "diff": 0.0,
+     "p": 0.922317073707211,
+     "q": 0.9223170737072109
+    },
+    {
+     "group": "DSpace",
+     "n": 15,
+     "group_value": 5.0,
+     "rest_value": 5.0,
+     "diff": 0.0,
+     "p": 0.17508346779497996,
+     "q": 0.4377086694874499
+    },
+    {
+     "group": "Digital commons",
+     "n": 24,
+     "group_value": 4.0,
+     "rest_value": 5.0,
+     "diff": -1.0,
+     "p": 0.0938486830355749,
+     "q": 0.4377086694874499
+    },
+    {
+     "group": "Omeka",
+     "n": 11,
+     "group_value": 5.0,
+     "rest_value": 5.0,
+     "diff": 0.0,
+     "p": 0.716827380215419,
+     "q": 0.9223170737072109
+    },
+    {
+     "group": "Samvera",
+     "n": 8,
+     "group_value": 4.5,
+     "rest_value": 5.0,
+     "diff": -0.5,
+     "p": 0.8427396095920622,
+     "q": 0.9223170737072109
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7019751605234509,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_COM1",
+   "family": "home",
+   "description": "mDLAUG COM1 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 110,
+   "groups": 5,
+   "statistic": 2.965840830046768,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.5822835432913417,
+   "p_controlling_other": 0.5662867426514697,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 31,
+     "value": 5.0,
+     "mean": 4.612903225806452
+    },
+    "Large-scale library / consortium": {
+     "n": 21,
+     "value": 5.0,
+     "mean": 4.428571428571429
+    },
+    "Museum": {
+     "n": 18,
+     "value": 4.0,
+     "mean": 4.388888888888889
+    },
+    "Organizational library": {
+     "n": 23,
+     "value": 5.0,
+     "mean": 4.391304347826087
+    },
+    "Public library": {
+     "n": 17,
+     "value": 5.0,
+     "mean": 4.764705882352941
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 31,
+     "group_value": 5.0,
+     "rest_value": 5.0,
+     "diff": 0.0,
+     "p": 0.32252521488174857,
+     "q": 0.5323479164343858
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 21,
+     "group_value": 5.0,
+     "rest_value": 5.0,
+     "diff": 0.0,
+     "p": 0.8354263515260467,
+     "q": 0.8354263515260467
+    },
+    {
+     "group": "Museum",
+     "n": 18,
+     "group_value": 4.0,
+     "rest_value": 5.0,
+     "diff": -1.0,
+     "p": 0.42587833314750867,
+     "q": 0.5323479164343858
+    },
+    {
+     "group": "Organizational library",
+     "n": 23,
+     "group_value": 5.0,
+     "rest_value": 5.0,
+     "diff": 0.0,
+     "p": 0.2986550708629835,
+     "q": 0.5323479164343858
+    },
+    {
+     "group": "Public library",
+     "n": 17,
+     "group_value": 5.0,
+     "rest_value": 5.0,
+     "diff": 0.0,
+     "p": 0.3254924723989814,
+     "q": 0.5323479164343858
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7078741114522192,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_EXE2",
+   "family": "home",
+   "description": "mDLAUG EXE2 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 43,
+   "groups": 4,
+   "statistic": 34.35792108362781,
+   "effect": 0.8040492585545592,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.038980509745127435,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 6,
+     "value": 1.0,
+     "mean": 1.3333333333333333
+    },
+    "DSpace": {
+     "n": 3,
+     "value": 6.0,
+     "mean": 4.333333333333333
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 4.0,
+     "mean": 4.0
+    },
+    "Samvera": {
+     "n": 9,
+     "value": 1.0,
+     "mean": 1.1111111111111112
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 6,
+     "group_value": 1.0,
+     "rest_value": 4.0,
+     "diff": -3.0,
+     "p": 0.0018265391392080878,
+     "q": 0.0024353855189441173
+    },
+    {
+     "group": "DSpace",
+     "n": 3,
+     "group_value": 6.0,
+     "rest_value": 4.0,
+     "diff": 2.0,
+     "p": 0.1575887974284027,
+     "q": 0.1575887974284027
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 4.0,
+     "rest_value": 1.0,
+     "diff": 3.0,
+     "p": 9.681816667800071e-07,
+     "q": 3.8727266671200284e-06
+    },
+    {
+     "group": "Samvera",
+     "n": 9,
+     "group_value": 1.0,
+     "rest_value": 4.0,
+     "diff": -3.0,
+     "p": 3.050012626392678e-05,
+     "q": 6.100025252785356e-05
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": false,
+   "excluded_because": "engine counts consent-manager dialog markup left in the page after dismissal; the overlay measures cover this directly",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_EXE2",
+   "family": "home",
+   "description": "mDLAUG EXE2 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 74,
+   "groups": 5,
+   "statistic": 0.09205282504531395,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.9998000399920016,
+   "p_controlling_other": 0.9916016796640672,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 21,
+     "value": 2.0,
+     "mean": 2.4285714285714284
+    },
+    "Large-scale library / consortium": {
+     "n": 12,
+     "value": 1.5,
+     "mean": 2.4166666666666665
+    },
+    "Museum": {
+     "n": 16,
+     "value": 2.5,
+     "mean": 2.4375
+    },
+    "Organizational library": {
+     "n": 16,
+     "value": 2.5,
+     "mean": 2.4375
+    },
+    "Public library": {
+     "n": 9,
+     "value": 3.0,
+     "mean": 2.5555555555555554
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 21,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.9484153757715004,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 12,
+     "group_value": 1.5,
+     "rest_value": 2.0,
+     "diff": -0.5,
+     "p": 0.8431809007708199,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Museum",
+     "n": 16,
+     "group_value": 2.5,
+     "rest_value": 2.0,
+     "diff": 0.5,
+     "p": 0.9773901018446927,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Organizational library",
+     "n": 16,
+     "group_value": 2.5,
+     "rest_value": 2.0,
+     "diff": 0.5,
+     "p": 0.9773901018446927,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Public library",
+     "n": 9,
+     "group_value": 3.0,
+     "rest_value": 2.0,
+     "diff": 1.0,
+     "p": 0.8165222020227969,
+     "q": 0.9773901018446927
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": false,
+   "excluded_because": "engine counts consent-manager dialog markup left in the page after dismissal; the overlay measures cover this directly",
+   "q": 1.0,
+   "q_controlling_other": 1.0,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_INT1",
+   "family": "home",
+   "description": "mDLAUG INT1 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 43,
+   "groups": 4,
+   "statistic": 34.35792108362781,
+   "effect": 0.8040492585545592,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.03798100949525238,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 6,
+     "value": 1.0,
+     "mean": 1.3333333333333333
+    },
+    "DSpace": {
+     "n": 3,
+     "value": 6.0,
+     "mean": 4.333333333333333
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 4.0,
+     "mean": 4.0
+    },
+    "Samvera": {
+     "n": 9,
+     "value": 1.0,
+     "mean": 1.1111111111111112
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 6,
+     "group_value": 1.0,
+     "rest_value": 4.0,
+     "diff": -3.0,
+     "p": 0.0018265391392080878,
+     "q": 0.0024353855189441173
+    },
+    {
+     "group": "DSpace",
+     "n": 3,
+     "group_value": 6.0,
+     "rest_value": 4.0,
+     "diff": 2.0,
+     "p": 0.1575887974284027,
+     "q": 0.1575887974284027
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 4.0,
+     "rest_value": 1.0,
+     "diff": 3.0,
+     "p": 9.681816667800071e-07,
+     "q": 3.8727266671200284e-06
+    },
+    {
+     "group": "Samvera",
+     "n": 9,
+     "group_value": 1.0,
+     "rest_value": 4.0,
+     "diff": -3.0,
+     "p": 3.050012626392678e-05,
+     "q": 6.100025252785356e-05
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": false,
+   "excluded_because": "duplicate of the EXE2 engine score (same engine findings)",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_INT1",
+   "family": "home",
+   "description": "mDLAUG INT1 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 74,
+   "groups": 5,
+   "statistic": 0.09205282504531395,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.9994001199760048,
+   "p_controlling_other": 0.9934013197360528,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 21,
+     "value": 2.0,
+     "mean": 2.4285714285714284
+    },
+    "Large-scale library / consortium": {
+     "n": 12,
+     "value": 1.5,
+     "mean": 2.4166666666666665
+    },
+    "Museum": {
+     "n": 16,
+     "value": 2.5,
+     "mean": 2.4375
+    },
+    "Organizational library": {
+     "n": 16,
+     "value": 2.5,
+     "mean": 2.4375
+    },
+    "Public library": {
+     "n": 9,
+     "value": 3.0,
+     "mean": 2.5555555555555554
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 21,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.9484153757715004,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 12,
+     "group_value": 1.5,
+     "rest_value": 2.0,
+     "diff": -0.5,
+     "p": 0.8431809007708199,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Museum",
+     "n": 16,
+     "group_value": 2.5,
+     "rest_value": 2.0,
+     "diff": 0.5,
+     "p": 0.9773901018446927,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Organizational library",
+     "n": 16,
+     "group_value": 2.5,
+     "rest_value": 2.0,
+     "diff": 0.5,
+     "p": 0.9773901018446927,
+     "q": 0.9773901018446927
+    },
+    {
+     "group": "Public library",
+     "n": 9,
+     "group_value": 3.0,
+     "rest_value": 2.0,
+     "diff": 1.0,
+     "p": 0.8165222020227969,
+     "q": 0.9773901018446927
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": false,
+   "excluded_because": "duplicate of the EXE2 engine score (same engine findings)",
+   "q": 1.0,
+   "q_controlling_other": 1.0,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_RED1",
+   "family": "home",
+   "description": "mDLAUG RED1 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 45,
+   "groups": 4,
+   "statistic": 18.34542124542129,
+   "effect": 0.37427856696149486,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.0011997600479904018,
+   "p_controlling_other": 0.0015996800639872025,
+   "p_without_dc": 0.14442778610694654,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 4,
+     "value": 2.0,
+     "mean": 3.0
+    },
+    "DSpace": {
+     "n": 13,
+     "value": 7.0,
+     "mean": 5.0
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 7.0,
+     "mean": 7.0
+    },
+    "Omeka": {
+     "n": 3,
+     "value": 7.0,
+     "mean": 7.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 4,
+     "group_value": 2.0,
+     "rest_value": 7.0,
+     "diff": -5.0,
+     "p": 0.0020213136561982787,
+     "q": 0.004042627312396557
+    },
+    {
+     "group": "DSpace",
+     "n": 13,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.02512937075447533,
+     "q": 0.03350582767263378
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.0006357914047131542,
+     "q": 0.0025431656188526167
+    },
+    {
+     "group": "Omeka",
+     "n": 3,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.4315992264724313,
+     "q": 0.4315992264724313
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": false,
+   "excluded_because": "results-status situation scored on home pages",
+   "q": 0.004375595469141465,
+   "q_controlling_other": 0.005834127292188621,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_RED1",
+   "family": "home",
+   "description": "mDLAUG RED1 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 67,
+   "groups": 5,
+   "statistic": 4.852037269575406,
+   "effect": 0.013742536606054932,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.29114177164567084,
+   "p_controlling_other": 0.250749850029994,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 19,
+     "value": 7.0,
+     "mean": 6.2631578947368425
+    },
+    "Large-scale library / consortium": {
+     "n": 12,
+     "value": 7.0,
+     "mean": 5.25
+    },
+    "Museum": {
+     "n": 15,
+     "value": 7.0,
+     "mean": 6.666666666666667
+    },
+    "Organizational library": {
+     "n": 15,
+     "value": 7.0,
+     "mean": 6.6
+    },
+    "Public library": {
+     "n": 6,
+     "value": 7.0,
+     "mean": 6.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 19,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.7166312688548315,
+     "q": 0.8957890860685394
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 12,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.03193760837213766,
+     "q": 0.1596880418606883
+    },
+    {
+     "group": "Museum",
+     "n": 15,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.43248025043498506,
+     "q": 0.7641395530572721
+    },
+    {
+     "group": "Organizational library",
+     "n": 15,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.4584837318343633,
+     "q": 0.7641395530572721
+    },
+    {
+     "group": "Public library",
+     "n": 6,
+     "group_value": 7.0,
+     "rest_value": 7.0,
+     "diff": 0.0,
+     "p": 0.9746069150444387,
+     "q": 0.9746069150444387
+    }
+   ],
+   "n_per_group_for_80pct_power": 40.0,
+   "final_review": false,
+   "excluded_because": "results-status situation scored on home pages",
+   "q": 0.47502078531662084,
+   "q_controlling_other": 0.4572497265252832,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_on_load",
+   "family": "overlay",
+   "description": "An overlay (consent banner, modal, promo) covers the home page on load",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 76.82952424380605,
+   "effect": 0.9343782828693077,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.05,
+     "mean": 0.05
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.9411764705882353,
+     "mean": 0.9411764705882353
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.1,
+     "mean": 0.1
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.05,
+     "rest_value": 0.6176470588235294,
+     "diff": -0.5676470588235294,
+     "p": 4.716839038907047e-06,
+     "q": 1.0496986075916064e-05
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.9411764705882353,
+     "rest_value": 0.38028169014084506,
+     "diff": 0.5608947804473903,
+     "p": 2.1947799289174498e-05,
+     "q": 2.7434749111468124e-05
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 1.0,
+     "rest_value": 0.2857142857142857,
+     "diff": 0.7142857142857143,
+     "p": 1.0086472296279818e-10,
+     "q": 5.043236148139909e-10
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.5972222222222222,
+     "diff": -0.5972222222222222,
+     "p": 6.298191645549639e-06,
+     "q": 1.0496986075916064e-05
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.1,
+     "rest_value": 0.5384615384615384,
+     "diff": -0.43846153846153846,
+     "p": 0.015195851575867232,
+     "q": 0.01519585157586723
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_on_load",
+   "family": "overlay",
+   "description": "An overlay (consent banner, modal, promo) covers the home page on load",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 2.362302438997609,
+   "effect": 0.13377679394598577,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.6804639072185563,
+   "p_controlling_other": 0.6944611077784443,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.5263157894736842,
+     "mean": 0.5263157894736842
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.34615384615384615,
+     "mean": 0.34615384615384615
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.43478260869565216,
+     "mean": 0.43478260869565216
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.4074074074074074,
+     "mean": 0.4074074074074074
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.3888888888888889,
+     "mean": 0.3888888888888889
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.5263157894736842,
+     "rest_value": 0.39361702127659576,
+     "diff": 0.13269876819708842,
+     "p": 0.17903955084944073,
+     "q": 0.8951977542472036
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.34615384615384615,
+     "rest_value": 0.4528301886792453,
+     "diff": -0.10667634252539915,
+     "p": 0.3813860682507296,
+     "q": 0.953465170626824
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.43478260869565216,
+     "rest_value": 0.43119266055045874,
+     "diff": 0.0035899481451934223,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.4074074074074074,
+     "rest_value": 0.4380952380952381,
+     "diff": -0.03068783068783071,
+     "p": 0.8301906875857243,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.3888888888888889,
+     "rest_value": 0.43859649122807015,
+     "diff": -0.049707602339181256,
+     "p": 0.8005283326671953,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7960143820292546,
+   "q_controlling_other": 0.7973442348567323,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "consent_overlay_on_load",
+   "family": "overlay",
+   "description": "A cookie/consent banner covers the home page on load",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 80.62004627938133,
+   "effect": 0.9571504006886401,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.9411764705882353,
+     "mean": 0.9411764705882353
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.1,
+     "mean": 0.1
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.0,
+     "rest_value": 0.6176470588235294,
+     "diff": -0.6176470588235294,
+     "p": 1.9914725258006496e-07,
+     "q": 4.978681314501624e-07
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.9411764705882353,
+     "rest_value": 0.36619718309859156,
+     "diff": 0.5749792874896438,
+     "p": 1.57607451044856e-05,
+     "q": 1.9700931380607e-05
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 1.0,
+     "rest_value": 0.2698412698412698,
+     "diff": 0.7301587301587302,
+     "p": 4.2222442170473664e-11,
+     "q": 2.1111221085236832e-10
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.5833333333333334,
+     "diff": -0.5833333333333334,
+     "p": 7.998749555043017e-06,
+     "q": 1.333124925840503e-05
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.1,
+     "rest_value": 0.5256410256410257,
+     "diff": -0.4256410256410257,
+     "p": 0.016024861594493716,
+     "q": 0.016024861594493716
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "consent_overlay_on_load",
+   "family": "overlay",
+   "description": "A cookie/consent banner covers the home page on load",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 2.182948119774579,
+   "effect": 0.12859815611379513,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.71125774845031,
+   "p_controlling_other": 0.7284543091381723,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.5,
+     "mean": 0.5
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.34615384615384615,
+     "mean": 0.34615384615384615
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.391304347826087,
+     "mean": 0.391304347826087
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.4074074074074074,
+     "mean": 0.4074074074074074
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.3333333333333333,
+     "mean": 0.3333333333333333
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.5,
+     "rest_value": 0.3723404255319149,
+     "diff": 0.12765957446808512,
+     "p": 0.24059888431953563,
+     "q": 1.0
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.34615384615384615,
+     "rest_value": 0.42452830188679247,
+     "diff": -0.07837445573294632,
+     "p": 0.5118428588932247,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.391304347826087,
+     "rest_value": 0.41284403669724773,
+     "diff": -0.021539688871160756,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.4074074074074074,
+     "rest_value": 0.4095238095238095,
+     "diff": -0.0021164021164021274,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.3333333333333333,
+     "rest_value": 0.42105263157894735,
+     "diff": -0.08771929824561403,
+     "p": 0.6087206476072313,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.8166292667392447,
+   "q_controlling_other": 0.8211666757557579,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_escape_fails",
+   "family": "overlay",
+   "description": "An overlay is open on load and Escape does not close it",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 80.62004627938133,
+   "effect": 0.9571504006886401,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.9411764705882353,
+     "mean": 0.9411764705882353
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.1,
+     "mean": 0.1
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.0,
+     "rest_value": 0.6176470588235294,
+     "diff": -0.6176470588235294,
+     "p": 1.9914725258006496e-07,
+     "q": 4.978681314501624e-07
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.9411764705882353,
+     "rest_value": 0.36619718309859156,
+     "diff": 0.5749792874896438,
+     "p": 1.57607451044856e-05,
+     "q": 1.9700931380607e-05
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 1.0,
+     "rest_value": 0.2698412698412698,
+     "diff": 0.7301587301587302,
+     "p": 4.2222442170473664e-11,
+     "q": 2.1111221085236832e-10
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.5833333333333334,
+     "diff": -0.5833333333333334,
+     "p": 7.998749555043017e-06,
+     "q": 1.333124925840503e-05
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.1,
+     "rest_value": 0.5256410256410257,
+     "diff": -0.4256410256410257,
+     "p": 0.016024861594493716,
+     "q": 0.016024861594493716
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_escape_fails",
+   "family": "overlay",
+   "description": "An overlay is open on load and Escape does not close it",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 1.6758262713640288,
+   "effect": 0.11267499088502121,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.794241151769646,
+   "p_controlling_other": 0.858628274345131,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.5,
+     "mean": 0.5
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.34615384615384615,
+     "mean": 0.34615384615384615
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.43478260869565216,
+     "mean": 0.43478260869565216
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.4074074074074074,
+     "mean": 0.4074074074074074
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.3888888888888889,
+     "mean": 0.3888888888888889
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.5,
+     "rest_value": 0.39361702127659576,
+     "diff": 0.10638297872340424,
+     "p": 0.3312481979711823,
+     "q": 1.0
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.34615384615384615,
+     "rest_value": 0.44339622641509435,
+     "diff": -0.0972423802612482,
+     "p": 0.5070759330644994,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.43478260869565216,
+     "rest_value": 0.42201834862385323,
+     "diff": 0.012764260071798927,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.4074074074074074,
+     "rest_value": 0.42857142857142855,
+     "diff": -0.021164021164021163,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.3888888888888889,
+     "rest_value": 0.4298245614035088,
+     "diff": -0.04093567251461988,
+     "p": 0.8025431979937889,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.8490164036158285,
+   "q_controlling_other": 0.9339465440245285,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_no_named_dismiss",
+   "family": "overlay",
+   "description": "An overlay on load has no named reject/close control",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 88.00000000000001,
+   "effect": 1.0,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": NaN,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.0,
+     "rest_value": 0.36764705882352944,
+     "diff": -0.36764705882352944,
+     "p": 0.0005430117960894052,
+     "q": 0.001357529490223513
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.0,
+     "rest_value": 0.352112676056338,
+     "diff": -0.352112676056338,
+     "p": 0.0022109665165356424,
+     "q": 0.0036849441942260704
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 1.0,
+     "rest_value": 0.0,
+     "diff": 1.0,
+     "p": 1.6579801559661164e-22,
+     "q": 8.2899007798305815e-22
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.3472222222222222,
+     "diff": -0.3472222222222222,
+     "p": 0.0043042274625137295,
+     "q": 0.005380284328142162
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.0,
+     "rest_value": 0.32051282051282054,
+     "diff": -0.32051282051282054,
+     "p": 0.056413359390749235,
+     "q": 0.05641335939074923
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "Digital Commons"
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_no_named_dismiss",
+   "family": "overlay",
+   "description": "An overlay on load has no named reject/close control",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 1.796789128919968,
+   "effect": 0.11667064264610144,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.7860427914417116,
+   "p_controlling_other": 0.8754249150169966,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.21052631578947367,
+     "mean": 0.21052631578947367
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.15384615384615385,
+     "mean": 0.15384615384615385
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.30434782608695654,
+     "mean": 0.30434782608695654
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.25925925925925924,
+     "mean": 0.25925925925925924
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.2222222222222222,
+     "mean": 0.2222222222222222
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.21052631578947367,
+     "rest_value": 0.23404255319148937,
+     "diff": -0.023516237402015694,
+     "p": 0.8229977984411421,
+     "q": 1.0
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.15384615384615385,
+     "rest_value": 0.24528301886792453,
+     "diff": -0.09143686502177067,
+     "p": 0.4361076046405563,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.30434782608695654,
+     "rest_value": 0.21100917431192662,
+     "diff": 0.09333865177502992,
+     "p": 0.41104334447691626,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.25925925925925924,
+     "rest_value": 0.21904761904761905,
+     "diff": 0.0402116402116402,
+     "p": 0.6176888248911728,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.2222222222222222,
+     "rest_value": 0.22807017543859648,
+     "diff": -0.005847953216374269,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.8490164036158285,
+   "q_controlling_other": 0.9357990470871344,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_not_exposed_as_dialog",
+   "family": "overlay",
+   "description": "An overlay on load is not exposed as a dialog to assistive technology",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 71.93966817496228,
+   "effect": 0.904154980775384,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.6470588235294118,
+     "mean": 0.6470588235294118
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.0,
+     "rest_value": 0.5294117647058824,
+     "diff": -0.5294117647058824,
+     "p": 4.504790167640378e-06,
+     "q": 1.1261975419100945e-05
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.6470588235294118,
+     "rest_value": 0.352112676056338,
+     "diff": 0.2949461474730738,
+     "p": 0.031672361660343484,
+     "q": 0.031672361660343484
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 1.0,
+     "rest_value": 0.1746031746031746,
+     "diff": 0.8253968253968254,
+     "p": 9.961232583673485e-14,
+     "q": 4.980616291836743e-13
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.5,
+     "diff": -0.5,
+     "p": 0.00010840360600277342,
+     "q": 0.000180672676671289
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.0,
+     "rest_value": 0.46153846153846156,
+     "diff": -0.46153846153846156,
+     "p": 0.00464581408112837,
+     "q": 0.005807267601410463
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_not_exposed_as_dialog",
+   "family": "overlay",
+   "description": "An overlay on load is not exposed as a dialog to assistive technology",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 2.3797013436601535,
+   "effect": 0.13426853869121347,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.6674665066986603,
+   "p_controlling_other": 0.46970605878824234,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.3684210526315789,
+     "mean": 0.3684210526315789
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.23076923076923078,
+     "mean": 0.23076923076923078
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.34782608695652173,
+     "mean": 0.34782608695652173
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.4074074074074074,
+     "mean": 0.4074074074074074
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.2777777777777778,
+     "mean": 0.2777777777777778
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.3684210526315789,
+     "rest_value": 0.3191489361702128,
+     "diff": 0.049272116461366144,
+     "p": 0.6839909069100579,
+     "q": 0.9860984348155988
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.23076923076923078,
+     "rest_value": 0.3584905660377358,
+     "diff": -0.12772133526850504,
+     "p": 0.2528337490934983,
+     "q": 0.9222752868273978
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.34782608695652173,
+     "rest_value": 0.3302752293577982,
+     "diff": 0.017550857598723546,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.4074074074074074,
+     "rest_value": 0.3142857142857143,
+     "diff": 0.0931216931216931,
+     "p": 0.36891011473095914,
+     "q": 0.9222752868273978
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.2777777777777778,
+     "rest_value": 0.34210526315789475,
+     "diff": -0.06432748538011696,
+     "p": 0.788878747852479,
+     "q": 0.9860984348155988
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7958254502945565,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_not_reachable_by_tab",
+   "family": "overlay",
+   "description": "An overlay on load can't be reached within 10 Tab presses",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 26.89239598278336,
+   "effect": 0.5528068459193187,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0003999200159968006,
+   "p_without_dc": 0.0014992503748125937,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.35294117647058826,
+     "mean": 0.35294117647058826
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.0,
+     "rest_value": 0.08823529411764706,
+     "diff": -0.08823529411764706,
+     "p": 0.32977528167429715,
+     "q": 0.549625469457162
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.35294117647058826,
+     "rest_value": 0.0,
+     "diff": 0.35294117647058826,
+     "p": 2.283684566947531e-05,
+     "q": 0.00011418422834737655
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.0,
+     "rest_value": 0.09523809523809523,
+     "diff": -0.09523809523809523,
+     "p": 0.17746764646723562,
+     "q": 0.443669116168089
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.08333333333333333,
+     "diff": -0.08333333333333333,
+     "p": 0.5869130820870418,
+     "q": 0.7336413526088024
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.0,
+     "rest_value": 0.07692307692307693,
+     "diff": -0.07692307692307693,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": 15.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.001653002732786776,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "overlay_not_reachable_by_tab",
+   "family": "overlay",
+   "description": "An overlay on load can't be reached within 10 Tab presses",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 4.708466550992867,
+   "effect": 0.18886556367926197,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.3343331333733253,
+   "p_controlling_other": 0.4481103779244151,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.10526315789473684,
+     "mean": 0.10526315789473684
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.038461538461538464,
+     "mean": 0.038461538461538464
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.07407407407407407,
+     "mean": 0.07407407407407407
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.10526315789473684,
+     "rest_value": 0.031914893617021274,
+     "diff": 0.07334826427771557,
+     "p": 0.10488334536743904,
+     "q": 0.5244167268371952
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.038461538461538464,
+     "rest_value": 0.05660377358490566,
+     "diff": -0.018142235123367198,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.0,
+     "rest_value": 0.06422018348623854,
+     "diff": -0.06422018348623854,
+     "p": 0.6047918558776695,
+     "q": 0.7891169878446003
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.07407407407407407,
+     "rest_value": 0.047619047619047616,
+     "diff": 0.026455026455026454,
+     "p": 0.6312935902756802,
+     "q": 0.7891169878446003
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.0,
+     "rest_value": 0.06140350877192982,
+     "diff": -0.06140350877192982,
+     "p": 0.5926652146545358,
+     "q": 0.7891169878446003
+    }
+   ],
+   "n_per_group_for_80pct_power": 60.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.5315039556191326,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "mdlaug_NAV2",
+   "family": "home",
+   "description": "mDLAUG NAV2 engine score on the home page (1\u20137, higher is better)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 37,
+   "groups": 5,
+   "statistic": 3.809523809523783,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.365126974605079,
+   "p_controlling_other": 0.3097380523895221,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 10,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Large-scale library / consortium": {
+     "n": 7,
+     "value": 1.0,
+     "mean": 1.2857142857142858
+    },
+    "Museum": {
+     "n": 6,
+     "value": 1.0,
+     "mean": 1.1666666666666667
+    },
+    "Organizational library": {
+     "n": 8,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Public library": {
+     "n": 6,
+     "value": 1.0,
+     "mean": 1.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 10,
+     "group_value": 1.0,
+     "rest_value": 1.0,
+     "diff": 0.0,
+     "p": 0.4071564664887881,
+     "q": 0.5631356240863876
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 7,
+     "group_value": 1.0,
+     "rest_value": 1.0,
+     "diff": 0.0,
+     "p": 0.25521836885231264,
+     "q": 0.5631356240863876
+    },
+    {
+     "group": "Museum",
+     "n": 6,
+     "group_value": 1.0,
+     "rest_value": 1.0,
+     "diff": 0.0,
+     "p": 0.22668458126805335,
+     "q": 0.5631356240863876
+    },
+    {
+     "group": "Organizational library",
+     "n": 8,
+     "group_value": 1.0,
+     "rest_value": 1.0,
+     "diff": 0.0,
+     "p": 0.4802112074856302,
+     "q": 0.5631356240863876
+    },
+    {
+     "group": "Public library",
+     "n": 6,
+     "group_value": 1.0,
+     "rest_value": 1.0,
+     "diff": 0.0,
+     "p": 0.5631356240863876,
+     "q": 0.5631356240863876
+    }
+   ],
+   "n_per_group_for_80pct_power": 30.0,
+   "final_review": false,
+   "excluded_because": "results-page situation; measured directly by pagination_landmark",
+   "q": 0.5659468106378724,
+   "q_controlling_other": 0.5196906564633019,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "results_count_announced",
+   "family": "results",
+   "description": "Result count is in a live/status region (announced)",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 68,
+   "groups": 5,
+   "statistic": 1.8915306915306915,
+   "effect": 0.16678317605990065,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 1.0,
+   "p_controlling_other": 1.0,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 22,
+     "value": 0.045454545454545456,
+     "mean": 0.045454545454545456
+    },
+    "Large-scale library / consortium": {
+     "n": 11,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Museum": {
+     "n": 12,
+     "value": 0.08333333333333333,
+     "mean": 0.08333333333333333
+    },
+    "Organizational library": {
+     "n": 11,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Public library": {
+     "n": 12,
+     "value": 0.08333333333333333,
+     "mean": 0.08333333333333333
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 22,
+     "group_value": 0.045454545454545456,
+     "rest_value": 0.043478260869565216,
+     "diff": 0.0019762845849802396,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 11,
+     "group_value": 0.0,
+     "rest_value": 0.05263157894736842,
+     "diff": -0.05263157894736842,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 12,
+     "group_value": 0.08333333333333333,
+     "rest_value": 0.03571428571428571,
+     "diff": 0.047619047619047616,
+     "p": 0.44688323090430215,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 11,
+     "group_value": 0.0,
+     "rest_value": 0.05263157894736842,
+     "diff": -0.05263157894736842,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 12,
+     "group_value": 0.08333333333333333,
+     "rest_value": 0.03571428571428571,
+     "diff": 0.047619047619047616,
+     "p": 0.44688323090430215,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 1.0,
+   "q_controlling_other": 1.0,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "focus_or_skip_to_results",
+   "family": "results",
+   "description": "Focus moves to results, or a skip-to-results link exists",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 45,
+   "groups": 4,
+   "statistic": 33.97753647214854,
+   "effect": 0.8689397942595019,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 10,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Omeka": {
+     "n": 13,
+     "value": 0.8461538461538461,
+     "mean": 0.8461538461538461
+    },
+    "Samvera": {
+     "n": 6,
+     "value": 0.8333333333333334,
+     "mean": 0.8333333333333334
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.5517241379310345,
+     "diff": -0.5517241379310345,
+     "p": 0.00017504103757487688,
+     "q": 0.00035008207514975376
+    },
+    {
+     "group": "DSpace",
+     "n": 10,
+     "group_value": 0.0,
+     "rest_value": 0.45714285714285713,
+     "diff": -0.45714285714285713,
+     "p": 0.008023039309423165,
+     "q": 0.010697385745897554
+    },
+    {
+     "group": "Omeka",
+     "n": 13,
+     "group_value": 0.8461538461538461,
+     "rest_value": 0.15625,
+     "diff": 0.6899038461538461,
+     "p": 2.5021816964554593e-05,
+     "q": 0.00010008726785821837
+    },
+    {
+     "group": "Samvera",
+     "n": 6,
+     "group_value": 0.8333333333333334,
+     "rest_value": 0.28205128205128205,
+     "diff": 0.5512820512820513,
+     "p": 0.01653517592258375,
+     "q": 0.01653517592258375
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "supporting",
+   "tier_reason": "weak replication (\u03c1 0.50)",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "focus_or_skip_to_results",
+   "family": "results",
+   "description": "Focus moves to results, or a skip-to-results link exists",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 68,
+   "groups": 5,
+   "statistic": 6.96969696969697,
+   "effect": 0.32014925218093865,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.13937212557488501,
+   "p_controlling_other": 0.5662867426514697,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 22,
+     "value": 0.4090909090909091,
+     "mean": 0.4090909090909091
+    },
+    "Large-scale library / consortium": {
+     "n": 11,
+     "value": 0.36363636363636365,
+     "mean": 0.36363636363636365
+    },
+    "Museum": {
+     "n": 12,
+     "value": 0.8333333333333334,
+     "mean": 0.8333333333333334
+    },
+    "Organizational library": {
+     "n": 11,
+     "value": 0.45454545454545453,
+     "mean": 0.45454545454545453
+    },
+    "Public library": {
+     "n": 12,
+     "value": 0.5,
+     "mean": 0.5
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 22,
+     "group_value": 0.4090909090909091,
+     "rest_value": 0.5434782608695652,
+     "diff": -0.13438735177865607,
+     "p": 0.43722433478090744,
+     "q": 0.8529822939505562
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 11,
+     "group_value": 0.36363636363636365,
+     "rest_value": 0.5263157894736842,
+     "diff": -0.16267942583732053,
+     "p": 0.5117893763703337,
+     "q": 0.8529822939505562
+    },
+    {
+     "group": "Museum",
+     "n": 12,
+     "group_value": 0.8333333333333334,
+     "rest_value": 0.42857142857142855,
+     "diff": 0.4047619047619048,
+     "p": 0.023026165730334024,
+     "q": 0.11513082865167013
+    },
+    {
+     "group": "Organizational library",
+     "n": 11,
+     "group_value": 0.45454545454545453,
+     "rest_value": 0.5087719298245614,
+     "diff": -0.0542264752791069,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 12,
+     "group_value": 0.5,
+     "rest_value": 0.5,
+     "diff": 0.0,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": 20.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.26185066017099606,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "results_list_semantics",
+   "family": "results",
+   "description": "Results are marked up as a list or table",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 43,
+   "groups": 4,
+   "statistic": 8.331249999999999,
+   "effect": 0.4401704215414752,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.05618876224755049,
+   "p_controlling_other": 0.09898020395920816,
+   "p_without_dc": 0.05847076461769116,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 16,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "DSpace": {
+     "n": 10,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Omeka": {
+     "n": 12,
+     "value": 0.75,
+     "mean": 0.75
+    },
+    "Samvera": {
+     "n": 5,
+     "value": 1.0,
+     "mean": 1.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 16,
+     "group_value": 1.0,
+     "rest_value": 0.8888888888888888,
+     "diff": 0.11111111111111116,
+     "p": 0.2823920265780731,
+     "q": 0.5647840531561462
+    },
+    {
+     "group": "DSpace",
+     "n": 10,
+     "group_value": 1.0,
+     "rest_value": 0.9090909090909091,
+     "diff": 0.09090909090909094,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Omeka",
+     "n": 12,
+     "group_value": 0.75,
+     "rest_value": 1.0,
+     "diff": -0.25,
+     "p": 0.017826756340653106,
+     "q": 0.07130702536261242
+    },
+    {
+     "group": "Samvera",
+     "n": 5,
+     "group_value": 1.0,
+     "rest_value": 0.9210526315789473,
+     "diff": 0.07894736842105265,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": 20.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.12441797354814751,
+   "q_controlling_other": 0.19758548290341932,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "results_list_semantics",
+   "family": "results",
+   "description": "Results are marked up as a list or table",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 65,
+   "groups": 5,
+   "statistic": 3.8316885562648273,
+   "effect": 0.2427942641657059,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.5056988602279544,
+   "p_controlling_other": 0.5614877024595081,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 21,
+     "value": 0.9523809523809523,
+     "mean": 0.9523809523809523
+    },
+    "Large-scale library / consortium": {
+     "n": 11,
+     "value": 0.8181818181818182,
+     "mean": 0.8181818181818182
+    },
+    "Museum": {
+     "n": 10,
+     "value": 0.9,
+     "mean": 0.9
+    },
+    "Organizational library": {
+     "n": 11,
+     "value": 0.8181818181818182,
+     "mean": 0.8181818181818182
+    },
+    "Public library": {
+     "n": 12,
+     "value": 1.0,
+     "mean": 1.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 21,
+     "group_value": 0.9523809523809523,
+     "rest_value": 0.8863636363636364,
+     "diff": 0.06601731601731597,
+     "p": 0.6548656591953789,
+     "q": 0.8185820739942236
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 11,
+     "group_value": 0.8181818181818182,
+     "rest_value": 0.9259259259259259,
+     "diff": -0.1077441077441077,
+     "p": 0.26615500113318724,
+     "q": 0.6653875028329681
+    },
+    {
+     "group": "Museum",
+     "n": 10,
+     "group_value": 0.9,
+     "rest_value": 0.9090909090909091,
+     "diff": -0.009090909090909038,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 11,
+     "group_value": 0.8181818181818182,
+     "rest_value": 0.9259259259259259,
+     "diff": -0.1077441077441077,
+     "p": 0.26615500113318724,
+     "q": 0.6653875028329681
+    },
+    {
+     "group": "Public library",
+     "n": 12,
+     "group_value": 1.0,
+     "rest_value": 0.8867924528301887,
+     "diff": 0.1132075471698113,
+     "p": 0.5830909571655208,
+     "q": 0.8185820739942236
+    }
+   ],
+   "n_per_group_for_80pct_power": 40.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7019751605234509,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "pagination_landmark",
+   "family": "results",
+   "description": "Results pagination is a navigation landmark",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 42,
+   "groups": 4,
+   "statistic": 33.58090909090909,
+   "effect": 0.8941730562622956,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 10,
+     "value": 0.9,
+     "mean": 0.9
+    },
+    "Omeka": {
+     "n": 11,
+     "value": 1.0,
+     "mean": 1.0
+    },
+    "Samvera": {
+     "n": 5,
+     "value": 0.4,
+     "mean": 0.4
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.8461538461538461,
+     "diff": -0.8461538461538461,
+     "p": 2.9097400160098552e-08,
+     "q": 1.1638960064039421e-07
+    },
+    {
+     "group": "DSpace",
+     "n": 10,
+     "group_value": 0.9,
+     "rest_value": 0.40625,
+     "diff": 0.49375,
+     "p": 0.009837229349424471,
+     "q": 0.013116305799232628
+    },
+    {
+     "group": "Omeka",
+     "n": 11,
+     "group_value": 1.0,
+     "rest_value": 0.3548387096774194,
+     "diff": 0.6451612903225806,
+     "p": 0.00020403678940264302,
+     "q": 0.00040807357880528604
+    },
+    {
+     "group": "Samvera",
+     "n": 5,
+     "group_value": 0.4,
+     "rest_value": 0.5405405405405406,
+     "diff": -0.14054054054054055,
+     "p": 0.6560350218886803,
+     "q": 0.6560350218886803
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "pagination_landmark",
+   "family": "results",
+   "description": "Results pagination is a navigation landmark",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 58,
+   "groups": 5,
+   "statistic": 4.175499670894407,
+   "effect": 0.26831208253843225,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.40751849630073983,
+   "p_controlling_other": 0.394121175764847,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 19,
+     "value": 0.47368421052631576,
+     "mean": 0.47368421052631576
+    },
+    "Large-scale library / consortium": {
+     "n": 11,
+     "value": 0.36363636363636365,
+     "mean": 0.36363636363636365
+    },
+    "Museum": {
+     "n": 8,
+     "value": 0.625,
+     "mean": 0.625
+    },
+    "Organizational library": {
+     "n": 9,
+     "value": 0.7777777777777778,
+     "mean": 0.7777777777777778
+    },
+    "Public library": {
+     "n": 11,
+     "value": 0.45454545454545453,
+     "mean": 0.45454545454545453
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 19,
+     "group_value": 0.47368421052631576,
+     "rest_value": 0.5384615384615384,
+     "diff": -0.06477732793522267,
+     "p": 0.7809396869000664,
+     "q": 0.7809396869000664
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 11,
+     "group_value": 0.36363636363636365,
+     "rest_value": 0.5531914893617021,
+     "diff": -0.1895551257253385,
+     "p": 0.32484791334607327,
+     "q": 0.7809396869000664
+    },
+    {
+     "group": "Museum",
+     "n": 8,
+     "group_value": 0.625,
+     "rest_value": 0.5,
+     "diff": 0.125,
+     "p": 0.7072630623071654,
+     "q": 0.7809396869000664
+    },
+    {
+     "group": "Organizational library",
+     "n": 9,
+     "group_value": 0.7777777777777778,
+     "rest_value": 0.46938775510204084,
+     "diff": 0.30839002267573695,
+     "p": 0.14676940560461793,
+     "q": 0.7338470280230897
+    },
+    {
+     "group": "Public library",
+     "n": 11,
+     "group_value": 0.45454545454545453,
+     "rest_value": 0.5319148936170213,
+     "diff": -0.07736943907156674,
+     "p": 0.7437058239383141,
+     "q": 0.7809396869000664
+    }
+   ],
+   "n_per_group_for_80pct_power": 30.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.6015749231106159,
+   "q_controlling_other": 0.6265516127543722,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "pagination_current_page",
+   "family": "results",
+   "description": "Results pagination marks the current page (aria-current)",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 42,
+   "groups": 4,
+   "statistic": 31.71,
+   "effect": 0.8689073598491384,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.0004997501249375312,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "DSpace": {
+     "n": 10,
+     "value": 0.9,
+     "mean": 0.9
+    },
+    "Omeka": {
+     "n": 11,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 5,
+     "value": 0.6,
+     "mean": 0.6
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.46153846153846156,
+     "diff": -0.46153846153846156,
+     "p": 0.0011191496821153879,
+     "q": 0.0022382993642307758
+    },
+    {
+     "group": "DSpace",
+     "n": 10,
+     "group_value": 0.9,
+     "rest_value": 0.09375,
+     "diff": 0.80625,
+     "p": 4.530246922454126e-06,
+     "q": 1.8120987689816503e-05
+    },
+    {
+     "group": "Omeka",
+     "n": 11,
+     "group_value": 0.0,
+     "rest_value": 0.3870967741935484,
+     "diff": -0.3870967741935484,
+     "p": 0.018324571267635526,
+     "q": 0.0244327616901807
+    },
+    {
+     "group": "Samvera",
+     "n": 5,
+     "group_value": 0.6,
+     "rest_value": 0.24324324324324326,
+     "diff": 0.3567567567567567,
+     "p": 0.1308877258813074,
+     "q": 0.1308877258813074
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "pagination_current_page",
+   "family": "results",
+   "description": "Results pagination marks the current page (aria-current)",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 58,
+   "groups": 5,
+   "statistic": 11.034665736310473,
+   "effect": 0.43617984538787935,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.023795240951809637,
+   "p_controlling_other": 0.07018596280743851,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 19,
+     "value": 0.42105263157894735,
+     "mean": 0.42105263157894735
+    },
+    "Large-scale library / consortium": {
+     "n": 11,
+     "value": 0.18181818181818182,
+     "mean": 0.18181818181818182
+    },
+    "Museum": {
+     "n": 8,
+     "value": 0.125,
+     "mean": 0.125
+    },
+    "Organizational library": {
+     "n": 9,
+     "value": 0.6666666666666666,
+     "mean": 0.6666666666666666
+    },
+    "Public library": {
+     "n": 11,
+     "value": 0.09090909090909091,
+     "mean": 0.09090909090909091
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 19,
+     "group_value": 0.42105263157894735,
+     "rest_value": 0.2564102564102564,
+     "diff": 0.16464237516869096,
+     "p": 0.23667258599250934,
+     "q": 0.3944543099875156
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 11,
+     "group_value": 0.18181818181818182,
+     "rest_value": 0.3404255319148936,
+     "diff": -0.15860735009671179,
+     "p": 0.47383585835114794,
+     "q": 0.4738358583511479
+    },
+    {
+     "group": "Museum",
+     "n": 8,
+     "group_value": 0.125,
+     "rest_value": 0.34,
+     "diff": -0.21500000000000002,
+     "p": 0.41349736795410175,
+     "q": 0.4738358583511479
+    },
+    {
+     "group": "Organizational library",
+     "n": 9,
+     "group_value": 0.6666666666666666,
+     "rest_value": 0.24489795918367346,
+     "diff": 0.42176870748299317,
+     "p": 0.019723585891445353,
+     "q": 0.09861792945722676
+    },
+    {
+     "group": "Public library",
+     "n": 11,
+     "group_value": 0.09090909090909091,
+     "rest_value": 0.3617021276595745,
+     "diff": -0.2707930367504836,
+     "p": 0.14565878400807297,
+     "q": 0.36414696002018243
+    }
+   ],
+   "n_per_group_for_80pct_power": 15.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.06870292608145037,
+   "q_controlling_other": 0.15718284914445682,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "results_axe_rules_violated",
+   "family": "results",
+   "description": "WCAG 2.2 A/AA rules failed on the results page (axe-core)",
+   "kind": "median",
+   "factor": "platform",
+   "n_sites": 45,
+   "groups": 4,
+   "statistic": 8.763745132720246,
+   "effect": 0.14057914957854256,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.02559488102379524,
+   "p_controlling_other": 0.02439512097580484,
+   "p_without_dc": 0.028985507246376812,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 16,
+     "value": 2.0,
+     "mean": 2.25
+    },
+    "DSpace": {
+     "n": 10,
+     "value": 2.5,
+     "mean": 2.8
+    },
+    "Omeka": {
+     "n": 13,
+     "value": 2.0,
+     "mean": 1.8461538461538463
+    },
+    "Samvera": {
+     "n": 6,
+     "value": 0.5,
+     "mean": 0.8333333333333334
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 16,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.3311104828348216,
+     "q": 0.4414806437797621
+    },
+    {
+     "group": "DSpace",
+     "n": 10,
+     "group_value": 2.5,
+     "rest_value": 2.0,
+     "diff": 0.5,
+     "p": 0.12833063669368203,
+     "q": 0.25666127338736405
+    },
+    {
+     "group": "Omeka",
+     "n": 13,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.664103806883823,
+     "q": 0.664103806883823
+    },
+    {
+     "group": "Samvera",
+     "n": 6,
+     "group_value": 0.5,
+     "rest_value": 2.0,
+     "diff": -1.5,
+     "p": 0.008063729070169948,
+     "q": 0.03225491628067979
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.06870292608145037,
+   "q_controlling_other": 0.07202369049999524,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "results_axe_rules_violated",
+   "family": "results",
+   "description": "WCAG 2.2 A/AA rules failed on the results page (axe-core)",
+   "kind": "median",
+   "factor": "library_type",
+   "n_sites": 68,
+   "groups": 5,
+   "statistic": 1.710896077244027,
+   "effect": 0.0,
+   "effect_measure": "epsilon\u00b2",
+   "p": 0.7906418716256749,
+   "p_controlling_other": 0.7820435912817436,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 22,
+     "value": 2.0,
+     "mean": 2.1363636363636362
+    },
+    "Large-scale library / consortium": {
+     "n": 11,
+     "value": 2.0,
+     "mean": 2.272727272727273
+    },
+    "Museum": {
+     "n": 12,
+     "value": 2.0,
+     "mean": 1.5
+    },
+    "Organizational library": {
+     "n": 11,
+     "value": 2.0,
+     "mean": 1.7272727272727273
+    },
+    "Public library": {
+     "n": 12,
+     "value": 2.0,
+     "mean": 2.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 22,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.39945527298066796,
+     "q": 0.8297097566411636
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 11,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.7709226494627393,
+     "q": 0.8297097566411636
+    },
+    {
+     "group": "Museum",
+     "n": 12,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.3168652354856646,
+     "q": 0.8297097566411636
+    },
+    {
+     "group": "Organizational library",
+     "n": 11,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.577769885625042,
+     "q": 0.8297097566411636
+    },
+    {
+     "group": "Public library",
+     "n": 12,
+     "group_value": 2.0,
+     "rest_value": 2.0,
+     "diff": 0.0,
+     "p": 0.8297097566411636,
+     "q": 0.8297097566411636
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.8490164036158285,
+   "q_controlling_other": 0.8658339760619304,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:target-size",
+   "family": "home",
+   "description": "axe rule 'target-size' fails on the home page",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 88,
+   "groups": 5,
+   "statistic": 7.483439702678458,
+   "effect": 0.291614621599187,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.1201759648070386,
+   "p_controlling_other": 0.10197960407918416,
+   "p_without_dc": 0.07446276861569215,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 20,
+     "value": 0.6,
+     "mean": 0.6
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.29411764705882354,
+     "mean": 0.29411764705882354
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.44,
+     "mean": 0.44
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.25,
+     "mean": 0.25
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.2,
+     "mean": 0.2
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 20,
+     "group_value": 0.6,
+     "rest_value": 0.3235294117647059,
+     "diff": 0.2764705882352941,
+     "p": 0.0364519126686978,
+     "q": 0.182259563343489
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.29411764705882354,
+     "rest_value": 0.4084507042253521,
+     "diff": -0.11433305716652858,
+     "p": 0.4226113566945891,
+     "q": 0.5282641958682364
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.44,
+     "rest_value": 0.36507936507936506,
+     "diff": 0.07492063492063494,
+     "p": 0.628400036330833,
+     "q": 0.628400036330833
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.25,
+     "rest_value": 0.4166666666666667,
+     "diff": -0.16666666666666669,
+     "p": 0.26561389950577985,
+     "q": 0.5081418465130113
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.2,
+     "rest_value": 0.41025641025641024,
+     "diff": -0.21025641025641023,
+     "p": 0.3048851079078068,
+     "q": 0.5081418465130113
+    }
+   ],
+   "n_per_group_for_80pct_power": 30.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.2328409318136373,
+   "q_controlling_other": 0.19758548290341932,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:target-size",
+   "family": "home",
+   "description": "axe rule 'target-size' fails on the home page",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 132,
+   "groups": 5,
+   "statistic": 3.184548901971442,
+   "effect": 0.15532343824896686,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.5436912617476505,
+   "p_controlling_other": 0.5488902219556089,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 38,
+     "value": 0.39473684210526316,
+     "mean": 0.39473684210526316
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.23076923076923078,
+     "mean": 0.23076923076923078
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.391304347826087,
+     "mean": 0.391304347826087
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.2962962962962963,
+     "mean": 0.2962962962962963
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.4444444444444444,
+     "mean": 0.4444444444444444
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 38,
+     "group_value": 0.39473684210526316,
+     "rest_value": 0.32978723404255317,
+     "diff": 0.06494960806271,
+     "p": 0.5464978982113203,
+     "q": 0.6521337618017113
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.23076923076923078,
+     "rest_value": 0.37735849056603776,
+     "diff": -0.14658925979680698,
+     "p": 0.17724779689498046,
+     "q": 0.6521337618017113
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.391304347826087,
+     "rest_value": 0.3394495412844037,
+     "diff": 0.051854806541683285,
+     "p": 0.6375569936625421,
+     "q": 0.6521337618017113
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.2962962962962963,
+     "rest_value": 0.3619047619047619,
+     "diff": -0.06560846560846562,
+     "p": 0.6521337618017113,
+     "q": 0.6521337618017113
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.4444444444444444,
+     "rest_value": 0.3333333333333333,
+     "diff": 0.1111111111111111,
+     "p": 0.42699591077437155,
+     "q": 0.6521337618017113
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7022678797573819,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:link-name",
+   "family": "home",
+   "description": "axe rule 'link-name' fails on the home page",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 87,
+   "groups": 5,
+   "statistic": 5.294872291021671,
+   "effect": 0.24669941436133588,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.26774645070985803,
+   "p_controlling_other": 0.26034793041391724,
+   "p_without_dc": 0.5482258870564718,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 19,
+     "value": 0.47368421052631576,
+     "mean": 0.47368421052631576
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.35294117647058826,
+     "mean": 0.35294117647058826
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.2,
+     "mean": 0.2
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.4375,
+     "mean": 0.4375
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.2,
+     "mean": 0.2
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 19,
+     "group_value": 0.47368421052631576,
+     "rest_value": 0.29411764705882354,
+     "diff": 0.17956656346749222,
+     "p": 0.17280244161070984,
+     "q": 0.43200610402677464
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.35294117647058826,
+     "rest_value": 0.32857142857142857,
+     "diff": 0.02436974789915969,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.2,
+     "rest_value": 0.3870967741935484,
+     "diff": -0.18709677419354837,
+     "p": 0.13202722195170283,
+     "q": 0.43200610402677464
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.4375,
+     "rest_value": 0.30985915492957744,
+     "diff": 0.12764084507042256,
+     "p": 0.38365147193925453,
+     "q": 0.6063729278193465
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.2,
+     "rest_value": 0.35064935064935066,
+     "diff": -0.15064935064935064,
+     "p": 0.48509834225547716,
+     "q": 0.6063729278193465
+    }
+   ],
+   "n_per_group_for_80pct_power": 60.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.47429371268603426,
+   "q_controlling_other": 0.46118776244751053,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:link-name",
+   "family": "home",
+   "description": "axe rule 'link-name' fails on the home page",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 131,
+   "groups": 5,
+   "statistic": 13.122026023123437,
+   "effect": 0.31649350322099024,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.008798240351929614,
+   "p_controlling_other": 0.01919616076784643,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 0.21621621621621623,
+     "mean": 0.21621621621621623
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.34615384615384615,
+     "mean": 0.34615384615384615
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.2608695652173913,
+     "mean": 0.2608695652173913
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.14814814814814814,
+     "mean": 0.14814814814814814
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.6111111111111112,
+     "mean": 0.6111111111111112
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 0.21621621621621623,
+     "rest_value": 0.3191489361702128,
+     "diff": -0.10293271995399655,
+     "p": 0.28928501759164404,
+     "q": 0.4821416959860734
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.34615384615384615,
+     "rest_value": 0.2761904761904762,
+     "diff": 0.06996336996336994,
+     "p": 0.47871287425794995,
+     "q": 0.5983910928224374
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.2608695652173913,
+     "rest_value": 0.2962962962962963,
+     "diff": -0.03542673107890498,
+     "p": 0.8057285749285057,
+     "q": 0.8057285749285057
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.14814814814814814,
+     "rest_value": 0.3269230769230769,
+     "diff": -0.1787749287749288,
+     "p": 0.09490805396446163,
+     "q": 0.23727013491115406
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.6111111111111112,
+     "rest_value": 0.23893805309734514,
+     "diff": 0.372173058013766,
+     "p": 0.003550852280835116,
+     "q": 0.017754261404175582
+    }
+   ],
+   "n_per_group_for_80pct_power": 20.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.028710047464191375,
+   "q_controlling_other": 0.06264010355823571,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:color-contrast",
+   "family": "home",
+   "description": "axe rule 'color-contrast' fails on the home page",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 87,
+   "groups": 5,
+   "statistic": 11.117146954388048,
+   "effect": 0.35746789831577797,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.02659468106378724,
+   "p_controlling_other": 0.02299540091981604,
+   "p_without_dc": 0.4432783608195902,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 19,
+     "value": 0.3157894736842105,
+     "mean": 0.3157894736842105
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.4117647058823529,
+     "mean": 0.4117647058823529
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.08,
+     "mean": 0.08
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.3125,
+     "mean": 0.3125
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.6,
+     "mean": 0.6
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 19,
+     "group_value": 0.3157894736842105,
+     "rest_value": 0.29411764705882354,
+     "diff": 0.02167182662538697,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.4117647058823529,
+     "rest_value": 0.2714285714285714,
+     "diff": 0.1403361344537815,
+     "p": 0.3753551219328837,
+     "q": 0.6255918698881394
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.08,
+     "rest_value": 0.3870967741935484,
+     "diff": -0.30709677419354836,
+     "p": 0.004323873361909692,
+     "q": 0.02161936680954846
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.3125,
+     "rest_value": 0.29577464788732394,
+     "diff": 0.016725352112676062,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.6,
+     "rest_value": 0.2597402597402597,
+     "diff": 0.34025974025974026,
+     "p": 0.05925211009914491,
+     "q": 0.14813027524786226
+    }
+   ],
+   "n_per_group_for_80pct_power": 20.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.06870292608145037,
+   "q_controlling_other": 0.07128574285142972,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:color-contrast",
+   "family": "home",
+   "description": "axe rule 'color-contrast' fails on the home page",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 131,
+   "groups": 5,
+   "statistic": 9.97644221238006,
+   "effect": 0.27596385165950366,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.04259148170365927,
+   "p_controlling_other": 0.04919016196760648,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 0.21621621621621623,
+     "mean": 0.21621621621621623
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.5384615384615384,
+     "mean": 0.5384615384615384
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.21739130434782608,
+     "mean": 0.21739130434782608
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.2222222222222222,
+     "mean": 0.2222222222222222
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.2777777777777778,
+     "mean": 0.2777777777777778
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 0.21621621621621623,
+     "rest_value": 0.3191489361702128,
+     "diff": -0.10293271995399655,
+     "p": 0.28928501759164404,
+     "q": 0.5988010452160804
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.5384615384615384,
+     "rest_value": 0.22857142857142856,
+     "diff": 0.3098901098901099,
+     "p": 0.003296685507428329,
+     "q": 0.016483427537141646
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.21739130434782608,
+     "rest_value": 0.3055555555555556,
+     "diff": -0.0881642512077295,
+     "p": 0.45882185646915585,
+     "q": 0.5988010452160804
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.2222222222222222,
+     "rest_value": 0.3076923076923077,
+     "diff": -0.0854700854700855,
+     "p": 0.4790408361728643,
+     "q": 0.5988010452160804
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.2777777777777778,
+     "rest_value": 0.2920353982300885,
+     "diff": -0.014257620452310715,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": 40.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.10156430252411057,
+   "q_controlling_other": 0.1215910664021042,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:aria-hidden-focus",
+   "family": "home",
+   "description": "axe rule 'aria-hidden-focus' fails on the home page",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 87,
+   "groups": 5,
+   "statistic": 59.37149238133284,
+   "effect": 0.8260937882055958,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0001999600079984003,
+   "p_without_dc": 0.04147926036981509,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 19,
+     "value": 0.05263157894736842,
+     "mean": 0.05263157894736842
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.29411764705882354,
+     "mean": 0.29411764705882354
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.96,
+     "mean": 0.96
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.1,
+     "mean": 0.1
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 19,
+     "group_value": 0.05263157894736842,
+     "rest_value": 0.4411764705882353,
+     "diff": -0.38854489164086686,
+     "p": 0.0011649253447192922,
+     "q": 0.0019415422411988203
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.29411764705882354,
+     "rest_value": 0.37142857142857144,
+     "diff": -0.0773109243697479,
+     "p": 0.7783857402813605,
+     "q": 0.7783857402813605
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.96,
+     "rest_value": 0.11290322580645161,
+     "diff": 0.8470967741935483,
+     "p": 3.427370874961418e-14,
+     "q": 1.713685437480709e-13
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.0,
+     "rest_value": 0.43661971830985913,
+     "diff": -0.43661971830985913,
+     "p": 0.0004034741866278469,
+     "q": 0.0010086854665696172
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.1,
+     "rest_value": 0.38961038961038963,
+     "diff": -0.28961038961038965,
+     "p": 0.08915222159864526,
+     "q": 0.11144027699830658
+    }
+   ],
+   "n_per_group_for_80pct_power": 10.0,
+   "final_review": false,
+   "excluded_because": "appears on Digital Commons only after the crawler rejects cookies through OneTrust's API; may not match what a user's click leaves behind",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.0009536554227616014,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:aria-hidden-focus",
+   "family": "home",
+   "description": "axe rule 'aria-hidden-focus' fails on the home page",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 131,
+   "groups": 5,
+   "statistic": 1.9347435113480662,
+   "effect": 0.12152791628992697,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.74625074985003,
+   "p_controlling_other": 0.4205158968206359,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 0.21621621621621623,
+     "mean": 0.21621621621621623
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.19230769230769232,
+     "mean": 0.19230769230769232
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.34782608695652173,
+     "mean": 0.34782608695652173
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.25925925925925924,
+     "mean": 0.25925925925925924
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.2777777777777778,
+     "mean": 0.2777777777777778
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 0.21621621621621623,
+     "rest_value": 0.26595744680851063,
+     "diff": -0.049741230592294405,
+     "p": 0.6576758696153016,
+     "q": 0.9685926527843394
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.19230769230769232,
+     "rest_value": 0.26666666666666666,
+     "diff": -0.07435897435897434,
+     "p": 0.6143988969575842,
+     "q": 0.9685926527843394
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.34782608695652173,
+     "rest_value": 0.23148148148148148,
+     "diff": 0.11634460547504025,
+     "p": 0.290978650897441,
+     "q": 0.9685926527843394
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.25925925925925924,
+     "rest_value": 0.25,
+     "diff": 0.009259259259259245,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.2777777777777778,
+     "rest_value": 0.24778761061946902,
+     "diff": 0.029990167158308767,
+     "p": 0.7748741222274715,
+     "q": 0.9685926527843394
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": false,
+   "excluded_because": "appears on Digital Commons only after the crawler rejects cookies through OneTrust's API; may not match what a user's click leaves behind",
+   "q": 0.8412281180127611,
+   "q_controlling_other": 0.6517996400719857,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:select-name",
+   "family": "home",
+   "description": "axe rule 'select-name' fails on the home page",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 87,
+   "groups": 5,
+   "statistic": 9.2550193591035,
+   "effect": 0.326158754080369,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.04839032193561288,
+   "p_controlling_other": 0.05098980203959208,
+   "p_without_dc": 0.013993003498250875,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 19,
+     "value": 0.10526315789473684,
+     "mean": 0.10526315789473684
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.16,
+     "mean": 0.16
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.3125,
+     "mean": 0.3125
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 19,
+     "group_value": 0.10526315789473684,
+     "rest_value": 0.1323529411764706,
+     "diff": -0.027089783281733754,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.0,
+     "rest_value": 0.15714285714285714,
+     "diff": -0.15714285714285714,
+     "p": 0.1122717076299924,
+     "q": 0.28067926907498103
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.16,
+     "rest_value": 0.11290322580645161,
+     "diff": 0.047096774193548394,
+     "p": 0.7223190429714246,
+     "q": 0.9028988037142807
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.3125,
+     "rest_value": 0.08450704225352113,
+     "diff": 0.22799295774647887,
+     "p": 0.026485173876650035,
+     "q": 0.13242586938325018
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.0,
+     "rest_value": 0.14285714285714285,
+     "diff": -0.14285714285714285,
+     "p": 0.34907046149933835,
+     "q": 0.5817841024988972
+    }
+   ],
+   "n_per_group_for_80pct_power": 20.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.11111851703733329,
+   "q_controlling_other": 0.1215910664021042,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:select-name",
+   "family": "home",
+   "description": "axe rule 'select-name' fails on the home page",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 131,
+   "groups": 5,
+   "statistic": 11.95855400145123,
+   "effect": 0.3021368427828742,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.016796640671865627,
+   "p_controlling_other": 0.026394721055788842,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.11538461538461539,
+     "mean": 0.11538461538461539
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.21739130434782608,
+     "mean": 0.21739130434782608
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.037037037037037035,
+     "mean": 0.037037037037037035
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.2222222222222222,
+     "mean": 0.2222222222222222
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 0.0,
+     "rest_value": 0.13829787234042554,
+     "diff": -0.13829787234042554,
+     "p": 0.019149867102359486,
+     "q": 0.09574933551179743
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.11538461538461539,
+     "rest_value": 0.09523809523809523,
+     "diff": 0.020146520146520158,
+     "p": 0.7211835464551675,
+     "q": 0.7211835464551675
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.21739130434782608,
+     "rest_value": 0.07407407407407407,
+     "diff": 0.143317230273752,
+     "p": 0.05229913686731431,
+     "q": 0.13074784216828578
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.037037037037037035,
+     "rest_value": 0.11538461538461539,
+     "diff": -0.07834757834757836,
+     "p": 0.3015081820337603,
+     "q": 0.37688522754220033
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.2222222222222222,
+     "rest_value": 0.07964601769911504,
+     "diff": 0.14257620452310715,
+     "p": 0.08076932092832155,
+     "q": 0.13461553488053593
+    }
+   ],
+   "n_per_group_for_80pct_power": 30.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.05206958608278345,
+   "q_controlling_other": 0.07438512297540491,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:image-alt",
+   "family": "home",
+   "description": "axe rule 'image-alt' fails on the home page",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 87,
+   "groups": 5,
+   "statistic": 3.121315789473684,
+   "effect": 0.18941275823570103,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.556488702259548,
+   "p_controlling_other": 0.55248950209958,
+   "p_without_dc": 0.34132933533233384,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 19,
+     "value": 0.10526315789473684,
+     "mean": 0.10526315789473684
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.0,
+     "mean": 0.0
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.12,
+     "mean": 0.12
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.125,
+     "mean": 0.125
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.2,
+     "mean": 0.2
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 19,
+     "group_value": 0.10526315789473684,
+     "rest_value": 0.10294117647058823,
+     "diff": 0.002321981424148606,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.0,
+     "rest_value": 0.12857142857142856,
+     "diff": -0.12857142857142856,
+     "p": 0.19542858252851694,
+     "q": 0.6880916713031792
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.12,
+     "rest_value": 0.0967741935483871,
+     "diff": 0.0232258064516129,
+     "p": 0.7123532600077114,
+     "q": 0.8904415750096393
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.125,
+     "rest_value": 0.09859154929577464,
+     "diff": 0.02640845070422536,
+     "p": 0.6681215939551179,
+     "q": 0.8904415750096393
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.2,
+     "rest_value": 0.09090909090909091,
+     "diff": 0.1090909090909091,
+     "p": 0.27523666852127165,
+     "q": 0.6880916713031792
+    }
+   ],
+   "n_per_group_for_80pct_power": 60.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7041285620426935,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:image-alt",
+   "family": "home",
+   "description": "axe rule 'image-alt' fails on the home page",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 131,
+   "groups": 5,
+   "statistic": 3.372031221275078,
+   "effect": 0.16043907362488505,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.5250949810037993,
+   "p_controlling_other": 0.5270945810837833,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 0.10810810810810811,
+     "mean": 0.10810810810810811
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.07692307692307693,
+     "mean": 0.07692307692307693
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.08695652173913043,
+     "mean": 0.08695652173913043
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.2222222222222222,
+     "mean": 0.2222222222222222
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.1111111111111111,
+     "mean": 0.1111111111111111
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 0.10810810810810811,
+     "rest_value": 0.1276595744680851,
+     "diff": -0.019551466359976982,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.07692307692307693,
+     "rest_value": 0.13333333333333333,
+     "diff": -0.056410256410256404,
+     "p": 0.7377545217033997,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.08695652173913043,
+     "rest_value": 0.12962962962962962,
+     "diff": -0.04267310789049919,
+     "p": 0.7365293681691047,
+     "q": 1.0
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.2222222222222222,
+     "rest_value": 0.09615384615384616,
+     "diff": 0.12606837606837606,
+     "p": 0.09756617750557581,
+     "q": 0.48783088752787906
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.1111111111111111,
+     "rest_value": 0.12389380530973451,
+     "diff": -0.012782694198623407,
+     "p": 1.0,
+     "q": 1.0
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7022678797573819,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:link-in-text-block",
+   "family": "home",
+   "description": "axe rule 'link-in-text-block' fails on the home page",
+   "kind": "share of sites",
+   "factor": "platform",
+   "n_sites": 87,
+   "groups": 5,
+   "statistic": 22.477855108359137,
+   "effect": 0.5082973053939934,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.0001999600079984003,
+   "p_controlling_other": 0.0003999200159968006,
+   "p_without_dc": 0.001999000499750125,
+   "by_group": {
+    "CONTENTdm": {
+     "n": 19,
+     "value": 0.05263157894736842,
+     "mean": 0.05263157894736842
+    },
+    "DSpace": {
+     "n": 17,
+     "value": 0.11764705882352941,
+     "mean": 0.11764705882352941
+    },
+    "Digital commons": {
+     "n": 25,
+     "value": 0.04,
+     "mean": 0.04
+    },
+    "Omeka": {
+     "n": 16,
+     "value": 0.5,
+     "mean": 0.5
+    },
+    "Samvera": {
+     "n": 10,
+     "value": 0.0,
+     "mean": 0.0
+    }
+   },
+   "posthoc": [
+    {
+     "group": "CONTENTdm",
+     "n": 19,
+     "group_value": 0.05263157894736842,
+     "rest_value": 0.16176470588235295,
+     "diff": -0.10913312693498453,
+     "p": 0.4504544570685506,
+     "q": 0.5630680713356883
+    },
+    {
+     "group": "DSpace",
+     "n": 17,
+     "group_value": 0.11764705882352941,
+     "rest_value": 0.14285714285714285,
+     "diff": -0.02521008403361344,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Digital commons",
+     "n": 25,
+     "group_value": 0.04,
+     "rest_value": 0.1774193548387097,
+     "diff": -0.13741935483870968,
+     "p": 0.16661399912755692,
+     "q": 0.4165349978188923
+    },
+    {
+     "group": "Omeka",
+     "n": 16,
+     "group_value": 0.5,
+     "rest_value": 0.056338028169014086,
+     "diff": 0.44366197183098594,
+     "p": 7.430375997105524e-05,
+     "q": 0.0003715187998552762
+    },
+    {
+     "group": "Samvera",
+     "n": 10,
+     "group_value": 0.0,
+     "rest_value": 0.15584415584415584,
+     "diff": -0.15584415584415584,
+     "p": 0.3449637374769562,
+     "q": 0.5630680713356883
+    }
+   ],
+   "n_per_group_for_80pct_power": 15.0,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.0007748450309938012,
+   "q_controlling_other": 0.001653002732786776,
+   "tier": "assert",
+   "tier_reason": "",
+   "scope": "several vendors"
+  },
+  {
+   "sample": "run 4",
+   "metric": "axe:link-in-text-block",
+   "family": "home",
+   "description": "axe rule 'link-in-text-block' fails on the home page",
+   "kind": "share of sites",
+   "factor": "library_type",
+   "n_sites": 131,
+   "groups": 5,
+   "statistic": 3.220806036819856,
+   "effect": 0.1568002092619109,
+   "effect_measure": "Cram\u00e9r's V",
+   "p": 0.5392921415716857,
+   "p_controlling_other": 0.4913017396520696,
+   "p_without_dc": NaN,
+   "by_group": {
+    "Academic library": {
+     "n": 37,
+     "value": 0.1891891891891892,
+     "mean": 0.1891891891891892
+    },
+    "Large-scale library / consortium": {
+     "n": 26,
+     "value": 0.11538461538461539,
+     "mean": 0.11538461538461539
+    },
+    "Museum": {
+     "n": 23,
+     "value": 0.17391304347826086,
+     "mean": 0.17391304347826086
+    },
+    "Organizational library": {
+     "n": 27,
+     "value": 0.07407407407407407,
+     "mean": 0.07407407407407407
+    },
+    "Public library": {
+     "n": 18,
+     "value": 0.05555555555555555,
+     "mean": 0.05555555555555555
+    }
+   },
+   "posthoc": [
+    {
+     "group": "Academic library",
+     "n": 37,
+     "group_value": 0.1891891891891892,
+     "rest_value": 0.10638297872340426,
+     "diff": 0.08280621046578494,
+     "p": 0.24921686302675644,
+     "q": 0.6529232413782764
+    },
+    {
+     "group": "Large-scale library / consortium",
+     "n": 26,
+     "group_value": 0.11538461538461539,
+     "rest_value": 0.13333333333333333,
+     "diff": -0.01794871794871794,
+     "p": 1.0,
+     "q": 1.0
+    },
+    {
+     "group": "Museum",
+     "n": 23,
+     "group_value": 0.17391304347826086,
+     "rest_value": 0.12037037037037036,
+     "diff": 0.0535426731078905,
+     "p": 0.49910967754526886,
+     "q": 0.6529232413782764
+    },
+    {
+     "group": "Organizational library",
+     "n": 27,
+     "group_value": 0.07407407407407407,
+     "rest_value": 0.14423076923076922,
+     "diff": -0.07015669515669515,
+     "p": 0.5223385931026211,
+     "q": 0.6529232413782764
+    },
+    {
+     "group": "Public library",
+     "n": 18,
+     "group_value": 0.05555555555555555,
+     "rest_value": 0.1415929203539823,
+     "diff": -0.08603736479842675,
+     "p": 0.4652826323123267,
+     "q": 0.6529232413782764
+    }
+   ],
+   "n_per_group_for_80pct_power": NaN,
+   "final_review": true,
+   "excluded_because": "",
+   "q": 0.7022678797573819,
+   "q_controlling_other": 0.6751880393152139,
+   "tier": "",
+   "tier_reason": "",
+   "scope": ""
+  }
+ ],
+ "replication": [
+  {
+   "metric": "search_in_landmark",
+   "factor": "platform",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": 0.8720815992723809,
+   "replication_by_group": {
+    "CONTENTdm": 0.75,
+    "DSpace": 0.0625,
+    "Digital commons": 0.0,
+    "Omeka": 0.6875,
+    "Samvera": 0.6666666666666666
+   },
+   "replication_n": {
+    "CONTENTdm": 20,
+    "DSpace": 16,
+    "Digital commons": 25,
+    "Omeka": 16,
+    "Samvera": 6
+   }
+  },
+  {
+   "metric": "mdlaug_ACC5",
+   "factor": "platform",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": 1.0,
+   "replication_by_group": {
+    "CONTENTdm": 4.0,
+    "DSpace": 3.0,
+    "Digital commons": 4.0,
+    "Omeka": 7.0,
+    "Samvera": 3.0
+   },
+   "replication_n": {
+    "CONTENTdm": 18,
+    "DSpace": 15,
+    "Digital commons": 25,
+    "Omeka": 9,
+    "Samvera": 6
+   }
+  },
+  {
+   "metric": "mdlaug_ACC5",
+   "factor": "library_type",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": 0.9682458365518541,
+   "replication_by_group": {
+    "Academic library": 3.0,
+    "Large-scale library / consortium": 3.0,
+    "Museum": 4.0,
+    "Organizational library": 4.0,
+    "Public library": 4.0
+   },
+   "replication_n": {
+    "Academic library": 25,
+    "Large-scale library / consortium": 23,
+    "Museum": 18,
+    "Organizational library": 17,
+    "Public library": 15
+   }
+  },
+  {
+   "metric": "mdlaug_EXE2",
+   "factor": "platform",
+   "groups_compared": 4,
+   "rank_correlation_with_primary": 1.0,
+   "replication_by_group": {
+    "CONTENTdm": 1.0,
+    "DSpace": 7.0,
+    "Digital commons": 4.0,
+    "Samvera": 1.0
+   },
+   "replication_n": {
+    "CONTENTdm": 6,
+    "DSpace": 7,
+    "Digital commons": 25,
+    "Samvera": 6
+   }
+  },
+  {
+   "metric": "mdlaug_INT1",
+   "factor": "platform",
+   "groups_compared": 4,
+   "rank_correlation_with_primary": 1.0,
+   "replication_by_group": {
+    "CONTENTdm": 1.0,
+    "DSpace": 7.0,
+    "Digital commons": 4.0,
+    "Samvera": 1.0
+   },
+   "replication_n": {
+    "CONTENTdm": 6,
+    "DSpace": 7,
+    "Digital commons": 25,
+    "Samvera": 6
+   }
+  },
+  {
+   "metric": "mdlaug_RED1",
+   "factor": "platform",
+   "groups_compared": 4,
+   "rank_correlation_with_primary": 1.0,
+   "replication_by_group": {
+    "CONTENTdm": 2.0,
+    "DSpace": 7.0,
+    "Digital commons": 7.0,
+    "Omeka": 7.0
+   },
+   "replication_n": {
+    "CONTENTdm": 4,
+    "DSpace": 12,
+    "Digital commons": 25,
+    "Omeka": 3
+   }
+  },
+  {
+   "metric": "overlay_on_load",
+   "factor": "platform",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": 0.8720815992723809,
+   "replication_by_group": {
+    "CONTENTdm": 0.0,
+    "DSpace": 0.1875,
+    "Digital commons": 1.0,
+    "Omeka": 0.0,
+    "Samvera": 0.3333333333333333
+   },
+   "replication_n": {
+    "CONTENTdm": 20,
+    "DSpace": 16,
+    "Digital commons": 25,
+    "Omeka": 16,
+    "Samvera": 6
+   }
+  },
+  {
+   "metric": "overlay_escape_fails",
+   "factor": "platform",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": 1.0,
+   "replication_by_group": {
+    "CONTENTdm": 0.0,
+    "DSpace": 0.1875,
+    "Digital commons": 1.0,
+    "Omeka": 0.0,
+    "Samvera": 0.16666666666666666
+   },
+   "replication_n": {
+    "CONTENTdm": 20,
+    "DSpace": 16,
+    "Digital commons": 25,
+    "Omeka": 16,
+    "Samvera": 6
+   }
+  },
+  {
+   "metric": "focus_or_skip_to_results",
+   "factor": "platform",
+   "groups_compared": 3,
+   "rank_correlation_with_primary": 0.5,
+   "replication_by_group": {
+    "CONTENTdm": 0.0,
+    "Omeka": 0.8,
+    "Samvera": 1.0
+   },
+   "replication_n": {
+    "CONTENTdm": 6,
+    "Omeka": 10,
+    "Samvera": 4
+   }
+  },
+  {
+   "metric": "pagination_landmark",
+   "factor": "platform",
+   "groups_compared": 3,
+   "rank_correlation_with_primary": 1.0,
+   "replication_by_group": {
+    "CONTENTdm": 0.0,
+    "Omeka": 1.0,
+    "Samvera": 0.6666666666666666
+   },
+   "replication_n": {
+    "CONTENTdm": 6,
+    "Omeka": 9,
+    "Samvera": 3
+   }
+  },
+  {
+   "metric": "pagination_current_page",
+   "factor": "platform",
+   "groups_compared": 3,
+   "rank_correlation_with_primary": 1.0,
+   "replication_by_group": {
+    "CONTENTdm": 0.0,
+    "Omeka": 0.0,
+    "Samvera": 0.6666666666666666
+   },
+   "replication_n": {
+    "CONTENTdm": 6,
+    "Omeka": 9,
+    "Samvera": 3
+   }
+  },
+  {
+   "metric": "axe:link-name",
+   "factor": "library_type",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": 0.9999999999999999,
+   "replication_by_group": {
+    "Academic library": 0.22580645161290322,
+    "Large-scale library / consortium": 0.3333333333333333,
+    "Museum": 0.23809523809523808,
+    "Organizational library": 0.08333333333333333,
+    "Public library": 0.5263157894736842
+   },
+   "replication_n": {
+    "Academic library": 31,
+    "Large-scale library / consortium": 30,
+    "Museum": 21,
+    "Organizational library": 24,
+    "Public library": 19
+   }
+  },
+  {
+   "metric": "axe:aria-hidden-focus",
+   "factor": "platform",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": -0.35355339059327373,
+   "replication_by_group": {
+    "CONTENTdm": 0.05,
+    "DSpace": 0.0,
+    "Digital commons": 0.0,
+    "Omeka": 0.0,
+    "Samvera": 0.0
+   },
+   "replication_n": {
+    "CONTENTdm": 20,
+    "DSpace": 16,
+    "Digital commons": 25,
+    "Omeka": 16,
+    "Samvera": 6
+   }
+  },
+  {
+   "metric": "axe:link-in-text-block",
+   "factor": "platform",
+   "groups_compared": 5,
+   "rank_correlation_with_primary": 0.9746794344808964,
+   "replication_by_group": {
+    "CONTENTdm": 0.05,
+    "DSpace": 0.125,
+    "Digital commons": 0.0,
+    "Omeka": 0.5,
+    "Samvera": 0.0
+   },
+   "replication_n": {
+    "CONTENTdm": 20,
+    "DSpace": 16,
+    "Digital commons": 25,
+    "Omeka": 16,
+    "Samvera": 6
+   }
+  }
+ ],
+ "manual": [
+  {
+   "code": "COM1",
+   "check_id": "llm.structure",
+   "reason": "LLM judgment (not validated by reviewers yet)",
+   "findings": 134,
+   "sites": 134
+  },
+  {
+   "code": "USE1",
+   "check_id": "probe.accessible_names",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 174,
+   "sites": 131
+  },
+  {
+   "code": "ACC2/COM3",
+   "check_id": "llm.alt_quality",
+   "reason": "LLM judgment (not validated by reviewers yet)",
+   "findings": 152,
+   "sites": 120
+  },
+  {
+   "code": "USE1",
+   "check_id": "engine.scorecard",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 225,
+   "sites": 106
+  },
+  {
+   "code": "EXE1",
+   "check_id": "probe.clear_control",
+   "reason": "crawler flagged the result for review",
+   "findings": 102,
+   "sites": 102
+  },
+  {
+   "code": "FIL1",
+   "check_id": "engine.scorecard",
+   "reason": "crawler flagged the result for review",
+   "findings": 189,
+   "sites": 101
+  },
+  {
+   "code": "FIL3/HEP1",
+   "check_id": "engine.scorecard",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 212,
+   "sites": 95
+  },
+  {
+   "code": "FIL3/HEP1",
+   "check_id": "llm.help_quality",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 84,
+   "sites": 84
+  },
+  {
+   "code": "EVA1",
+   "check_id": "llm.snippet_relevance",
+   "reason": "LLM judgment (not validated by reviewers yet)",
+   "findings": 72,
+   "sites": 72
+  },
+  {
+   "code": "RED4",
+   "check_id": "llm.restricted_explained",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 64,
+   "sites": 64
+  },
+  {
+   "code": "ACC2/COM3",
+   "check_id": "engine.scorecard",
+   "reason": "crawler flagged the result for review",
+   "findings": 112,
+   "sites": 63
+  },
+  {
+   "code": "COM2/NAV1",
+   "check_id": "probe.facets",
+   "reason": "crawler flagged the result for review",
+   "findings": 54,
+   "sites": 54
+  },
+  {
+   "code": "RED1",
+   "check_id": "probe.results_status",
+   "reason": "crawler flagged the result for review",
+   "findings": 55,
+   "sites": 53
+  },
+  {
+   "code": "RED4",
+   "check_id": "engine.scorecard",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 92,
+   "sites": 51
+  },
+  {
+   "code": "COM1",
+   "check_id": "engine.scorecard",
+   "reason": "crawler flagged the result for review",
+   "findings": 72,
+   "sites": 50
+  },
+  {
+   "code": "FIL3/HEP1",
+   "check_id": "probe.help_present",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 38,
+   "sites": 38
+  },
+  {
+   "code": "RED2",
+   "check_id": "probe.thumb_duplication",
+   "reason": "crawler flagged the result for review",
+   "findings": 28,
+   "sites": 28
+  },
+  {
+   "code": "FIL2/RED3",
+   "check_id": "probe.search_present",
+   "reason": "crawler flagged the result for review",
+   "findings": 23,
+   "sites": 23
+  },
+  {
+   "code": "ACC3/COM4",
+   "check_id": "engine.scorecard",
+   "reason": "always needs a person (AT / content quality)",
+   "findings": 27,
+   "sites": 19
+  },
+  {
+   "code": "FIL2/RED3",
+   "check_id": "probe.search_keyboard",
+   "reason": "crawler flagged the result for review",
+   "findings": 1,
+   "sites": 1
+  }
+ ],
+ "n_perm": 5000
+}

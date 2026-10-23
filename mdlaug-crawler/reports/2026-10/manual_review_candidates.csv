@@ -1,0 +1,21 @@
+code,check_id,reason,findings,sites
+COM1,llm.structure,LLM judgment (not validated by reviewers yet),134,134
+USE1,probe.accessible_names,always needs a person (AT / content quality),174,131
+ACC2/COM3,llm.alt_quality,LLM judgment (not validated by reviewers yet),152,120
+USE1,engine.scorecard,always needs a person (AT / content quality),225,106
+EXE1,probe.clear_control,crawler flagged the result for review,102,102
+FIL1,engine.scorecard,crawler flagged the result for review,189,101
+FIL3/HEP1,engine.scorecard,always needs a person (AT / content quality),212,95
+FIL3/HEP1,llm.help_quality,always needs a person (AT / content quality),84,84
+EVA1,llm.snippet_relevance,LLM judgment (not validated by reviewers yet),72,72
+RED4,llm.restricted_explained,always needs a person (AT / content quality),64,64
+ACC2/COM3,engine.scorecard,crawler flagged the result for review,112,63
+COM2/NAV1,probe.facets,crawler flagged the result for review,54,54
+RED1,probe.results_status,crawler flagged the result for review,55,53
+RED4,engine.scorecard,always needs a person (AT / content quality),92,51
+COM1,engine.scorecard,crawler flagged the result for review,72,50
+FIL3/HEP1,probe.help_present,always needs a person (AT / content quality),38,38
+RED2,probe.thumb_duplication,crawler flagged the result for review,28,28
+FIL2/RED3,probe.search_present,crawler flagged the result for review,23,23
+ACC3/COM4,engine.scorecard,always needs a person (AT / content quality),27,19
+FIL2/RED3,probe.search_keyboard,crawler flagged the result for review,1,1

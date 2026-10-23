@@ -66,7 +66,8 @@ class Store:
     # columns added after the first release — existing databases are upgraded in place
     MIGRATIONS = {"sites": [("active", "INTEGER DEFAULT 1"), ("note", "TEXT"), ("added", "REAL")],
                   "pages": [("annotations", "TEXT"), ("fullshot", "TEXT"), ("annotated", "TEXT"),
-                            ("remediation", "TEXT"), ("aftershot", "TEXT"), ("after_annotated", "TEXT")],
+                            ("remediation", "TEXT"), ("aftershot", "TEXT"), ("after_annotated", "TEXT"),
+                            ("overlays", "TEXT"), ("fingerprint", "TEXT")],
                   "reviews": [("exemplar", "TEXT")],
                   "llm_calls": [("prompt_version", "TEXT"), ("prompt", "TEXT"), ("role", "TEXT"), ("replay_of", "INTEGER")]}
 

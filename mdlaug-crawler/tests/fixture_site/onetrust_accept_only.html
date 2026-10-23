@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hosted repository with a consent manager</title>
+<link rel="stylesheet" href="/ir-style.css">
+<style>.onetrust-pc-dark-filter{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2147483645}
+#onetrust-banner-sdk{position:fixed;left:0;right:0;bottom:0;background:#fff;padding:12px;z-index:2147483646}</style></head><body>
+<a href="#main">Skip to main content</a>
+<header><form action="/slow-results" id="sf"><label for="q">Enter search terms:</label>
+<input id="q" name="q" type="text"><button type="submit">Search</button></form></header>
+<main id="main"><h1>Hosted Repository</h1><p>Scholarship from our institution. Powered by bepress.</p></main>
+<div class="onetrust-pc-dark-filter"></div>
+<div id="onetrust-banner-sdk" role="region" aria-label="Cookie banner"><p>We use cookies that are necessary to make our site work.</p>
+<button id="onetrust-accept-btn-handler" onclick="ot()">Accept All Cookies</button>
+<button id="onetrust-pc-btn-handler">Cookie Settings</button></div>
+<script>window.OneTrust={RejectAll:function(){window.rejected=1;ot();}};function ot(){document.getElementById('onetrust-banner-sdk').remove();document.querySelector('.onetrust-pc-dark-filter').remove();}</script>
+</body></html>

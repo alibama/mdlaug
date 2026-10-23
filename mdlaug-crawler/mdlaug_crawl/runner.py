@@ -1,10 +1,16 @@
 """Crawl orchestration.
 
 Per site (mobile emulation by default):
-  1. home page   — dialogs/Escape, names (USE1), structure (COM1), images (ACC2), engine, axe
+  0. every page  — bot-protection check (recorded, never solved); overlays (consent managers,
+                   modals, promos) measured as users meet them — dialog role, name, Escape, Tab
+                   reach, named dismiss control (INT1/EXE2) — then dismissed (reject first, using
+                   the overlay's own controls) so later measurements and screenshots see the page
+  1. home page   — platform fingerprint, vision check of the screenshots (optional), names (USE1),
+                   structure (COM1), images (ACC2), engine, axe
   2. search flow — find search (incl. behind an icon toggle), keyboard reach, autocomplete,
-                   clear control, submit → results page probes (RED1, NAV5, NAV3, NAV2,
-                   COM2/NAV1, RED2, EVA1) + engine
+                   clear control, submit → wait for script-rendered results → results page probes
+                   (RED1, NAV5, NAV3, NAV2, COM2/NAV1, RED2, EVA1) + engine. If the search box
+                   can't be used, the platform's own search URL is opened instead (method 'url')
   3. first result → item page (engine; images)
   4. help page   → FIL3/HEP1 (LLM-judged)
   5. browse page → engine
@@ -14,6 +20,7 @@ confidence and needs_review.
 import asyncio
 import json
 import os
+import re
 import time
 import urllib.robotparser
 from pathlib import Path
@@ -29,6 +36,16 @@ ENGINE_BUNDLE = Path(__file__).parent / "engine.bundle.js"
 ENGINE_FILES = ["engine/remediator.js", "packs/blacklight.js", "packs/dspace.js", "packs/islandora.js",
                 "packs/omeka.js", "packs/iiif.js", "engine/assessment.js"]
 AXE_PATH = CRAWLER / "vendor" / "axe.min.js"
+# Each platform's own search URL (path from the site's origin). Used only when the search box
+# can't be operated, so the results page can still be assessed; {omeka_s} = "/s/<site>".
+SEARCH_URLS = {
+    "CONTENTdm": ["/digital/search/searchterm/{q}"],
+    "DSpace": ["/search?query={q}", "/discover?query={q}"],
+    "Digital commons": ["/do/search/?q={q}"],
+    "Islandora": ["/islandora/search/{q}?type=dismax", "/search?search_api_fulltext={q}"],
+    "Omeka": ["{omeka_s}/item?fulltext_search={q}", "/items/browse?search={q}"],
+    "Samvera": ["/catalog?q={q}"],
+}
 
 
 def _engine_js():
@@ -50,6 +67,12 @@ class SiteCrawler:
         self.browser, self.pw = browser, playwright
         self.site_id = None
         self._first_result = None
+        self._last_status = None
+        self._results_state = None
+        self._fp = None
+        self._home_url = None
+        self._site_platform = ""
+        self._overlays_seen = set()
         self.engine_js = _engine_js()
         self.axe_js = AXE_PATH.read_text(encoding="utf-8") if (cfg.run_axe and AXE_PATH.exists()) else None
 
@@ -90,15 +113,29 @@ class SiteCrawler:
         if self.axe_js:
             await page.add_script_tag(content=self.axe_js)
 
+    async def ensure_injected(self, page, pid=None):
+        """Inject probes/engine/axe unless this document already has them (a page that
+        navigated by itself — a bot check clearing, an overlay link — starts empty)."""
+        try:
+            if await page.evaluate("() => !!window.__mdlaugProbe"):
+                return
+        except Exception:
+            pass
+        try:
+            await self.inject(page)
+        except Exception as e:  # noqa: BLE001
+            self.log("inject", f"script injection failed: {e}", "warn", pid)
+
     async def probe(self, page, fn, *args):
         try:
             return await page.evaluate(f"(a) => window.__mdlaugProbe.{fn}.apply(null, a || [])", list(args))
         except Exception as e:  # noqa: BLE001
             return {"_error": str(e)[:300]}
 
-    async def visit(self, page, url, hint, start_url=None, navigate=True):
+    async def visit(self, page, url, hint, start_url=None, navigate=True, wait_results=False):
         t0 = time.time()
         status, http, err = "ok", None, ""
+        self._last_status = "not_loaded"
         if navigate:
             await asyncio.sleep(self.cfg.polite_delay_s)
             for attempt in (1, 2):           # one patient retry: slow sites are common
@@ -125,10 +162,31 @@ class SiteCrawler:
         if status != "ok":
             self.log("visit", f"{hint}: failed to load {url}", "warn", pid, {"status": status, "http": http, "error": err}, t0)
             return None, None
-        try:
-            await self.inject(page)
-        except Exception as e:  # noqa: BLE001
-            self.log("inject", f"script injection failed: {e}", "warn", pid)
+        await self.ensure_injected(page, pid)
+        if wait_results:
+            await self.wait_for_results(page)
+        self._last_status = "ok"
+        ch = await self.probe(page, "challenge")
+        if ch.get("blocked"):
+            # Some bot checks clear by themselves in a real browser. Wait and look again; never interact with one.
+            for _ in range(4):
+                await asyncio.sleep(2.0)
+                await self.ensure_injected(page, pid)
+                ch = await self.probe(page, "challenge")
+                if not ch.get("blocked"):
+                    break
+        if ch.get("blocked"):
+            shot = str(Path(self.cfg.artifacts_dir) / f"r{self.run_id}_s{self.site_id}_p{pid}.png") if self.cfg.screenshots else ""
+            try:
+                if shot:
+                    await page.screenshot(path=shot, full_page=False)
+            except Exception:
+                shot = ""
+            self._last_status = "bot_challenge"
+            self.store.update_page(pid, status="bot_challenge", final_url=page.url, title=ch.get("title", ""),
+                                   screenshot=shot, error="bot-protection challenge: " + ",".join(ch.get("signals", [])))
+            self.log("visit", f"{hint}: bot-protection challenge at {page.url}; not measured", "warn", pid, ch, t0)
+            return None, None
         summ = await self.probe(page, "summary")
         if "_error" in summ:
             self.log("summary", "probe summary failed", "warn", pid, summ)
@@ -157,6 +215,7 @@ class SiteCrawler:
         good techniques), take one clean full-page screenshot, and render the markup."""
         if not self.cfg.screenshots:
             return
+        await self.clear_overlays(page, pid, "screenshot")
         t0 = time.time()
         try:
             # Mobile Chrome "text autosizing" re-inflates fonts when the full-page capture
@@ -231,6 +290,7 @@ class SiteCrawler:
 
     # ---------- analyses ----------
     async def engine_and_axe(self, page, pid):
+        await self.clear_overlays(page, pid, "engine/axe")
         t0 = time.time()
         try:
             card = await page.evaluate("() => window.mDLAUG.assessment.buildScorecard()")
@@ -282,21 +342,135 @@ class SiteCrawler:
             self.find(pid, "WCAG-2.5.8", "probe.target_size", "probe", "fail" if ts["small_targets"] else "pass",
                       score=None, confidence=0.7, message=f"{ts['small_targets']} targets under 24×24 CSS px", evidence=ts)
 
-    async def dialogs(self, page, pid):
-        d = await self.probe(page, "dialogs")
-        if "_error" in d or not d.get("open"):
+    # ---------- overlays (consent banners, modals, promos) ----------
+    async def tabs_into_overlay(self, page, i, max_tabs=40):
+        """Tab presses from the top of the page until keyboard focus is inside overlay i (None = never)."""
+        try:
+            await page.evaluate("() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0,0); }")
+            for n in range(1, max_tabs + 1):
+                await page.keyboard.press("Tab")
+                if await self.probe(page, "overlayFocusable", i) is True:
+                    return n
+        except Exception:
+            return None
+        return None
+
+    async def _overlay_gone(self, page, i):
+        return await self.probe(page, "overlayVisible", i) is not True
+
+    async def _dismiss(self, page, i):
+        """Privacy-preferring dismissal with the overlay's own controls; hide it only as a last resort."""
+        d = await self.probe(page, "dismissOverlay", i)
+        await asyncio.sleep(1.0)
+        if not await self._overlay_gone(page, i):
+            await self.probe(page, "hideOverlay", i)
+            d = dict(d if isinstance(d, dict) else {}, fallback="hidden")
+            await asyncio.sleep(0.3)
+        return d
+
+    async def handle_overlays(self, page, pid, home=False):
+        """What floats over this page when it loads? For each overlay: measure how a keyboard or
+        screen-reader user meets it (dialog semantics, name, Escape, Tab reach, named dismiss
+        control), then get it out of the way so every later measurement and screenshot sees the
+        page itself. Each distinct overlay is scored once per site (INT1/EXE2, probe.overlay)."""
+        t0 = time.time()
+        url_before = page.url
+        out = []
+        for layer in range(3):      # dismissing one overlay can reveal another underneath it
+            found = await self.probe(page, "detectOverlays")
+            if not isinstance(found, list):
+                self.log("overlay", "overlay probe failed", "warn", pid, found)
+                break
+            found = [o for o in found if o.get("index") is not None]
+            if not found:
+                break
+            n_before = len(out)
+            await self._handle_layer(page, pid, found, out, home, layer)
+            if len(out) == n_before or all(o["still_visible"] for o in out[n_before:]):
+                break
+        if page.url != url_before:          # a dismiss control navigated away: come back
+            self.log("overlay", f"dismissing navigated to {page.url}; returning", "warn", pid)
+            try:
+                await page.goto(url_before, wait_until="domcontentloaded", timeout=self.cfg.nav_timeout_ms)
+                await page.wait_for_load_state("networkidle", timeout=8000)
+            except Exception:
+                pass
+            await self.ensure_injected(page, pid)
+        if out:
+            self.store.update_page(pid, overlays=json.dumps({"on_load": out}, default=str))
+            self.log("overlay", f"{len(out)} overlay(s): " + ", ".join(
+                f"{o.get('cmp') or o['kind']} → {('escape' if o['escape_closes'] else (o['dismissal'] or {}).get('via'))}"
+                f"{' (still visible)' if o['still_visible'] else ''}" for o in out),
+                "warn" if any(o["still_visible"] for o in out) else "info", pid, out, t0)
+        return out
+
+    async def _handle_layer(self, page, pid, found, out, home, layer):
+        for ov in found[:4]:
+            i = ov["index"]
+            ov["layer"] = layer
+            if await self._overlay_gone(page, i):     # went away with an earlier one (e.g. a consent banner's backdrop)
+                continue
+            ov["tabs_to_reach"] = 0 if ov.get("focus_inside") else await self.tabs_into_overlay(page, i)
+            await page.keyboard.press("Escape")
+            await asyncio.sleep(0.6)
+            ov["escape_closes"] = await self._overlay_gone(page, i)
+            ov["dismissal"] = {"via": "escape"} if ov["escape_closes"] else await self._dismiss(page, i)
+            ov["still_visible"] = not await self._overlay_gone(page, i)
+            out.append(ov)
+            key = (ov.get("cmp") or ov["kind"], (ov.get("el") or {}).get("id") or (ov.get("el") or {}).get("cls", "")[:30])
+            if key in self._overlays_seen:
+                continue
+            self._overlays_seen.add(key)
+            closed = ov.get("closed_shadow")      # a closed shadow root hides role, name and buttons: unknown, not failed
+            crit = {"escape_closes": ov["escape_closes"],
+                    "exposed_as_dialog": None if closed else bool(ov.get("dialog_role")),
+                    "has_accessible_name": None if closed else bool(ov.get("name")),
+                    "keyboard_reachable": ov["tabs_to_reach"] is not None and ov["tabs_to_reach"] <= 10,
+                    "named_dismiss_control": None if closed else
+                    bool(ov.get("has_reject") or ov.get("has_close")) and not ov.get("unnamed_buttons")}
+            known = [v for v in crit.values() if v is not None]
+            score = 1 + round(6 * sum(known) / len(known))
+            label = (ov.get("cmp") + " " if ov.get("cmp") else "") + ov["kind"]
+            for code in ("EXE2", "INT1"):
+                self.find(pid, code, "probe.overlay", "probe", scoring.outcome_from_score(score), score=score, confidence=0.8,
+                          message=f"{label} overlay on load ({round(100 * ov.get('coverage', 0))}% of screen): " +
+                                  "; ".join(f"{k.replace('_', ' ')}: {'not observable' if v is None else 'yes' if v else 'no'}"
+                                            for k, v in crit.items()),
+                          evidence=dict(ov, criteria=crit, home=home))
+
+    async def clear_overlays(self, page, pid, stage):
+        """Overlays that appeared after load (timed pop-ups): dismiss before measuring or photographing."""
+        found = await self.probe(page, "detectOverlays")
+        if not isinstance(found, list) or not found:
             return
-        before = d["open"]
-        await page.keyboard.press("Escape")
-        await asyncio.sleep(0.6)
-        after = (await self.probe(page, "dialogs")).get("open", before)
-        closes = after < before
-        modal = any(x.get("aria_modal") == "true" for x in d["sample"])
-        outcome = "pass" if closes and modal else ("partial" if closes or modal else "fail")
-        for code in ("EXE2", "INT1"):
-            self.find(pid, code, "probe.dialog_escape", "probe", outcome, confidence=0.75,
-                      message=f"{before} dialog(s) open on load; Escape closes: {closes}; aria-modal: {modal}",
-                      evidence={"before": d, "open_after_escape": after})
+        res = []
+        for ov in found[:4]:
+            d = await self._dismiss(page, ov["index"])
+            res.append({"kind": ov["kind"], "cmp": ov.get("cmp"), "el": ov.get("el"), "dismissal": d})
+        self.log("overlay", f"{len(res)} late overlay(s) before {stage}", "info", pid, res)
+
+    async def vision_qa(self, page, pid, first_view):
+        """Ask the vision model whether the home page is clear after overlay handling (and whether the
+        first view had an overlay). This checks the crawler's own work: an overlay the DOM probe missed
+        shows up as a disagreement."""
+        if not (self.llm and self.cfg.llm_enabled and self.llm.check_vision()) or not self.cfg.screenshots:
+            return None
+        clean = str(Path(self.cfg.artifacts_dir) / f"r{self.run_id}_s{self.site_id}_p{pid}_clean.png")
+        try:
+            await page.screenshot(path=clean, full_page=False)
+        except Exception:
+            return None
+        out = {}
+        for k, path in (("first_view", first_view), ("after_dismissal", clean)):
+            if path and Path(path).exists():
+                r = await asyncio.to_thread(self.llm.ask_vision, "vision_overlay", path, self.run_id, self.site_id, pid)
+                out[k] = {x: r.get(x) for x in ("overlay_visible", "overlay_kind", "page_loaded", "content_obscured_pct",
+                                                 "confidence", "rationale", "_ok")}
+        out["clean_shot"] = clean
+        resid = (out.get("after_dismissal") or {}).get("overlay_visible") and (out["after_dismissal"].get("confidence") or 0) >= 0.7
+        self.log("vision_qa", ("residual overlay in screenshot: " + str(out["after_dismissal"].get("overlay_kind"))) if resid
+                 else "screenshot clear", "warn" if resid else "info", pid, out)
+        return out
 
     async def images_llm(self, page, pid):
         imgs = await self.probe(page, "images")
@@ -357,7 +531,7 @@ class SiteCrawler:
                       message="no search input found on the start page (may be a selector miss)", evidence=s)
             self.log("search", "no search input found", "warn", home_pid, s, t0)
             self.log("search_outcome", "no search box found", "warn", home_pid, data={"outcome": "no_search"})
-            return None
+            return await self.search_by_url(page, home_pid, "no_search")
         # FIL2/RED3: findable & distinguishable
         named = bool(s.get("input_name"))
         outcome = "pass" if named and s.get("in_search_landmark") else ("partial" if named or s.get("placeholder_only") else "fail")
@@ -375,7 +549,9 @@ class SiteCrawler:
         sel = '[data-mdlaug-probe="search"]'
         method = "keyboard"
         try:
-            # 1) something covering the search box? (cookie/consent/pop-up modals were the #1 cause of failures)
+            # 1) an overlay covering the search box? Load-time overlays were already handled; this
+            #    catches ones that appeared later (timed pop-ups). Page elements merely overlapping
+            #    the box are not blockers: keyboard focus doesn't need hit-testing.
             blk = await self.probe(page, "blocker")
             if blk.get("found"):
                 await page.keyboard.press("Escape")
@@ -385,14 +561,17 @@ class SiteCrawler:
                 await asyncio.sleep(0.8)
                 still = (await self.probe(page, "blocker")).get("found")
                 self.find(home_pid, "INT1", "probe.blocking_overlay", "probe",
-                          "partial" if esc_ok else "fail", confidence=0.6, needs_review=True,
-                          message=("an overlay covered the search box on load; " +
+                          "partial" if esc_ok else "fail", confidence=0.75,
+                          message=("an overlay appeared over the search box after load; " +
                                    ("Escape closed it" if esc_ok else
-                                    f"Escape did not close it; dismissed via its '{how.get('label')}' button" if how.get("via") == "button"
-                                    else "Escape did not close it and no close button was found (hidden to continue)")),
+                                    f"Escape did not close it; dismissed via its own '{how.get('label')}' control"
+                                    if how.get("via") in ("button", "cmp-control", "close-icon")
+                                    else "Escape did not close it and it had no usable close control (hidden to continue)")),
                           evidence={"blocker": blk, "dismissal": how, "still_blocked": still})
-                self.log("search", f"overlay over search: {blk.get('el', {}).get('id') or blk.get('el', {}).get('cls', '')[:40]} "
+                self.log("search", f"overlay over search: {(blk.get('el') or {}).get('id') or (blk.get('el') or {}).get('cls', '')[:40]} "
                                    f"→ {how.get('via')} {how.get('label', '')}", "warn" if still else "info", home_pid, data=how)
+            elif blk.get("covered_by"):
+                self.log("search", "search box overlapped by a page element (not an overlay)", "info", home_pid, blk)
             # 2) keyboard first: focus + type (what a screen-reader user does; no pointer hit-testing)
             await page.focus(sel, timeout=5000)
             if not await page.evaluate("() => window.__mdlaugProbe.searchFocused()"):
@@ -446,19 +625,88 @@ class SiteCrawler:
                 self.log("search", f"search interaction failed: {e}", "warn", home_pid, t0=t0)
                 self.log("search_outcome", "interaction failed", "warn", home_pid,
                          data={"outcome": "interaction_failed", "error": str(e)[:300], "fallback_error": str(e2)[:200]})
-                return None
+                return await self.search_by_url(page, home_pid, "interaction_failed")
         self.log("search", f"search submitted ({method})", page_id=home_pid, t0=t0,
                  data={"query": self.cfg.search_query, "method": method})
-        rpid, rsum = await self.visit(page, page.url, hint="results", navigate=False)
+        rpid, rsum = await self.visit(page, page.url, hint="results", navigate=False, wait_results=True)
         if rpid is None:
+            if self._last_status == "bot_challenge":   # the search endpoint is behind a bot check: say so, don't retry
+                self.log("search_outcome", "search results behind a bot-protection challenge", "warn", home_pid,
+                         data={"outcome": "bot_challenge", "method": method})
+                return None
             self.log("search_outcome", "results page failed to load", "warn", home_pid, data={"outcome": "results_failed", "method": method})
-            return None
+            return await self.search_by_url(page, home_pid, "results_failed")
+        await self.handle_overlays(page, rpid)
         await self.results_probes(page, rpid)
         got = await self.probe(page, "resultsInfo")
-        self.log("search_outcome", "results found" if (got.get("items") or got.get("count_text")) else "submitted, no results detected",
-                 page_id=rpid, data={"outcome": "ok" if (got.get("items") or got.get("count_text")) else "no_results",
-                                     "method": method, "items": got.get("items"), "count": got.get("count_text")})
+        found = bool(got.get("items") or got.get("count_text"))
+        self.log("search_outcome", "results found" if found else "submitted, no results detected",
+                 page_id=rpid, data={"outcome": "ok" if found else "no_results", "method": method,
+                                     "items": got.get("items"), "count": got.get("count_text"),
+                                     "waited_ms": (self._results_state or {}).get("waited_ms")})
+        if not found and page.url.rstrip("/") == (self._home_url or "").rstrip("/"):
+            fb = await self.search_by_url(page, home_pid, "no_results")    # submitting changed nothing
+            return fb or rpid
         return rpid
+
+    def search_urls(self):
+        """The platform's own search URL for the test query (by fingerprint, else the listed platform)."""
+        fp = (self._fp or {}).get("platform") or ""
+        plat = fp if fp in SEARCH_URLS else (self._site_platform if self._site_platform in SEARCH_URLS else "")
+        p = urlparse(self._home_url or "")
+        if not plat or not p.netloc:
+            return plat, []
+        origin = f"{p.scheme}://{p.netloc}"
+        q = requests.utils.quote(self.cfg.search_query)
+        m = re.search(r"(/s/[^/?#]+)", p.path)
+        out = []
+        for t in SEARCH_URLS[plat]:
+            if "{omeka_s}" in t and not m:
+                continue
+            out.append(origin + t.format(q=q, omeka_s=m.group(1) if m else ""))
+        return plat, out
+
+    async def search_by_url(self, page, home_pid, ui_outcome):
+        """When the search box can't be used, open the platform's search URL directly so the results
+        page can still be assessed. The search-box failure stays recorded; this is method 'url'."""
+        plat, urls = self.search_urls()
+        for url in urls[:2]:
+            rpid, _ = await self.visit(page, url, hint="results", start_url=self._home_url, wait_results=True)
+            if rpid is None:
+                if self._last_status == "bot_challenge":
+                    self.log("search_outcome", "search results behind a bot-protection challenge", "warn", home_pid,
+                             data={"outcome": "bot_challenge", "method": "url", "ui_outcome": ui_outcome, "url": url})
+                    return None
+                continue
+            await self.ensure_injected(page, rpid)
+            await self.handle_overlays(page, rpid)
+            await self.results_probes(page, rpid)
+            got = await self.probe(page, "resultsInfo")
+            if got.get("items") or got.get("count_text"):
+                self.log("search_outcome", f"results via {plat} search URL (search box: {ui_outcome})", page_id=rpid,
+                         data={"outcome": "ok", "method": "url", "ui_outcome": ui_outcome, "url": url, "platform": plat,
+                               "items": got.get("items"), "count": got.get("count_text")})
+                return rpid
+        return None
+
+    async def wait_for_results(self, page, timeout_s=15):
+        """Results pages are often rendered by script after load (CONTENTdm shows 'Loading…'):
+        wait until there is a result list, a count, or a no-results message."""
+        t0 = time.time()
+        st = {}
+        while time.time() - t0 < timeout_s:
+            await self.ensure_injected(page)
+            st = await self.probe(page, "resultsState")
+            if not isinstance(st, dict) or st.get("_error"):
+                st = {}
+            elif (await self.probe(page, "challenge")).get("blocked"):
+                break
+            elif not st.get("loading") and (st.get("cards", 0) >= 3 or st.get("lists") or st.get("count_text") or st.get("no_results")):
+                break
+            await asyncio.sleep(1.0)
+        st["waited_ms"] = int((time.time() - t0) * 1000)
+        self._results_state = st
+        return st
 
     async def tab_count(self, page, max_tabs=60):
         try:
@@ -541,6 +789,8 @@ class SiteCrawler:
     async def crawl(self, site):
         self.site_id = self.store.upsert_site(site)
         self._first_result = None
+        self._overlays_seen = set()
+        self._site_platform = site.get("platform") or ""
         url = site["collection_url"]
         t0 = time.time()
         if not await self.robots_ok(url):
@@ -561,7 +811,24 @@ class SiteCrawler:
             if hpid is None:
                 return
             pages += 1
-            await self.dialogs(page, hpid)
+            self._home_url = page.url
+            first_view = (self.store.query("SELECT screenshot FROM pages WHERE id=?", (hpid,)) or [{}])[0].get("screenshot")
+            fp = await self.probe(page, "fingerprint")
+            if isinstance(fp, dict) and "_error" not in fp:
+                self._fp = fp
+                self.store.update_page(hpid, fingerprint=json.dumps(fp))
+                agree = fp.get("platform") == site.get("platform")
+                self.log("fingerprint", f"looks like {fp.get('platform') or 'unknown'} ({fp.get('confidence')}); listed as "
+                                        f"{site.get('platform')}", "info" if agree or not fp.get("platform") else "warn", hpid, fp)
+            # overlays first: measured as users meet them, then out of the way of everything else
+            await self.handle_overlays(page, hpid, home=True)
+            vq = await self.vision_qa(page, hpid, first_view)
+            if vq:
+                cur = json.loads((self.store.query("SELECT overlays FROM pages WHERE id=?", (hpid,)) or [{}])[0].get("overlays") or "{}")
+                self.store.update_page(hpid, overlays=json.dumps(dict(cur, vision=vq), default=str))
+            hs2 = await self.probe(page, "summary")       # outline without the overlay's own headings
+            if isinstance(hs2, dict) and "_error" not in hs2:
+                hsum = hs2
             await self.names_and_targets(page, hpid)
             if self._llm_on():
                 j = self.llm.ask("judge_structure", {"title": hsum.get("title"), "headings": hsum.get("headings"),
@@ -592,6 +859,7 @@ class SiteCrawler:
                 ipid, _ = await self.visit(page, self._first_result, hint="item", start_url=url)
                 if ipid:
                     pages += 1
+                    await self.handle_overlays(page, ipid)
                     await self.images_llm(page, ipid)
                     await self.names_and_targets(page, ipid)
                     await self.engine_and_axe(page, ipid)
@@ -604,6 +872,7 @@ class SiteCrawler:
                 hppid, hpsum = await self.visit(page, hl["href"], hint="help", start_url=url)
                 if hppid:
                     pages += 1
+                    await self.handle_overlays(page, hppid)
                     if self._llm_on():
                         j = self.llm.ask("judge_help", {"title": hpsum.get("title"), "headings": hpsum.get("headings"),
                                                         "text": hpsum.get("text_excerpt")},
@@ -624,6 +893,7 @@ class SiteCrawler:
                 bpid, _ = await self.visit(page, browse_links[0]["href"], hint="browse", start_url=url)
                 if bpid:
                     pages += 1
+                    await self.handle_overlays(page, bpid)
                     await self.engine_and_axe(page, bpid)
                     await self.capture_annotated(page, bpid)
             self.log("site", f"done: {pages} page(s)", data={"pages": pages}, t0=t0)

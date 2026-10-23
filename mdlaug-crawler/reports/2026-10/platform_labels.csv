@@ -1,0 +1,170 @@
+site_id,platform,platform_listed,platform_check,fingerprint,listed_platform,library_type,institution,collection_url
+1,DSpace,DSpace,confirmed,DSpace,DSpace,Large-scale library / consortium,State Library of Massachusetts (Digital Collections),https://archives.lib.state.ma.us/home
+2,DSpace,DSpace,confirmed,DSpace,DSpace,Large-scale library / consortium,South Carolina State Library (Digital Collections),http://dc.statelibrary.sc.gov/
+3,DSpace,DSpace,confirmed,DSpace,DSpace,Large-scale library / consortium,New Jersey State Library (Digital Collections),https://dspace.njstatelib.org/xmlui/
+4,DSpace,DSpace,confirmed,DSpace,DSpace,Large-scale library / consortium,Detroit Area Library Network (DALNET),https://www.dalnetarchive.org/xmlui/
+5,,DSpace,unverified,,DSpace,Large-scale library / consortium,West Texas Digital Archives,http://wtda.alc.org/
+6,DSpace,DSpace,confirmed,DSpace,DSpace,Large-scale library / consortium,Texas Digital Library (DSpace Repository Services),https://tdl-ir.tdl.org/
+7,,DSpace,unverified,,DSpace,Academic library,Duke University (DukeSpace),https://dukespace.lib.duke.edu/
+8,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,Boston University (OpenBU),https://open.bu.edu/
+9,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,Johns Hopkins University (JScholarship),https://jscholarship.library.jhu.edu/
+10,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,University of Massachusetts Amherst (ScholarWorks@UMassAmherst),https://scholarworks.umass.edu/
+11,,DSpace,not fingerprinted,,DSpace,Academic library,Princeton University (Open Access Repository),https://oar.princeton.edu/
+12,,DSpace,not fingerprinted,,DSpace,Academic library,University of Arizona (UA Campus Repository),https://UA Campus Repository :: Home/
+13,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,University of Kansas (KU ScholarWorks),https://kuscholarworks.ku.edu/
+14,,DSpace,unverified,,DSpace,Academic library,University of Illinois Urbana-Champaign (IDEALS),https://www.ideals.illinois.edu/
+15,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,Massachusetts Institute of Technology (MIT Repository),https://dspace.mit.edu/
+16,,DSpace,not fingerprinted,,DSpace,Academic library,University of Texas at San Antonio (UTSA Libraries Digital Repository),https://utsa-ir.tdl.org/
+17,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,"University of Maryland, College Park",https://drum.lib.umd.edu/
+18,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,University of Delaware,https://udspace.udel.edu/
+19,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,"University of Tennessee, Knoxville",https://trace.tennessee.edu/home
+20,DSpace,DSpace,confirmed,DSpace,DSpace,Academic library,Indiana University Indianapolis,https://scholarworks.indianapolis.iu.edu/
+21,DSpace,DSpace,confirmed,DSpace,DSpace,Public library,"York County Library, South Carolina (York County History Repository)",https://dspace.ychistory.org/
+22,,DSpace,not fingerprinted,,DSpace,Public library,"Willard Library, Battle Creek, Michigan (Digital Repository)",http://dspace.willard.lib.mi.us/xmlui/
+23,,DSpace,unverified,,DSpace,Public library,Society of Fire Protection Engineers (SFPE),https://www.sfpe.org/
+24,,DSpace,not fingerprinted,,DSpace,Organizational library,Mote Marine Laboratory & Aquarium (Digital Repository),https://dspace.mote.org/dspace/
+25,DSpace,DSpace,confirmed,DSpace,DSpace,Organizational library,Lunar and Planetary Institute / USRA (Repository),https://repository.hou.usra.edu/
+26,,DSpace,not fingerprinted,,DSpace,Organizational library,NASA Jet Propulsion Laboratory (Technical Reports Repository),http://trs-new.jpl.nasa.gov/dspace/
+27,,DSpace,unverified,,DSpace,Organizational library,National Evolutionary Synthesis Center (Dryad project),https://datadryad.org/
+28,,DSpace,unverified (WordPress),WordPress,DSpace,Organizational library,Cottonwood Research Foundation (Digital Library),https://www.crfdl.org/
+29,DSpace,DSpace,confirmed,DSpace,DSpace,Organizational library,American Museum of Natural History (Research Library Digital Repository),https://digitallibrary.amnh.org/
+30,DSpace,DSpace,confirmed,DSpace,DSpace,Museum,Smithsonian National Museum of Natural History (Smithsonian Research Online),https://repository.si.edu/
+31,Omeka,Omeka,confirmed,Omeka,Omeka,Museum,Yale University Library (Online Exhibitions),https://onlineexhibits.library.yale.edu/
+32,Omeka,Omeka,confirmed,Omeka,Omeka,Large-scale library / consortium,University of Michigan Library (Online Exhibits),https://apps.lib.umich.edu/online-exhibits/
+33,Omeka,Omeka,confirmed,Omeka,Omeka,Large-scale library / consortium,University of Illinois Library (Digital Exhibits),https://exhibits.library.illinois.edu/
+34,,Omeka,not fingerprinted,,Omeka,Large-scale library / consortium,Binghamton University Libraries (Digital Collections),https://omeka.binghamton.edu/omeka/
+35,Omeka,Omeka,confirmed,Omeka,Omeka,Large-scale library / consortium,Cleveland Historical (Place-based Digital Collection),https://clevelandhistorical.org/
+36,,Omeka,unverified,,Omeka,Large-scale library / consortium,Papers of the War Department 1784–1800,https://wardepartmentpapers.org/
+37,Omeka,Omeka,confirmed,Omeka,Omeka,Academic library,University of Utah (J. Willard Marriott Library Digital Exhibits),https://exhibits.lib.utah.edu/
+38,,Omeka,not fingerprinted,,Omeka,Academic library,Stony Brook University (Libraries Digital Projects and Exhibits),https://exhibits.library.stonybrook.edu/s/digital-projects/page/welcome
+39,Omeka,Omeka,confirmed,Omeka,Omeka,Academic library,New Haven Free Public Library (Digital Collections),https://nhfpl.omeka.net/
+40,Omeka,Omeka,confirmed,Omeka,Omeka,Public library,South Kingstown Public Library (Digital Collections),https://skpubliclibrary.omeka.net/
+41,Omeka,Omeka,confirmed,Omeka,Omeka,Public library,"Falmouth Public Library, Massachusetts (Digital Collections)",https://falmouthpubliclibrary.omeka.net/
+42,Omeka,Omeka,confirmed,Omeka,Omeka,Public library,"Concord Public Library, New Hampshire (Digital Collections)",https://concordnhlibrary.omeka.net/
+43,,Omeka,not fingerprinted,,Omeka,Public library,Kenosha County Library System (Digital Archive),https://digitalarchive.mykcls.info/
+44,,Omeka,not fingerprinted,,Omeka,Public library,"Kansas City, Kansas Public Library (Kansas Collection / Omeka special collections)",https://kckpl.omeka.net/
+45,Omeka,Omeka,confirmed,Omeka,Omeka,Organizational library,Colored Conventions Project,https://coloredconventions.org/
+46,Omeka,Omeka,confirmed,Omeka,Omeka,Organizational library,Baltimore Uprising Archive,https://baltimoreuprising2015.org/
+47,,Omeka,not fingerprinted,,Omeka,Organizational library,African American AIDS History Project,https://aahhp.org/
+48,Omeka,Omeka,confirmed,Omeka,Omeka,Organizational library,The Filson Historical Society (Digital Collections and Exhibits),https://filsonhistorical.org/collections/digital-collections/
+49,,Omeka,not fingerprinted,,Omeka,Organizational library,"Palmer Museum of Art, Penn State (African Brilliance)",https://africanbrilliance.omeka.net/
+50,Omeka,Omeka,confirmed,Omeka,Omeka,Museum,Seattle Art Museum Libraries (Digital Collections),https://samlibraries.omeka.net/
+51,Omeka,Omeka,confirmed,Omeka,Omeka,Museum,Indiana University Museum of Archaeology and Anthropology (Digital Exhibits),https://dlib.indiana.edu/omeka/mathers/
+52,Omeka,Omeka,confirmed,Omeka,Omeka,Museum,Brooklyn Museum Libraries & Archives / Frick Art Reference Library (Documenting the Gilded Age),https://gildedage.omeka.net/
+53,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Museum,Maine State Library (Digital Maine),https://digitalmaine.com/
+54,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Large-scale library / consortium,Tennessee State Library and Archives (Digital Tennessee),https://digitaltennessee.tnsos.gov/
+55,,Digital commons,not fingerprinted,,Digital commons,Large-scale library / consortium,State Library of North Carolina (Digital Commons),https://digitalcommons.nc.gov/state-library/
+56,,Digital commons,not fingerprinted,,Digital commons,Large-scale library / consortium,State Archives of North Carolina (Digital Commons),https://digitalcommons.nc.gov/state-archives/
+57,Omeka,Omeka,relabeled (listed Digital commons),Omeka,Digital commons,Large-scale library / consortium,"Bangor Public Library, Maine (Bangor Community: Digital Commons@bpl)",https://digicom.bpl.lib.me.us/
+58,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Large-scale library / consortium,University of Nebraska–Lincoln (DigitalCommons@UNL),https://digitalcommons.unl.edu/
+59,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Academic library,University of Connecticut (DigitalCommons@UConn),https://digitalcommons.lib.uconn.edu/
+60,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Academic library,University of South Florida (Digital Commons @ USF),https://digitalcommons.usf.edu/
+61,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Academic library,University of Central Florida (STARS),https://stars.library.ucf.edu/
+62,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Academic library,"University of Nevada, Las Vegas (Digital Scholarship@UNLV)",https://digitalscholarship.unlv.edu/
+63,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Academic library,Virginia Commonwealth University (VCU Scholars Compass),https://scholarscompass.vcu.edu/
+64,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Academic library,University of Kentucky,https://uknowledge.uky.edu/
+65,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Public library,University of Rhode Island,https://digitalcommons.uri.edu/
+66,,Digital commons,unverified,,Digital commons,Public library,"University of California, Berkeley",https://escholarship.org/uc/ucb
+67,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Public library,"Frost Memorial Library, Maine",https://digitalmaine.com/partners.html
+68,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Public library,"Portland Public Library, Maine (Digital Commons)",https://digitalcommons.portlandlibrary.com/
+69,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Public library,Providence Health (Providence Digital Commons),https://digitalcommons.providence.org/
+70,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Organizational library,Advocate Health – Midwest (SHARE Institutional Repository),https://institutionalrepository.aah.org/
+71,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Organizational library,Parkview Health (Research Repository),https://researchrepository.parkviewhealth.org/
+72,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Organizational library,Children's Mercy Kansas City (Scholarly Works),https://scholarlyexchange.childrensmercy.org/
+73,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Organizational library,Baptist Health South Florida (Scholarly Commons),https://scholarlycommons.baptisthealth.net/
+74,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Organizational library,Barrow Neurological Institute (Scholarly Commons),https://scholar.barrowneuro.org/
+75,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Organizational library,Fairfield University Art Museum (Museum Archive in DigitalCommons@Fairfield),https://digitalcommons.fairfield.edu/artmuseum/
+76,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Museum,Augustana Teaching Museum of Art (Augustana Digital Commons),https://digitalcommons.augustana.edu/artmuseum/
+77,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Museum,"Frank Museum of Art, Otterbein University (Digital Commons @ Otterbein)",https://digitalcommons.otterbein.edu/frank/
+78,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Museum,Robert Russa Moton Museum (Digital Commons @ Longwood collection),https://digitalcommons.longwood.edu/moton/
+79,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Museum,American Textile History Museum Collection (USM Digital Commons),https://digitalcommons.usm.maine.edu/oml-athm/
+80,Digital commons,Digital commons,confirmed,Digital commons,Digital commons,Museum,University of Memphis Research Centers & Museums (Digital Commons collections),https://digitalcommons.memphis.edu/
+81,,CONTENTdm,not fingerprinted,,CONTENTdm,Museum,Minnesota Digital Library (Minnesota Reflections),https://collection.mndigital.org/
+82,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Large-scale library / consortium,Illinois State Library (Illinois Digital Archives),https://www.idaillinois.org/
+83,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Large-scale library / consortium,Ohio History Connection & State Library (Ohio Memory),https://ohiomemory.ohiohistory.org/collections
+84,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Large-scale library / consortium,Washington State Library (Washington Rural Heritage),https://www.washingtonruralheritage.org/
+85,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Large-scale library / consortium,PALNI (Private Academic Library Network of Indiana),https://palni.contentdm.oclc.org/digital/search
+86,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Large-scale library / consortium,CARLI | Consortium of Academic and Research Libraries in Illinois,https://collections.carli.illinois.edu/
+87,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Large-scale library / consortium,University of Wisconsin-Milwaukee (UWM Digital Collections),https://uwm.edu/lib-collections/
+88,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Academic library,University of Washington (UW Libraries Digital Collections),https://content.lib.washington.edu/
+89,,CONTENTdm,unverified,,CONTENTdm,Academic library,University of Southern California (USC Digital Library),https://digitallibrary.usc.edu/CS.aspx?VP3=CMS3&VF=CollectionPage
+90,,CONTENTdm,unverified (Samvera),Samvera,CONTENTdm,Academic library,Duke University Libraries,https://repository.duke.edu/dc
+91,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Academic library,Univerity of Miami Libraries,https://digitalcollections.library.miami.edu/
+92,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Academic library,Temple University Libraries,https://digital.library.temple.edu/
+93,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Academic library,Milwaukee Public Library (MPL Digital Collections),https://content.mpl.org/
+94,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Public library,Seattle Public Library (Seattle Public Digital Collections),https://cdm16118.contentdm.oclc.org/
+95,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Public library,Cleveland Public Library (Cleveland Public Digital Gallery),https://cplorg.contentdm.oclc.org/
+96,,CONTENTdm,unverified,,CONTENTdm,Public library,Denver Public Library (Denver Public Digital Collections),https://digital.denverlibrary.org/
+97,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Public library,St. Louis Public Library (St. Louis Public Digital Collections),https://cdm17210.contentdm.oclc.org/
+98,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Public library,Norfork Public library,https://cdm15987.contentdm.oclc.org/digital/
+99,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Public library,Indiana State Library and Historical Bureau,https://digitalcollections.library.in.gov/
+100,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Organizational library,Idaho State Historical Society (Idaho History Digital Collections),https://idahohistory.contentdm.oclc.org/
+101,,CONTENTdm,unverified (Samvera),Samvera,CONTENTdm,Organizational library,National Library of Medicine (NLM Digital Collections),https://collections.nlm.nih.gov/
+102,,CONTENTdm,other software: Preservica,Preservica,CONTENTdm,Organizational library,Wisconsin Historical Society (WHS Digital Collections),https://www.wisconsinhistory.org/research/explore-our-collections/digital-collections/
+103,,CONTENTdm,unverified,,CONTENTdm,Organizational library,The Newberry Library,https://collections.newberry.org/
+104,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Organizational library,The Metropolitan Museum of Art (Thomas J. Watson Library),https://libmma.contentdm.oclc.org/
+105,,CONTENTdm,unverified (Drupal),Drupal,CONTENTdm,Museum,The National WWII Museum (Digital Collections),https://www.ww2online.org/
+106,CONTENTdm,CONTENTdm,confirmed,CONTENTdm,CONTENTdm,Museum,"The Huntington Library, Art Museum & Botanical Gardens",https://hdl.huntington.org/
+107,,CONTENTdm,not fingerprinted,,CONTENTdm,Museum,Amon Carter Museum of American Art (Digital Collections),https://cartermuseum.contentdm.oclc.org/
+108,,CONTENTdm,not fingerprinted,,CONTENTdm,Museum,Dallas Museum of Art (DMA Digital Archives),https://dma.contentdm.oclc.org/
+109,,CONTENTdm,unverified,,CONTENTdm,Museum,The Historic New Orlean collection,https://catalog.hnoc.org/#/
+110,Islandora,Islandora,confirmed,Islandora,Islandora,Museum,Florida Virtual Campus (PALMM / FL-Islandora),https://palmm.isle.flvc.org/
+111,,Islandora,not fingerprinted,,Islandora,Large-scale library / consortium,Connecticut Digital Archives (CTDA),https://ctdigitalarchive.org/node/86164
+112,,Islandora,not fingerprinted,,Islandora,Large-scale library / consortium,TriCollege Consortium Libraries,https://digitalcollections.tricolib.brynmawr.edu/
+113,,Islandora,unverified (Samvera),Samvera,Islandora,Large-scale library / consortium,Digital Commonwealth Consortium (Digital Commonwealth),https://www.digitalcommonwealth.org/collections
+114,,Islandora,not fingerprinted,,Islandora,Large-scale library / consortium,Heinz History Center & Univ. of Pittsburgh (Historic Pittsburgh),https://historicpittsburgh.org/browse-collections
+115,CONTENTdm,CONTENTdm,relabeled (listed Islandora),CONTENTdm,Islandora,Large-scale library / consortium,Keystone library network,https://digital.klnpa.org/
+116,,Islandora,other software: Primo,Primo,Islandora,Large-scale library / consortium,University of Neveda Digital Archives,https://library.unr.edu/collections/unique-collections/digital-collections/digital-archive
+117,Digital commons,Digital commons,relabeled (listed Islandora),Digital commons,Islandora,Large-scale library / consortium,Virginia Commonwealth University Library,https://scholarscompass.vcu.edu/digital_collections/
+118,,Islandora,not fingerprinted,,Islandora,Academic library,University of Pittsburgh (Pitt Digital Collections),https://digital.library.pitt.edu/
+119,Islandora,Islandora,confirmed,Islandora,Islandora,Academic library,Florida State University (DigiNole Digital Repository),https://repository.lib.fsu.edu/
+120,,Islandora,other software: Preservica,Preservica,Islandora,Academic library,University of Rochester (RBSCP Digital Collections),https://uorrcl.access.preservica.com/
+121,,Islandora,unverified (Drupal),Drupal,Islandora,Academic library,Arizona State University (KEEP Digital Repository),https://keep.lib.asu.edu/
+122,,Islandora,not fingerprinted,,Islandora,Academic library,Tulane University (Tulane University Digital Library),https://digitallibrary.tulane.edu/
+123,,Islandora,not fingerprinted,,Islandora,Academic library,Lehigh University Libraries,https://preserve.lehigh.edu/collections
+124,,Islandora,other software: Quartex,Quartex,Islandora,Academic library,American University,https://digitalcollections.american.edu/
+125,,Islandora,not fingerprinted,,Islandora,Academic library,"University of Maryland, Baltimore County",https://digitalcollections.umbc.edu/
+126,,Islandora,not fingerprinted,,Islandora,Academic library,Drexel University,https://archives.library.drexel.edu/
+127,,Islandora,unverified,,Islandora,Academic library,Villanova University,https://digital.library.villanova.edu/
+128,CONTENTdm,CONTENTdm,relabeled (listed Islandora),CONTENTdm,Islandora,Academic library,Georgia State University,https://digitalcollections.library.gsu.edu/
+129,,Islandora,unverified,,Islandora,Academic library,University of Oklahoma Libraries,https://digitalcollections.libraries.ou.edu/
+130,,Islandora,other software: Primo,Primo,Islandora,Public library,Smithsonian Institution (Smithsonian Libraries & Archives),https://library.si.edu/collections
+131,,Islandora,not fingerprinted,,Islandora,Organizational library,American Philosophical Society (APS Digital Library),https://digital.amphilsoc.org/
+132,,Islandora,unverified (Samvera),Samvera,Islandora,Organizational library,Science History Institute (Science History Digital Collections),https://digital.sciencehistory.org/
+133,,Islandora,not fingerprinted,,Islandora,Organizational library,Mystic Seaport Museum & Archives (Mystic Seaport Collections),https://ctdigitalarchive.org/islandora/object/30002%3AMysticSeaport
+134,,Islandora,unverified,,Islandora,Organizational library,Massachusetts Historical Society (MHS Digital Collections),https://www.masshist.org/collection-guides/
+135,,Islandora,not fingerprinted,,Islandora,Organizational library,State library of Oregon,https://digitalcollections.library.oregon.gov/
+136,,Islandora,unverified (CONTENTdm),CONTENTdm,Islandora,Organizational library,Art Institute of Chicago (Archival & Digital Collections),https://www.artic.edu/archival-collections
+137,,Islandora,unverified (Drupal),Drupal,Islandora,Museum,Smithsonian National Museum of American History,https://americanhistory.si.edu/collections
+138,,Islandora,not fingerprinted,,Islandora,Museum,The Wolfsonian–FIU Museum (Wolfsonian Digital Collections),https://palmm.isle.flvc.org/islandora/object/fiu%3Awolfsonian
+139,,Islandora,unverified (Drupal),Drupal,Islandora,Museum,Yale Center for British Art (YCBA Collections),https://collections.britishart.yale.edu/
+140,,Islandora,not fingerprinted,,Islandora,Museum,"Museum of Fine Arts, Boston (MFA Boston Archives)",https://collections.mfa.org/
+141,,Islandora,unverified (Drupal),Drupal,Islandora,Museum,National Gallery of Art (NGA Digital Images),https://www.nga.gov/artworks
+142,Samvera,Samvera,confirmed,Samvera,Samvera,Museum,Indiana University Media Collections Online,https://media.dlib.indiana.edu/collections
+143,,Samvera,not fingerprinted,,Samvera,Large-scale library / consortium,California Historical Society Collection at Stanford,https://archives.stanford.edu/catalog
+144,Samvera,Samvera,confirmed,Samvera,Samvera,Large-scale library / consortium,Atlas Digital library,https://dl.atla.com/
+145,,Samvera,other software: Primo,Primo,Samvera,Large-scale library / consortium,National Agricultural Library - USDA (PubAg Digital Repository),https://search.nal.usda.gov/discovery/collectionDiscovery?vid=01NAL_INST:MAIN&lang=en
+146,Samvera,Samvera,confirmed,Samvera,Samvera,Large-scale library / consortium,Digital Commonwealth Collections,https://www.digitalcommonwealth.org/
+147,Samvera,Samvera,confirmed,Samvera,Samvera,Large-scale library / consortium,University of Michigan (Deep Blue Data),https://deepblue.lib.umich.edu/data
+148,Samvera,Samvera,confirmed,Samvera,Samvera,Academic library,University of Cincinnati (Scholar@UC),https://scholar.uc.edu/
+149,,Samvera,unverified,,Samvera,Academic library,Northwestern University (Northwestern Digital Collections),https://dc.library.northwestern.edu/
+150,Samvera,Samvera,confirmed,Samvera,Samvera,Academic library,Oregon State University (ScholarsArchive@OSU),https://ir.library.oregonstate.edu/
+151,,Samvera,not fingerprinted,,Samvera,Academic library,University of Houston (UH Digital Collections),https://digitalcollections.lib.uh.edu/
+152,,Samvera,unverified (WordPress),WordPress,Samvera,Academic library,University of Virginia,https://library.virginia.edu/libra
+153,,Samvera,not fingerprinted,,Samvera,Academic library,Geroge Washington University Libraries,https://scholarspace.library.gwu.edu/
+154,Samvera,Samvera,confirmed,Samvera,Samvera,Academic library,Duke University Digital repository,https://repository.duke.edu/
+155,,Samvera,not fingerprinted,,Samvera,Academic library,Princeton University Library,https://figgy.princeton.edu/catalog?q=World+war
+156,,Samvera,not fingerprinted,,Samvera,Academic library,Carolina Digital Repository,https://cdr.lib.unc.edu/catalog?f%5Bhuman_readable_type_sim%5D%5B%5D=Collection&locale=en
+157,Samvera,Samvera,confirmed,Samvera,Samvera,Academic library,UCLA Library digital collections,https://digital.library.ucla.edu/
+158,,Samvera,unverified,,Samvera,Academic library,University of Utah,https://hive.utah.edu/
+159,Samvera,Samvera,confirmed,Samvera,Samvera,Public library,GBH & Library of Congress (American Archive of Public Broadcasting),https://americanarchive.org/
+160,,Samvera,unverified (WordPress),WordPress,Samvera,Organizational library,Science History Institute (Science History Collections),https://www.sciencehistory.org/collections/
+161,,Samvera,unverified,,Samvera,Organizational library,Rock and Roll Hall of Fame (Rock Hall Library & Archives),https://catalog.rockhall.com/rrhof-ais/search/simple
+162,Samvera,Samvera,confirmed,Samvera,Samvera,Organizational library,Mo's Community Archive (Amigos Library services),https://ucmo.shared.hyku.amigos.org/
+163,,Samvera,other software: Archive-It,Archive-It,Samvera,Organizational library,Internet Archive & Partner Orgs (Archive-It Collections),https://archive-it.org/explore/
+164,,Samvera,other software: Primo,Primo,Samvera,Organizational library,The Getty Research Institute Research collections,https://www.getty.edu/research/collections/collections
+165,,Samvera,unverified,,Samvera,Organizational library,Whitney Museum of American Art (Whitney Digital Assets),https://collection.whitney.org/
+166,,Samvera,unverified,,Samvera,Museum,Museum of Modern Art - MoMA (MoMA Exhibition Records & Archives),https://www.moma.org/collection/
+167,,Samvera,unverified,,Samvera,Museum,Cleveland Museum of Art (CMA Collection Online),https://www.clevelandart.org/art/collection/search
+168,,Samvera,unverified (WordPress),WordPress,Samvera,Museum,Solomon R. Guggenheim Museum (Guggenheim Collection Online),https://www.guggenheim.org/collection-online
+169,,Samvera,other software: Primo,Primo,Samvera,Museum,The Getty Research Institute Museum,https://www.getty.edu/art/collection/

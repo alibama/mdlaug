@@ -34,7 +34,7 @@
     'input[name="search"]', 'input[name="searchTerm"]', 'input[name="keyword"]', 'input[name="keywords"]',
     'input[name="s"]', 'input[name="terms"]', 'input[name="search_api_fulltext"]', 'input[name="all_fields"]',
     'input[placeholder*="earch" i]', 'input[aria-label*="earch" i]', 'input[id*="search" i]', 'input[class*="search" i]'];
-  var COUNT_RE = /(\d[\d,\.]*)\s*(results?|items?|records?|hits|matches|objects?|documents?)\b|\b(results?|items?)\s*\d[\d,]*\s*(-|–|to)\s*\d[\d,]*\s*of\s*\d[\d,]*/i;
+  var COUNT_RE = /(\d[\d,\.]*)\s*(results?|items?|records?|hits|matches|objects?|documents?)\b|\b(results?|items?)\s*\d[\d,]*\s*(-|–|to)\s*\d[\d,]*\s*of\s*\d[\d,]*|\(\s*\d[\d,]*\s*total\s*\)|\b\d[\d,]*\s+total\b/i;
 
   // ---- annotation registry: element + situation + status (good|issue|review) ----
   var ANN = window.__mdlaugAnnList = window.__mdlaugAnnList || [];
@@ -198,38 +198,285 @@
     return true;
   }
 
-  var OVERLAY_SEL = '[role="dialog"], [role="alertdialog"], dialog[open], .modal.show, .modal.in, [aria-modal="true"], ' +
-    '#onetrust-banner-sdk, #onetrust-pc-sdk, .onetrust-pc-dark-filter, #CybotCookiebotDialog, .cc-window, #cookie-law-info-bar, ' +
-    '.modal_overlay, [class*="popup" i][class*="modal" i], .cookie-banner, [class*="cookie" i][class*="banner" i], ' +
-    '[class*="consent" i][class*="banner" i], [id*="cookie" i][id*="banner" i]';
-  // What is on top of the search box? (the thing that would swallow a tap)
+  // ---- overlays: consent managers, modals, promos, interstitials ----
+  // Known consent-management platforms: [name, container, dismiss controls in order of
+  // preference — reject/necessary-only first, then close, then accept as a last resort].
+  var CMP = [
+    ["OneTrust", "#onetrust-banner-sdk, #onetrust-pc-sdk", "#onetrust-reject-all-handler, .ot-pc-refuse-all-handler, .onetrust-close-btn-handler, #onetrust-accept-btn-handler"],
+    ["Cookiebot", "#CybotCookiebotDialog", "#CybotCookiebotDialogBodyButtonDecline, #CybotCookiebotDialogBodyLevelButtonLevelOptinDeclineAll, #CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection"],
+    ["Klaro", ".klaro .cookie-notice, .klaro .cookie-modal, #klaro .cookie-notice, #klaro .cookie-modal", ".cn-decline, .cm-btn-decline, .cm-btn-danger, .cm-btn-accept"],
+    ["CookieYes", ".cky-consent-container, #cookie-law-info-bar", ".cky-btn-reject, #cookie_action_close_header_reject, [data-cli_action='reject'], .cky-banner-btn-close"],
+    ["Osano", ".osano-cm-window .osano-cm-dialog, .osano-cm-dialog", ".osano-cm-denyAll, .osano-cm-button--type_denyAll, .osano-cm-dialog__close"],
+    ["Didomi", "#didomi-popup, #didomi-notice", "#didomi-notice-disagree-button, .didomi-continue-without-agreeing"],
+    ["TrustArc", "#truste-consent-track, .truste_box_overlay, #consent_blackbar", "#truste-consent-required, .truste-consent-required"],
+    ["Usercentrics", "#usercentrics-root, #usercentrics-cmp-ui", "[data-testid='uc-deny-all-button']"],
+    ["Quantcast", ".qc-cmp2-container", ".qc-cmp2-summary-buttons button[mode='secondary']"],
+    ["Complianz", ".cmplz-cookiebanner", ".cmplz-deny, .cmplz-close"],
+    ["Iubenda", "#iubenda-cs-banner", ".iubenda-cs-reject-btn, .iubenda-cs-close-btn"],
+    ["Termly", "[class*='termly-styles-root']", "[data-tid='banner-decline']"],
+    ["CookieConsent", ".cc-window, .cc-banner, #cc-main .cm, #cc--main #cm", ".cc-deny, .cc-dismiss, .cm__btn[data-role='necessary'], #c-s-bn, .cc-btn.cc-allow"],
+    ["EU Cookie Compliance (Drupal)", "#sliding-popup, .eu-cookie-compliance-banner", ".decline-button, .eu-cookie-compliance-default-button, .agree-button"],
+    ["Cookie Notice (WordPress)", "#cookie-notice", "#cn-refuse-cookie, #cn-close-notice, #cn-accept-cookie"],
+    ["Civic Cookie Control", "#ccc-notify, #ccc-module, #ccc-overlay", "#ccc-notify-reject, #ccc-reject-settings, #ccc-close"],
+    ["GDPR Cookie Compliance", "#moove_gdpr_cookie_info_bar", ".moove-gdpr-infobar-reject-btn, .moove-gdpr-infobar-close-btn"],
+    ["Borlabs", "#BorlabsCookieBox", "[data-cookie-refuse], .brlbs-btn-accept-only-essential"]
+  ];
+  var DIALOG_SEL = '[role="dialog"], [role="alertdialog"], dialog[open], [aria-modal="true"], .modal.show, .modal.in, .modal_overlay';
+  var CONSENT_TXT = /cookie|consent|gdpr|ccpa|tracking technolog|personal (data|information)|privacy (policy|preferences|settings)|we use|do not sell/i;
+  var PROMO_TXT = /newsletter|subscribe|sign ?up|survey|feedback|donat|membership|join us|mailing list/i;
+  var APP_TXT = /switch to (the )?(desktop|mobile|full|classic) (view|site|version)|desktop view|(get|download|open in) (the|our) app|open in app/i;
+  var DISMISS = [/reject all|decline all|deny all|refuse all|reject|decline|deny|refuse|necessary only|only necessary|essential only|only essential|necessary cookies only|continue without/i,
+                 /^(×|✕|✖|x)$|^close|close (this|dialog|banner|window|notice|pop)|dismiss|no,? thanks|not now|maybe later|^skip$|hide/i,
+                 /^ok$|okay|got it|i understand|understood|continue|accept all|accept|agree|allow all|allow|that'?s ok/i];
+  var BTN_SEL = "button, a[href], [role=button], input[type=button], input[type=submit]";
+
+  function fixedRoot(el) {   // outermost fixed-position ancestor (what actually floats over the page)
+    var best = null;
+    for (var p = el; p && p !== document.body && p !== document.documentElement; p = p.parentElement) {
+      if (getComputedStyle(p).position === "fixed") best = p;
+    }
+    return best;
+  }
+  function coverage(el) {
+    var r = el.getBoundingClientRect();
+    var w = Math.max(0, Math.min(r.right, innerWidth) - Math.max(r.left, 0));
+    var h = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0));
+    return (w * h) / Math.max(1, innerWidth * innerHeight);
+  }
+  // Web components (e.g. <notice-dialog>) draw their dialog inside a shadow root: the host
+  // element itself may have no size or position, so measure the layer inside it.
+  function layer(el) {
+    var sr = el && el.shadowRoot;
+    if (!sr) return el;
+    var cand = Array.prototype.slice.call(sr.querySelectorAll('dialog[open], [role="dialog"], [role="alertdialog"], [aria-modal="true"], *'))
+      .filter(function (x) { return visible(x) && (x.matches('dialog[open], [role="dialog"], [role="alertdialog"], [aria-modal="true"]') ||
+        getComputedStyle(x).position === "fixed"); });
+    return cand.sort(function (a, b) { return coverage(b) - coverage(a); })[0] || el;
+  }
+  // A closed shadow root can't be read at all and its host reports no size, but hit-testing
+  // still lands on the host wherever its layer is drawn: estimate coverage from a 5×7 grid.
+  function closedHost(el) {
+    if (!el || el.shadowRoot || el.tagName.indexOf("-") < 0) return false;
+    var r = el.getBoundingClientRect(); return r.width * r.height < 4;
+  }
+  function hostHits(el) {
+    var n = 0;
+    for (var gx = 1; gx <= 5; gx++) for (var gy = 1; gy <= 7; gy++) {
+      if (document.elementFromPoint(innerWidth * gx / 6, innerHeight * gy / 8) === el) n++;
+    }
+    return n;
+  }
+  function layerCoverage(el) { return closedHost(el) ? hostHits(el) / 35 : coverage(layer(el)); }
+  function layerVisible(el) { return closedHost(el) ? hostHits(el) >= 2 : visible(layer(el)); }
+  function deepButtons(el) {
+    var out = $$(BTN_SEL, el);
+    if (el.shadowRoot) out = out.concat(Array.prototype.slice.call(el.shadowRoot.querySelectorAll(BTN_SEL)));
+    return out.filter(visible);
+  }
+  function isOurs(el) { return !!(el.closest && el.closest('[class*="mdlaug-"], [id^="mdlaug"], #__mdlaug')); }
+  function cmpFor(el) {
+    for (var i = 0; i < CMP.length; i++) { try { if (el.matches(CMP[i][1]) || el.closest(CMP[i][1]) || el.querySelector(CMP[i][1])) return CMP[i]; } catch (e) {} }
+    return null;
+  }
+  // Every visible overlay, outermost element only. An overlay is a known consent manager,
+  // an element exposed as a dialog, or a fixed-position layer that either covers most of
+  // the screen or carries consent/promo text. Fixed site headers and nav bars are not overlays.
+  function overlays() {
+    var roots = [];
+    function add(el) {
+      if (!el || isOurs(el) || !layerVisible(el)) return;
+      for (var i = 0; i < roots.length; i++) { if (roots[i] === el || roots[i].contains(el)) return; if (el.contains(roots[i])) { roots.splice(i, 1); i--; } }
+      roots.push(el);
+    }
+    CMP.forEach(function (c) { $$(c[1]).filter(visible).forEach(function (el) { add(fixedRoot(el) || el); }); });
+    // dialogs: modal ones, big ones, or consent/promo ones (a small non-modal share bar or chat launcher is page furniture)
+    $$(DIALOG_SEL).filter(visible).forEach(function (el) {
+      var cov = coverage(el), t = txt(el).slice(0, 600);
+      var modal = el.getAttribute("aria-modal") === "true" || (el.tagName === "DIALOG" && el.matches(":modal"));
+      if (cov > 0.01 && (modal || cov >= 0.15 || CONSENT_TXT.test(t) || PROMO_TXT.test(t) || APP_TXT.test(t))) add(fixedRoot(el) || el);
+    });
+    // sample the viewport: what floats on top of the page?
+    for (var gx = 1; gx <= 5; gx++) for (var gy = 1; gy <= 7; gy++) {
+      var top = document.elementFromPoint(innerWidth * gx / 6, innerHeight * gy / 8); if (!top) continue;
+      if (top.shadowRoot && top.tagName.indexOf("-") > 0) {
+        var ly = layer(top);
+        if (ly !== top && coverage(ly) >= 0.04) { add(top); continue; }
+      }
+      if (closedHost(top)) { if (hostHits(top) >= 2) add(top); continue; }
+      var fr = fixedRoot(top); if (!fr || isOurs(fr)) continue;
+      var t = txt(fr).slice(0, 600), cov = coverage(fr);
+      var chrome = fr.matches("header, nav, [role=banner], [role=navigation], footer, [role=contentinfo]") ||
+        (fr.querySelector("nav, [role=navigation]") && cov < 0.4);
+      if (cov >= 0.5 || (!chrome && cov >= 0.03 && (CONSENT_TXT.test(t) || PROMO_TXT.test(t) || APP_TXT.test(t)) && fr.querySelector(BTN_SEL))) add(fr);
+    }
+    return roots;
+  }
+  function overlayInfo(el, i) {
+    el.setAttribute("data-mdlaug-overlay", String(i));
+    var closed = closedHost(el), ly = layer(el), c = cmpFor(el), t = txt(ly).slice(0, 400), cov = layerCoverage(el);
+    var dlg = ly.matches(DIALOG_SEL) ? ly : (ly.querySelector(DIALOG_SEL) || null);
+    var named = dlg ? accName(dlg) || "" : "";
+    if (dlg && !named && dlg.getAttribute("aria-labelledby")) {
+      var root = dlg.getRootNode && dlg.getRootNode().getElementById ? dlg.getRootNode() : document;
+      named = txt(root.getElementById(dlg.getAttribute("aria-labelledby")));
+    }
+    var btns = deepButtons(el);
+    var names = btns.map(function (b) { return (accName(b) || b.value || "").trim(); });
+    var cx = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
+    if (closed) {   // nothing inside is readable: report what hit-testing shows, the rest as unknown
+      ann(el, "INT1", "review", "overlay in a closed shadow root");
+      return { index: i, kind: "dialog", cmp: "", el: describe(el), coverage: Math.round(cov * 100) / 100,
+        blocks_center: document.elementFromPoint(innerWidth / 2, innerHeight / 2) === el, closed_shadow: true,
+        dialog_role: null, dialog_tag: "", aria_modal: null, name: null, focus_inside: document.activeElement === el,
+        buttons: [], unnamed_buttons: null, has_reject: null, has_close: null, text: "" };
+    }
+    var kind = c || CONSENT_TXT.test(t) ? "consent" : PROMO_TXT.test(t) ? "promo" : APP_TXT.test(t) ? "app_banner" : (!t && cov >= 0.5) ? "backdrop" :
+      /verify|human|robot|captcha/i.test(t) ? "challenge" : dlg ? "dialog" : "interstitial";
+    var info = {
+      index: i, kind: kind, cmp: c ? c[0] : "", el: describe(el), coverage: Math.round(cov * 100) / 100,
+      blocks_center: !!(cx && (el.contains(cx) || cx === el)), dialog_role: !!dlg, shadow: ly !== el, dialog_tag: dlg ? (dlg.getAttribute("role") || dlg.tagName.toLowerCase()) : "",
+      aria_modal: !!(dlg && dlg.getAttribute("aria-modal") === "true") || !!(dlg && dlg.tagName === "DIALOG" && dlg.matches(":modal")),
+      name: (named || "").slice(0, 120), focus_inside: el.contains(document.activeElement) || (!!el.shadowRoot && !!el.shadowRoot.activeElement),
+      buttons: names.slice(0, 8), unnamed_buttons: names.filter(function (n) { return !n; }).length,
+      has_reject: names.some(function (n) { return DISMISS[0].test(n); }), has_close: names.some(function (n) { return DISMISS[1].test(n); }),
+      text: t.slice(0, 200)
+    };
+    ann(el, "INT1", "issue", (c ? c[0] + " " : "") + kind + " overlay on load");
+    return info;
+  }
+  function detectOverlays() {
+    $$("[data-mdlaug-overlay]").forEach(function (e) { e.removeAttribute("data-mdlaug-overlay"); });
+    return overlays().map(overlayInfo);
+  }
+  function overlayVisible(i) {
+    var el = document.querySelector('[data-mdlaug-overlay="' + i + '"]');
+    if (!el || !el.isConnected) return false;
+    if (closedHost(el)) return getComputedStyle(el).display !== "none" && hostHits(el) >= 2;
+    if (!visible(el) && !el.shadowRoot) return false;
+    var ly = layer(el);
+    return visible(ly) && coverage(ly) > 0;
+  }
+  function overlayFocusable(i) {   // is keyboard focus currently inside overlay i?
+    var el = document.querySelector('[data-mdlaug-overlay="' + i + '"]');
+    return !!(el && (el.contains(document.activeElement) || document.activeElement === el || (el.shadowRoot && el.shadowRoot.activeElement)));
+  }
+  // Dismiss overlay i using controls INSIDE it (never a page-wide search): the consent
+  // manager's own reject control, then any reject/close/accept button by name.
+  function dismissOverlay(i) {
+    var el = document.querySelector('[data-mdlaug-overlay="' + i + '"]'); if (!el) return { dismissed: false, via: "gone" };
+    var c = cmpFor(el), deferred = [];
+    function click(b, via, extra) { var lb = (accName(b) || b.value || "").trim(); b.click(); return Object.assign({ dismissed: true, via: via, label: lb.slice(0, 60) }, extra || {}); }
+    if (c) {
+      var scope = el.matches(c[1]) || el.querySelector(c[1]) ? el : document;   // CMP buttons can sit in a sibling preference pane
+      var sels = c[2].split(/\s*,\s*/);
+      for (var k = 0; k < sels.length; k++) {
+        if (/accept|agree|allow/i.test(sels[k])) { deferred.push(sels[k]); continue; }   // accepting is the last resort
+        var b = $$(sels[k], scope).filter(visible)[0] || (scope === el ? $$(sels[k]).filter(function (x) { return visible(x) && x.closest(c[1]); })[0] : null);
+        if (b) return click(b, "cmp-control", { cmp: c[0], priority: 0 });
+      }
+    }
+    var btns = deepButtons(el);
+    for (var p = 0; p < 2; p++) {    // reject, then close
+      var hit = btns.filter(function (x) { return DISMISS[p].test((accName(x) || x.value || "").trim()); })[0];
+      if (hit) return click(hit, "button", { priority: p });
+    }
+    var closeSel = '[class*="close" i], [aria-label*="close" i], [title*="close" i]';
+    var x = $$(closeSel, el).concat(el.shadowRoot ? Array.prototype.slice.call(el.shadowRoot.querySelectorAll(closeSel)) : []).filter(visible)[0];
+    if (x) return click(x, "close-icon", { priority: 1 });
+    try {   // consent-manager APIs, privacy-preferring, before anything that accepts
+      if (window.OneTrust && OneTrust.RejectAll) { OneTrust.RejectAll(); return { dismissed: true, via: "cmp-api", cmp: "OneTrust", label: "OneTrust.RejectAll()", priority: 0 }; }
+      if (window.Cookiebot && Cookiebot.decline) { Cookiebot.decline(); return { dismissed: true, via: "cmp-api", cmp: "Cookiebot", label: "Cookiebot.decline()", priority: 0 }; }
+      if (window.Didomi && Didomi.setUserDisagreeToAll) { Didomi.setUserDisagreeToAll(); return { dismissed: true, via: "cmp-api", cmp: "Didomi", label: "Didomi.setUserDisagreeToAll()", priority: 0 }; }
+    } catch (e) {}
+    for (var d = 0; d < deferred.length; d++) {
+      var a = $$(deferred[d]).filter(visible)[0];
+      if (a) return click(a, "cmp-control", { cmp: c[0], priority: 2 });
+    }
+    var acc = btns.filter(function (x) { return DISMISS[2].test((accName(x) || x.value || "").trim()); })[0];
+    if (acc) return click(acc, "button", { priority: 2 });
+    return { dismissed: false, via: "none" };
+  }
+  // Last resort so measurements see the page: hide the overlay and any full-screen
+  // backdrop, and release the scroll lock / inert attribute overlays leave behind.
+  function hideOverlay(i) {
+    var el = document.querySelector('[data-mdlaug-overlay="' + i + '"]');
+    if (el) el.style.setProperty("display", "none", "important");
+    $$(".onetrust-pc-dark-filter, .modal-backdrop, [class*='backdrop' i], [class*='overlay' i]").filter(function (b) {
+      return visible(b) && !txt(b) && getComputedStyle(b).position === "fixed" && coverage(b) > 0.5;
+    }).forEach(function (b) { b.style.setProperty("display", "none", "important"); });
+    [document.documentElement, document.body].forEach(function (n) {
+      if (getComputedStyle(n).overflow === "hidden" || getComputedStyle(n).overflowY === "hidden") n.style.setProperty("overflow", "auto", "important");
+    });
+    $$("[inert]").forEach(function (n) { n.removeAttribute("inert"); });
+    return { hidden: !!el };
+  }
+  // What is on top of the search box? Only an overlay counts as a blocker; an ordinary
+  // page element overlapping the box (sticky header, dropdown) is reported, not dismissed.
   function blocker() {
     var s = document.querySelector('[data-mdlaug-probe="search"]'); if (!s) return { found: false };
     var r = s.getBoundingClientRect();
     var x = Math.min(Math.max(r.left + r.width / 2, 1), innerWidth - 1), y = Math.min(Math.max(r.top + r.height / 2, 1), innerHeight - 1);
     var top = document.elementFromPoint(x, y);
-    if (!top || top === s || s.contains(top) || top.contains(s) && top.tagName === "LABEL") return { found: false };
-    var root = top.closest(OVERLAY_SEL) || top;
-    var p = root; while (p && p.parentElement && p.parentElement !== document.body) {
-      var cs = getComputedStyle(p.parentElement); if (cs.position === "fixed" || p.parentElement.matches(OVERLAY_SEL)) p = p.parentElement; else break; }
-    root = p || root;
-    root.setAttribute("data-mdlaug-probe", "blocker");
-    return { found: true, el: describe(root), covering: describe(top) };
+    if (!top || top === s || s.contains(top) || top.contains(s)) return { found: false };
+    var ov = overlays().filter(function (o) { return o.contains(top); })[0];
+    if (!ov) return { found: false, covered_by: describe(top) };
+    var n = $$("[data-mdlaug-overlay]").length;
+    ov.setAttribute("data-mdlaug-probe", "blocker");
+    var info = overlayInfo(ov, ov.getAttribute("data-mdlaug-overlay") || ("late" + n));
+    return { found: true, el: describe(ov), covering: describe(top), overlay: info };
   }
-  var DISMISS = [/reject all|decline all|deny all|necessary only|only necessary|essential only|reject|decline/i,
-                 /^(×|✕|x)$|close|dismiss|no,? thanks|not now|maybe later|skip/i,
-                 /continue|^ok$|okay|got it|i understand|accept all|accept|agree|allow all|allow/i];
   function dismissBlocker() {
-    var root = document.querySelector('[data-mdlaug-probe="blocker"]') ||
-      $$(OVERLAY_SEL).filter(visible)[0]; if (!root) return { dismissed: false };
-    var scope = root.querySelectorAll("button, a, [role=button], input[type=button], input[type=submit]").length ? root : document;
-    var btns = $$("button, a, [role=button], input[type=button], input[type=submit]", scope).filter(visible);
-    for (var i = 0; i < DISMISS.length; i++) {
-      var b = btns.filter(function (x) { return DISMISS[i].test((accName(x) || x.value || "").trim()); })[0];
-      if (b) { var label = (accName(b) || b.value || "").trim(); b.click(); return { dismissed: true, via: "button", label: label.slice(0, 60), priority: i }; }
-    }
-    root.style.setProperty("display", "none", "important");      // last resort so the crawl can continue
-    return { dismissed: true, via: "hidden", label: "" };
+    var el = document.querySelector('[data-mdlaug-probe="blocker"]'); if (!el) return { dismissed: false };
+    var i = el.getAttribute("data-mdlaug-overlay");
+    var res = dismissOverlay(i);
+    if (!res.dismissed) { hideOverlay(i); res = { dismissed: true, via: "hidden", label: "" }; }
+    return res;
+  }
+
+  // ---- bot protection: a challenge page instead of the site (never solved, only recorded) ----
+  function challenge() {
+    var body = txt(document.body), t = (document.title || "") + " " + body.slice(0, 1500);
+    var sig = [];
+    if (/just a moment|attention required|performing security verification|verify(ing)? (that )?you are (a )?human|checking (your|if the site connection is secure)|human verification|are you a robot|pardon our interruption|request unsuccessful|incapsula|ddos protection by|bot (detection|protection)|(not|aren'?t) a (ro)?bot|failed the browser check|\bsecurity check\b|making sure you'?re not a bot/i.test(t)) sig.push("text");
+    if (document.querySelector('iframe[src*="challenges.cloudflare.com"], iframe[src*="hcaptcha.com"], iframe[src*="recaptcha"], #challenge-form, #cf-challenge-running, .cf-turnstile, #px-captcha, #challenge-stage')) sig.push("widget");
+    if (/turnstile_challenge|__cf_chl|\/captcha|cdn-cgi\/challenge/i.test(location.href)) sig.push("url");
+    var short = body.length < 1500;
+    var blocked = sig.indexOf("url") >= 0 || (sig.indexOf("text") >= 0 && body.length < 3000) || (sig.indexOf("widget") >= 0 && short);
+    return { blocked: blocked, signals: sig, title: (document.title || "").slice(0, 120), body_chars: body.length };
+  }
+
+  // ---- platform fingerprint: which repository software is this, by its own markers ----
+  var FP = [
+    ["CONTENTdm", [/powered by contentdm/i, /\/digital\/(collection|search|api)\//, /\/customizations\/global\//, /contentdm\.oclc\.org/, /wp-content\/plugins\/contentdm/]],
+    ["DSpace", [/dspace/i, /<ds-app|ds-app#?/, /\/handle\/\d+\/\d+/, /\/(xmlui|jspui)\b/, /dspace-angular-state/]],
+    ["Digital commons", [/bepress/i, /ir-style\.css/, /\/do\/search/, /digital commons network/i, /network\.bepress\.com/]],
+    ["Islandora", [/islandora/i, /\/islandora\/(object|search)/, /search_api_fulltext/]],
+    ["Omeka", [/omeka/i, /\/application\/views\/scripts\//, /\/application\/asset\//, /\/items\/(show|browse)/, /\/s\/[a-z0-9-]+\/(item|page)/]],
+    ["Samvera", [/hyrax|hyku|samvera/i, /blacklight/i, /\/concern\//, /spotlight/i, /arclight/i, /\/catalog\?/]],
+    ["Preservica", [/preservica/i]], ["Primo", [/primo|\/discovery\/(search|collectionDiscovery)/i]],
+    ["CollectiveAccess", [/collectiveaccess|pawtucket/i]], ["ArchivesSpace", [/archivesspace/i]],
+    ["Quartex", [/quartex/i]], ["LUNA", [/luna\/servlet/i]], ["Archive-It", [/archive-it\.org/i]],
+    ["WordPress", [/wp-content|wp-includes/]], ["Drupal", [/drupal/i]]
+  ];
+  function fingerprint() {
+    var gen = $$('meta[name="generator" i]').map(function (m) { return m.content || ""; });
+    var hay = [gen.join(" | "),
+      $$("script[src]").map(function (s) { return s.getAttribute("src"); }).join(" "),
+      $$("link[rel~=stylesheet]").map(function (l) { return l.getAttribute("href"); }).join(" "),
+      document.documentElement.className + " " + (document.body ? document.body.className : ""),
+      $$("body > *").map(function (e) { return e.tagName.toLowerCase() + (e.id ? "#" + e.id : ""); }).join(" "),
+      $$("a[href]").slice(0, 400).map(function (a) { return a.getAttribute("href"); }).join(" "),
+      txt(document.body).slice(-800), location.href].join("\n");
+    var scores = FP.map(function (f) {
+      var hits = f[1].filter(function (re) { return re.test(hay); }).map(String);
+      return { platform: f[0], hits: hits };
+    }).filter(function (s) { return s.hits.length; });
+    // repository software outranks the CMS/framework it may sit on (Islandora is Drupal; CONTENTdm sites often front WordPress)
+    var generic = { WordPress: 1, Drupal: 1 };
+    scores.sort(function (a, b) { return (generic[a.platform] || 0) - (generic[b.platform] || 0) || b.hits.length - a.hits.length; });
+    var best = scores[0] || null;
+    return { platform: best ? best.platform : "", confidence: best ? (best.hits.length >= 2 ? "high" : "low") : "none",
+      generator: gen.slice(0, 3), candidates: scores.slice(0, 4) };
   }
   function programmaticSubmit(q) {
     var s = document.querySelector('[data-mdlaug-probe="search"]'); if (!s) return false;
@@ -332,7 +579,7 @@
     var facet = $$('[class*="facet" i], [id*="facet" i], [class*="filter" i], [class*="refine" i], [class*="limit" i]').filter(visible);
     var facetLabeled = facet.filter(function (f) { var r = f.closest("[role=region],[role=complementary],aside,nav,section,fieldset"); return r && (accName(r) || r.querySelector("h2,h3,h4,legend")); });
     // result items: repeated siblings with links
-    var lists = $$("ol,ul,[role=list]").filter(function (l) { return l.children.length >= 3 && $$(":scope > * a[href]", l).length >= 3 && !l.closest("nav,header,footer"); });
+    var lists = $$("ol,ul,[role=list],table > tbody").filter(function (l) { return l.children.length >= 3 && $$(":scope > * a[href]", l).length >= 3 && !l.closest("nav,header,footer"); });
     var itemsContainer = lists.sort(function (a, b) { return b.children.length - a.children.length; })[0] || null;
     var divItems = [];
     if (!itemsContainer) {
@@ -375,8 +622,12 @@
       if ((alt && title && (alt === title || title.indexOf(alt) >= 0)) || (imLink && link && imLink !== link && imLink.href === link.href))
         ann(im, "RED2", "issue", "thumbnail repeats title");
     });
-    var first = null;
-    if (items.length) { var a = items[0].querySelector("a[href]"); if (a) { a.setAttribute("data-mdlaug-probe", "first-result"); first = a.href; } }
+    // first result = first link in the result items that leads to a record, not back into search (facets, sorting, paging)
+    var first = null, NOT_ITEM = /[?&](f|fq|facet|filter|sort|per_page|page|range|search_field)(\[|%5B|=)|\/(search|discover)\b|\/catalog\?|^javascript:|#$/i;
+    items.slice(0, 6).some(function (it) {
+      var a = $$("a[href]", it).filter(function (x) { return !NOT_ITEM.test(x.getAttribute("href") || ""); })[0];
+      if (a) { a.setAttribute("data-mdlaug-probe", "first-result"); first = a.href; return true; } return false;
+    });
     return {
       count_text: m ? m[0] : "", live_regions: live.length, live_with_count: liveWithCount.length,
       focused: describe(ae && ae !== document.body ? ae : null), focus_on_body: !ae || ae === document.body,
@@ -400,6 +651,20 @@
     var d = $$(OVERLAY_SEL).filter(visible).filter(function (x, i, arr) {   // outermost only
       return !arr.some(function (y) { return y !== x && y.contains(x); }); });
     return { open: d.length, sample: d.slice(0, 3).map(function (x) { return Object.assign(describe(x), { aria_modal: x.getAttribute("aria-modal") || "", focus_inside: x.contains(document.activeElement) }); }) };
+  }
+  // Cheap, side-effect-free check used while waiting for a results page to finish rendering.
+  function resultsState() {
+    var main = document.querySelector("main,[role='main']") || document.body, body = txt(main);
+    var busy = $$('[aria-busy="true"], [class*="spinner" i], [class*="loading" i], [class*="loader" i]').filter(visible)
+      .filter(function (e) { return coverage(e) > 0.002; }).length;
+    var loading = busy > 0 || /^\s*(loading|searching|please wait)\b/i.test(body.slice(0, 300)) || /\bloading\.{3}|\bloading…/i.test(body.slice(0, 1500));
+    var lists = $$("ol,ul,[role=list],table > tbody").filter(function (l) { return l.children.length >= 3 && $$(":scope > * a[href]", l).length >= 3 && !l.closest("nav,header,footer"); });
+    var cards = $$("[class*='result' i], article, [class*='item' i], [class*='record' i]").filter(function (e) {
+      return e.querySelector("a[href]") && txt(e).length > 20 && !e.closest("nav,header,footer") && visible(e); });
+    var m = body.match(COUNT_RE);
+    return { loading: loading, count_text: m ? m[0] : "", lists: lists.length, cards: cards.length,
+      no_results: /no (results|items|records|matches|documents)( were)? found|did not match any|0 results|nothing (was )?found|returned no results|no matching/i.test(body),
+      chars: body.length };
   }
   function helpLinks() {
     var hl = $$("a[href]").filter(function (a) { return /\b(help|faq|how to|search tips|searching tips|user guide|accessibility)\b/i.test(accName(a) + " " + a.href); }).slice(0, 8);
@@ -442,5 +707,7 @@
     restricted: restricted, browseLinks: browseLinks, clearControl: clearControl, suggestions: suggestions, accName: accName,
     engineMarks: engineMarks, annotateGood: annotateGood, annotateImages: annotateImages, collect: collect,
     remediationDiff: remediationDiff, undoRemediation: undoRemediation, blocker: blocker, dismissBlocker: dismissBlocker,
-    programmaticSubmit: programmaticSubmit, searchFocused: searchFocused };
+    programmaticSubmit: programmaticSubmit, searchFocused: searchFocused, detectOverlays: detectOverlays,
+    overlayVisible: overlayVisible, overlayFocusable: overlayFocusable, dismissOverlay: dismissOverlay,
+    hideOverlay: hideOverlay, challenge: challenge, fingerprint: fingerprint, resultsState: resultsState };
 })();

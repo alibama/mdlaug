@@ -178,7 +178,8 @@ def model_comparison(store, run_id=None):
     return pairs, pd.DataFrame(rows)
 
 
-STATUS_ORDER = ["complete", "no results", "search failed", "no search found", "failed to load", "not crawled"]
+STATUS_ORDER = ["complete", "no results", "search behind bot check", "search failed", "no search found",
+                "blocked by bot check", "failed to load", "not crawled"]
 
 
 def coverage(store, run_id):
@@ -200,7 +201,8 @@ def coverage(store, run_id):
         if len(oc):
             d = json.loads(oc.iloc[-1]["data"] or "{}")
             search = {"ok": "ok", "no_results": "no results", "no_search": "no search box",
-                      "interaction_failed": "failed", "results_failed": "failed"}.get(d.get("outcome"), d.get("outcome", ""))
+                      "interaction_failed": "failed", "results_failed": "failed",
+                      "bot_challenge": "bot check"}.get(d.get("outcome"), d.get("outcome", ""))
             detail = d.get("method", "") if search == "ok" else (d.get("error") or "")[:160]
         elif len(se):                                   # runs from before outcomes were recorded
             msgs = " | ".join(se[se.stage == "search"].message.astype(str))
@@ -216,11 +218,13 @@ def coverage(store, run_id):
         if not len(sp) and not len(se):
             status = "not crawled"
         elif pages_ok == 0:
-            status = "failed to load"
+            status = "blocked by bot check" if (sp.status == "bot_challenge").any() else "failed to load"
         elif search == "ok":
             status = "complete"
         elif search == "no results":
             status = "no results"
+        elif search == "bot check":
+            status = "search behind bot check"
         elif search == "no search box":
             status = "no search found"
         else:

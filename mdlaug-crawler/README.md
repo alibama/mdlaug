@@ -46,9 +46,10 @@ switch.
 
 | Step | What it checks | mDLAUG |
 |---|---|---|
-| Home page | dialogs open on load + Escape to close; accessible names & label-in-name (voice control); heading/landmark structure (LLM); image alt quality (LLM); restricted features (LLM); mDLAUG engine; axe-core | EXE2, INT1, USE1, COM1, ACC2/COM3, RED4, + engine |
-| Search | close or get past pop-ups covering it (Escape, then the overlay's own reject/close button — recorded as an INT1 finding); use it by keyboard (focus + type + Enter, as a screen-reader user would), falling back to submitting it in script (recorded); find the search box (including behind an icon toggle); its name and search landmark; Tab presses to reach it; icon-only submit; autocomplete semantics; clear control | FIL1, FIL2/RED3, ACC6, EXE1 |
-| Results | result count + whether it's announced; focus/skip to results; list structure; pagination landmark + `aria-current`; filter grouping; thumbnail/title duplication; snippet usefulness (LLM) | RED1, NAV5, NAV3, NAV2, COM2/NAV1, RED2, EVA1 |
+| Every page, first | **bot-protection challenge** (Cloudflare "Just a moment…", "Verify you are human") — recorded as `bot_challenge`, never solved, page not measured; **overlays** on load (18 known consent managers such as OneTrust, Cookiebot and Klaro, plus modals, promos and app banners) — each is measured as users meet it (exposed as a dialog? named? Escape closes it? reachable by Tab? named reject/close control?), then dismissed with its own controls, reject first, so later checks and screenshots see the page | INT1, EXE2 |
+| Home page | platform fingerprint (which repository software the markup says it is); vision check of the screenshots (optional); accessible names & label-in-name (voice control); heading/landmark structure (LLM); image alt quality (LLM); restricted features (LLM); mDLAUG engine; axe-core | EXE2, INT1, USE1, COM1, ACC2/COM3, RED4, + engine |
+| Search | close or get past pop-ups that appear later (Escape, then the overlay's own reject/close control — recorded as an INT1 finding); use it by keyboard (focus + type + Enter, as a screen-reader user would), falling back to submitting it in script (recorded); find the search box (including behind an icon toggle); its name and search landmark; Tab presses to reach it; icon-only submit; autocomplete semantics; clear control | FIL1, FIL2/RED3, ACC6, EXE1 |
+| Results | waits up to 15 s for script-rendered results; if the search box couldn't be used, opens the platform's own search URL instead (method `url`); result count + whether it's announced; focus/skip to results; list structure; pagination landmark + `aria-current`; filter grouping; thumbnail/title duplication; snippet usefulness (LLM) | RED1, NAV5, NAV3, NAV2, COM2/NAV1, RED2, EVA1 |
 | First result | item page through the engine; image alt quality | ACC1, ACC3, NAV4, EXE3, … |
 | Help | finds help/FAQ/accessibility links; judges the page (LLM) | FIL3/HEP1 |
 | Browse | collections page through the engine | ACC4, COM1 |
@@ -60,6 +61,52 @@ own. The extension remains the source of truth: after changing the engine, run
 `python crawler/scripts/sync_engine.py` (or `npm run crawler:sync`). A test fails if
 the bundle is stale. To try unreleased engine changes without rebuilding, set
 `MDLAUG_ENGINE_DIR` to an extension folder. **axe-core** (MPL-2.0, `vendor/`) gives a WCAG 2.2 A/AA baseline.
+
+## Overlays, bot checks and platform labels
+
+Overlays were the main reason earlier screenshots looked broken and searches failed. The
+crawler now handles them before measuring anything on a page:
+
+1. **Detect** what floats over the page: known consent managers by their own markup,
+   anything exposed as a modal dialog, and fixed layers that cover most of the screen or
+   carry consent/promo/app-banner text. Site headers and nav bars are not overlays.
+2. **Measure** each one as a keyboard or screen-reader user meets it, and record a
+   `probe.overlay` finding (INT1/EXE2) with the five criteria in its evidence.
+3. **Dismiss** it using only controls inside it: the consent manager's reject control,
+   then any reject/close button by name, then the manager's API (`OneTrust.RejectAll()`,
+   …), and *accept* only as a last resort; hide it only if nothing works. This repeats
+   in layers, because one overlay can hide another. Timed pop-ups are cleared again
+   before axe/engine and before each screenshot.
+
+**Bot-protection challenges** are detected on every page. The crawler waits a few seconds
+in case the check clears by itself, and otherwise records the page as `bot_challenge` and
+moves on. It never interacts with a challenge.
+
+**Platform fingerprint:** the home page's own markup (generator tag, asset paths, URL
+patterns, "Powered by" text) says which repository software a site runs. It is stored on
+the page (`pages.fingerprint`) and logged when it disagrees with the spreadsheet.
+
+**Vision QA (optional):** if `MDLAUG_VISION_MODEL` (default `gemma3:4b`) is pulled in
+Ollama, it looks at each home page's first-view and post-dismissal screenshots and flags
+overlays the DOM rules missed. It is a check on the crawler, not a finding about the site.
+
+## Statistical review
+
+`scripts/significance.py` tests which differences between platforms (vendors) and
+library types hold up using automated evidence only. `scripts/significance_report.py`
+renders the results as a shareable page.
+
+```bash
+uv run --with-requirements requirements-analysis.txt python scripts/significance.py --run 4 --patch 5 --patch 6 --replicate 1
+uv run --with-requirements requirements-analysis.txt python scripts/significance_report.py
+```
+
+`--patch` takes a later run that re-crawled some sites with a fixed crawler; its rows replace
+the primary run's for those sites. The narrative at the top of the report lives in
+`scripts/significance_narrative.json`; rewrite it after reading new results. Outputs go to
+`data/significance/` (per-site metrics, every test, platform labels, manual-review candidates,
+`report.html`). The October 2026 outputs are kept in `reports/2026-10/`. See [`AUTOMATION.md`](AUTOMATION.md) for what
+is automated, what still needs a person, and the tools worth adding next.
 
 ## Marked-up screenshots
 

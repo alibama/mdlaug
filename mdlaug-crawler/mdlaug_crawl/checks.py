@@ -103,7 +103,8 @@ CATALOG = {
     "EXE2": dict(
         title="Difficulty exiting an open item",
         question="Can a user close an open item, viewer, or overlay and get back?",
-        auto=["probe: dialogs open on load — does Escape close them, are they aria-modal?",
+        auto=["probe: overlays on load (consent managers, modals, promos) — exposed as a dialog, named, closed by "
+              "Escape, reachable by Tab, named reject/close control",
               "engine: dialog semantics and close controls"],
         llm=None,
         rubric="7 — labeled close control, Escape works, focus returns.\n4 — closes but focus is lost.\n"
@@ -143,7 +144,8 @@ CATALOG = {
     "INT1": dict(
         title="Difficulty interacting with multi-layered windows",
         question="When overlays/pop-ups open, is the background inert and focus contained?",
-        auto=["probe: dialogs on load (cookie banners etc.) — Escape, aria-modal, focus"],
+        auto=["probe: overlays on load (cookie/consent banners, modals, promos) — dialog role, name, Escape, "
+              "Tab reach, named dismiss control; then dismissed (reject first) so later checks see the page"],
         llm=None,
         rubric="7 — overlays are aria-modal, focus moves in and returns, Escape closes.\n4 — partly.\n"
                "1 — background reachable/focus lost.",

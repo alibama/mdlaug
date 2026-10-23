@@ -237,7 +237,7 @@ with tab_over:
         st.download_button("Download site × situation CSV", t.to_csv(index=False).encode(), file_name=f"mdlaug_run_{run_id}.csv")
 
 # ---------------- site list ----------------
-COV_COLORS = ["#1f9e8f", "#9cc9a0", "#e8912a", "#d6b656", "#b1315e", "#bcccc6"]
+COV_COLORS = ["#1f9e8f", "#9cc9a0", "#8a7fc6", "#e8912a", "#d6b656", "#5b4b9e", "#b1315e", "#bcccc6"]
 with tab_list:
     st.header("Which sites are evaluated")
     cov = analysis.coverage(store, run_id)
@@ -253,7 +253,9 @@ with tab_list:
         if run_id:
             st.caption(f"Status for run #{run_id}. **complete** = loaded and a search returned results; "
                        "**search failed** = loaded but the search couldn't be used (see detail); "
-                       "**no search found** = no search box detected; **not crawled** = not part of this run.")
+                       "**no search found** = no search box detected; **search behind bot check** / **blocked by bot "
+                       "check** = a bot-protection challenge (e.g. Cloudflare) answered instead of the site; it is "
+                       "recorded, never solved; **not crawled** = not part of this run.")
             show_chart(alt.Chart(act.groupby(["platform", "status"]).size().reset_index(name="sites")).mark_bar().encode(
                 x=alt.X("sites:Q", stack="zero"), y=alt.Y("platform:N", title=None),
                 color=alt.Color("status:N", scale=alt.Scale(domain=analysis.STATUS_ORDER, range=COV_COLORS)),

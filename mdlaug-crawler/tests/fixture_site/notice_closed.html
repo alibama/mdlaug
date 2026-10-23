@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DL with a content notice</title></head><body>
+<header><form action="/search" role="search"><label for="q">Search</label><input id="q" name="q" type="search">
+<button type="submit">Search</button></form></header>
+<main><h1>Digital Collections</h1><p>Historical materials.</p></main>
+<notice-dialog></notice-dialog>
+<script>
+customElements.define("notice-dialog", class extends HTMLElement {
+  connectedCallback() {
+    const r = this.attachShadow({mode: "closed"});
+    r.innerHTML = '<style>.bg{position:fixed;inset:0;background:rgba(0,0,0,.5)}.box{position:fixed;top:10%;left:5%;right:5%;background:#fff;padding:16px}</style>' +
+      '<div class="bg"></div><div class="box"><h2>Potentially Offensive Content</h2><p>Some content may be harmful.</p>' +
+      '<button id="go">Continue</button></div>';
+    r.getElementById("go").addEventListener("click", () => this.remove()); document.addEventListener("keydown", e => { if (e.key === "Escape") {} });
+  }
+});
+</script></body></html>

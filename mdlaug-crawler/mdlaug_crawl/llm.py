@@ -6,10 +6,12 @@ does this help page explain how to use the DL?). Every call is logged (prompt ha
 latency, raw output, parse success) and cached by prompt hash. Every result carries a
 confidence; anything below the review threshold is routed to human review.
 """
+import base64
 import hashlib
 import json
 import re
 import time
+from pathlib import Path
 
 import requests
 
@@ -60,6 +62,18 @@ TASKS = {
                   '"confidence": 0.0-1.0, "rationale": "short"}',
         "instruction": ("This is the heading outline and landmark list of a digital-library home page. Judge "
                         "mDLAUG COM1: could a screen-reader user understand the library's structure from it?"),
+    },
+    # vision: quality control on the crawler's own screenshots, not a site judgment
+    "vision_overlay": {
+        "schema": '{"overlay_visible": bool, "overlay_kind": "none|cookie_consent|modal|newsletter_or_promo|'
+                  'chat_widget|app_banner|bot_check|other", "page_loaded": bool, "content_obscured_pct": int, '
+                  '"confidence": 0.0-1.0, "rationale": "short"}',
+        "instruction": ("This is a screenshot of a digital-library web page on a phone. Is anything floating over or "
+                        "covering the page's own content: a cookie or consent banner, a pop-up or modal dialog, a "
+                        "newsletter or donation prompt, a chat widget, an app-install banner, or a bot-verification "
+                        "screen? A normal site header or menu bar is not an overlay. Also say whether the page has "
+                        "finished loading (not blank, not only a spinner or 'Loading…')."),
+        "vision": True,
     },
 }
 
@@ -134,9 +148,12 @@ class LLM:
 
     _no_think = set()     # models that reject the "think" flag
 
-    def _ollama(self, model, system, prompt):
+    def _ollama(self, model, system, prompt, images=None):
+        user = {"role": "user", "content": prompt}
+        if images:
+            user["images"] = images
         body = {"model": model, "stream": False, "format": "json", "options": {"temperature": 0},
-                "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}]}
+                "messages": [{"role": "system", "content": system}, user]}
         if model not in self._no_think:
             body["think"] = False        # keep Qwen3-style reasoning out of the JSON
         r = requests.post(self.cfg.ollama_url.rstrip("/") + "/api/chat", timeout=self.cfg.llm_timeout, json=body)
@@ -206,6 +223,58 @@ class LLM:
                                      parsed=json.dumps(parsed) if parsed is not None else "", error=err, cached=0,
                                      prompt_version=pv, prompt=prompt, role=role, replay_of=replay_of)
         return parsed, cid
+
+    _vision_ok = None
+
+    def check_vision(self):
+        """Is the vision model pulled? (Cheap; cached.) A test transport counts as available."""
+        if not self.cfg.vision_enabled:
+            return False
+        if self._vision_ok is None:
+            if self.vision_transport is not None:
+                self._vision_ok = True
+            else:
+                try:
+                    tags = requests.get(self.cfg.ollama_url.rstrip("/") + "/api/tags", timeout=5).json()
+                    self._vision_ok = self.cfg.vision_model in {m.get("name") for m in tags.get("models", [])}
+                except Exception:
+                    self._vision_ok = False
+        return self._vision_ok
+
+    vision_transport = None   # tests set (model, system, prompt, images) -> raw text
+
+    def ask_vision(self, task, image_path, run_id=None, site_id=None, page_id=None):
+        """Ask the vision model about a screenshot. Logged with role='vision' (bench replays skip it,
+        since the image isn't stored with the prompt). Cached by prompt + image hash."""
+        spec = TASKS[task]
+        prompt = f"{self.instruction(task)}\n\nRespond with JSON: {spec['schema']}"
+        raw_img = Path(image_path).read_bytes()
+        model = self.cfg.vision_model
+        h = hashlib.sha256((model + "|" + task + "|" + prompt + "|" + hashlib.sha256(raw_img).hexdigest()).encode()).hexdigest()[:24]
+        if self.store:
+            hit = self.store.cached_llm(h, model)
+            if hit is not None:
+                return dict(hit, _ok=True, _confidence=clamp_conf(hit.get("confidence")), _cached=True)
+        t0 = time.time()
+        raw, parsed, err = "", None, ""
+        try:
+            img = base64.b64encode(raw_img).decode()
+            raw = (self.vision_transport(model, SYSTEM, prompt, [img]) if self.vision_transport
+                   else self._ollama(model, SYSTEM, prompt, images=[img]))
+            parsed = parse_json(raw)
+        except Exception as e:  # noqa: BLE001
+            err = f"{type(e).__name__}: {e}"
+        cid = None
+        if self.store:
+            cid = self.store.log_llm(run_id=run_id, site_id=site_id, page_id=page_id, task=task, model=model,
+                                     prompt_hash=h, input_chars=len(prompt), latency_ms=int((time.time() - t0) * 1000),
+                                     ok=1 if parsed is not None else 0, raw=(raw or "")[:4000],
+                                     parsed=json.dumps(parsed) if parsed is not None else "", error=err, cached=0,
+                                     prompt_version=checks.prompt_version(prompt), prompt=f"[image {image_path}]\n{prompt}",
+                                     role="vision")
+        if parsed is None:
+            return {"_ok": False, "_error": err, "_confidence": 0.0, "_call_id": cid}
+        return dict(parsed, _ok=True, _confidence=clamp_conf(parsed.get("confidence")), _call_id=cid)
 
     def _shadow(self, task, prompt, pv, primary_id, run_id, site_id, page_id):
         m = self.cfg.shadow_model

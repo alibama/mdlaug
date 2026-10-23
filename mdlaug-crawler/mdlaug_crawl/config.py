@@ -30,6 +30,9 @@ class Config:
     # optional second model: every judgment also goes to it, recorded for comparison only
     shadow_model: str = field(default_factory=_env("MDLAUG_SHADOW_MODEL", ""))
     llm_timeout: int = field(default_factory=lambda: int(os.environ.get("MDLAUG_LLM_TIMEOUT", "120")))
+    # optional vision model: checks screenshots for overlays the DOM probes missed (skipped if not pulled)
+    vision_model: str = field(default_factory=_env("MDLAUG_VISION_MODEL", "gemma3:4b"))
+    vision_enabled: bool = field(default_factory=_flag("MDLAUG_VISION"))
     review_confidence: float = field(default_factory=lambda: float(os.environ.get("MDLAUG_REVIEW_CONF", "0.7")))
     # crawling — mDLAUG is mobile-first; MDLAUG_DEVICE="" means desktop
     device: str = field(default_factory=_env("MDLAUG_DEVICE", "iPhone 13"))
