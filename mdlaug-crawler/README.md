@@ -1,5 +1,9 @@
 # mDLAUG crawler
 
+- **Just want the results?** [Read the Vendor Accessibility Signals report](https://alibama.github.io/mdlaug/signals/).
+- **New here?** [Follow the training guide](TRAINING.md). It needs no programming.
+- **Project website:** https://alibama.github.io/mdlaug/
+
 Crawls a list of digital libraries and assesses them against the 24 mDLAUG
 situations — automating what can be automated, using a local LLM where rules get
 brittle, and routing everything uncertain to a human review queue. Results, review
