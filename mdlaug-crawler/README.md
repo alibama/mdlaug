@@ -8,24 +8,31 @@ analytics, review, and workflow diagnostics.
 
 ## Setup
 
-```bash
-cd crawler
-pip install -r requirements.txt
-playwright install chromium
+**New here? Follow [TRAINING.md](TRAINING.md).** It's a step-by-step guide for Windows and Mac
+that needs no programming. In short, from this folder:
 
-# local LLM (optional but recommended)
-ollama pull qwen2.5:7b          # or set OLLAMA_MODEL, e.g. qwen3:8b
-ollama serve                    # default http://localhost:11434
+| | Mac / Linux | Windows |
+|---|---|---|
+| Install everything (Python, libraries, Chromium) | `bash mdlaug.sh setup` | `.\mdlaug setup` |
+| Download the October 2026 results | `bash mdlaug.sh get-data` | `.\mdlaug get-data` |
+| Open the app | `bash mdlaug.sh app` | `.\mdlaug app` |
+| Test crawl / full crawl | `bash mdlaug.sh trial` / `crawl` | `.\mdlaug trial` / `crawl` |
+| Statistics report | `bash mdlaug.sh report` | `.\mdlaug report` |
 
-streamlit run app.py
-```
+The setup command uses [uv](https://docs.astral.sh/uv/) to install its own Python into `.venv`
+here, so it doesn't touch any other Python on the machine. Everything else is in
+`scripts/helper.py`; `mdlaug.sh` and `mdlaug.bat` only make sure that's installed first.
 
-Or from the command line:
+The local LLM is optional but recommended: install [Ollama](https://ollama.com), then
+`ollama pull qwen3.5:4b` (text judgments) and `ollama pull gemma3:4b` (screenshot check).
+
+Working directly with Python (inside `.venv`) also works:
 
 ```bash
 python -m mdlaug_crawl import sample/DLs_for_mDLAUG_Assessment.xlsx
 python -m mdlaug_crawl run --platform DSpace --limit 5 --note "DSpace pilot"
 python -m mdlaug_crawl export --run 1 --out run1.xlsx
+streamlit run app.py
 ```
 
 ## Site list
@@ -97,12 +104,16 @@ library types hold up using automated evidence only. `scripts/significance_repor
 renders the results as a shareable page.
 
 ```bash
-uv run --with-requirements requirements-analysis.txt python scripts/significance.py --run 4 --patch 5 --patch 6 --replicate 1
-uv run --with-requirements requirements-analysis.txt python scripts/significance_report.py
+bash mdlaug.sh report                 # or .\mdlaug report on Windows
+python scripts/significance.py --run 4 --patch 5 --patch 6 --replicate 1   # choosing runs yourself
+python scripts/significance_report.py
+python scripts/build_site.py          # maintainers: update the GitHub Pages copy in ../docs
 ```
 
-`--patch` takes a later run that re-crawled some sites with a fixed crawler; its rows replace
-the primary run's for those sites. The narrative at the top of the report lives in
+With no options it picks the latest large run, any runs whose note starts "patch of run N"
+(re-crawls of some sites with a fixed crawler, whose rows replace the primary run's), and the
+largest other run on a different device for replication. The published report is at
+https://alibama.github.io/mdlaug/signals/. The narrative at the top of the report lives in
 `scripts/significance_narrative.json`; rewrite it after reading new results. Outputs go to
 `data/significance/` (per-site metrics, every test, platform labels, manual-review candidates,
 `report.html`). The October 2026 outputs are kept in `reports/2026-10/`. See [`AUTOMATION.md`](AUTOMATION.md) for what

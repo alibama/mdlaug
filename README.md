@@ -5,6 +5,13 @@ A Manifest V3 browser extension that repairs, on the fly, the 24 screen-reader
 "help-seeking situations" catalogued in the **Mobile Digital Library Accessibility
 and Usability Guidelines** (mDLAUG), and converts inaccessible
 PDF/Word files into accessible formats — all client-side, no server, no uploads.
+
+> **mDLAUG crawler: results and onboarding**
+> The crawler in [`mdlaug-crawler/`](mdlaug-crawler/) checks digital-library websites against mDLAUG
+> and measures which problems come from the platform vendor.
+> **[Read the Vendor Accessibility Signals report](https://alibama.github.io/mdlaug/signals/)** ·
+> **[Training guide (Windows and Mac, no programming needed)](mdlaug-crawler/TRAINING.md)** ·
+> [Project site and data](https://alibama.github.io/mdlaug/)
 <br><br>
 here's a document before remediation<br>
 
