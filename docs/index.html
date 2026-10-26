@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>mDLAUG Crawler</title>
+<meta name="description" content="Automated accessibility checks of digital libraries against the mobile Digital Library Accessibility and Usability Guidelines: results, data and training.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; three entry cards that stack on phones. */
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --ink: #14181f; --ink-2: #4a5160; --ink-3: #6b7280;
+  --rule: #dde1e8; --accent: #1f62b4; --accent-ink: #ffffff;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #12151b; --surface: #1a1e26; --ink: #eef0f4; --ink-2: #b7bdc9; --ink-3: #8e95a3;
+  --rule: #2c323d; --accent: #6aa8f0; --accent-ink: #0d1117; color-scheme: dark } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--body); }
+.wrap { max-width: 60rem; margin: 0 auto; padding-block: 48px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.prose { max-width: 42rem; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.2; margin: 0; text-wrap: balance; }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.5rem; margin-top: 48px; }
+h3 { font-size: 1.15rem; }
+p { margin: 12px 0 0; }
+.eyebrow { font: 500 0.78rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
+.lede { font-size: 1.15rem; color: var(--ink-2); }
+a { color: var(--accent); }
+a:focus-visible, .button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 20px; margin-top: 28px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+.card p { margin: 0; color: var(--ink-2); font-size: 0.97rem; flex: 1; }
+.button { align-self: flex-start; display: inline-block; margin-top: 8px; padding: 9px 16px; border-radius: 4px;
+  background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none; }
+ul.findings { padding-left: 1.2rem; } ul.findings li { margin-top: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; background: var(--surface); }
+.table-wrap { overflow-x: auto; margin-top: 14px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 0.8rem; color: var(--ink-3); font-weight: 600; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 1px 5px; }
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="prose">
+    <p class="eyebrow">mDLAUG · accessibility of digital libraries</p>
+    <h1>mDLAUG Crawler</h1>
+    <p class="lede">We visit digital-library websites the way a phone does, check them against the mobile Digital
+      Library Accessibility and Usability Guidelines (mDLAUG), and measure which problems come from the platform
+      vendor and which from the institution. This page collects the results, the data, and how to take part.</p>
+  </header>
+
+  <main>
+    <div class="cards">
+      <section class="card" aria-labelledby="c1">
+        <h2 id="c1" style="margin:0;font-size:1.2rem">Read the results</h2>
+        <p>The Vendor Accessibility Signals report: what the October 2026 crawl of 132 sites can show with
+          statistical confidence, platform by platform.</p>
+        <a class="button" href="signals/">Open the report</a>
+      </section>
+      <section class="card" aria-labelledby="c2">
+        <h2 id="c2" style="margin:0;font-size:1.2rem">Get set up</h2>
+        <p>A step-by-step guide for Windows and Mac. No programming needed: you copy a few commands into a
+          terminal. It takes about 20 minutes.</p>
+        <a class="button" href="https://github.com/alibama/mdlaug/blob/main/mdlaug-crawler/TRAINING.md">Start the training</a>
+      </section>
+      <section class="card" aria-labelledby="c3">
+        <h2 id="c3" style="margin:0;font-size:1.2rem">Use the data</h2>
+        <p>Spreadsheets behind the report, and the full October database to explore in the crawler's app.</p>
+        <a class="button" href="#data">Go to the data</a>
+      </section>
+    </div>
+
+    <section class="prose" aria-labelledby="h-find">
+      <h2 id="h-find">The October 2026 crawl in brief</h2>
+      <ul class="findings">
+        <li>Every Digital Commons site, and 16 of 17 DSpace sites, open a cookie-consent overlay that the Escape key
+          doesn't close. The Digital Commons banner has no way to reject or close it at all.</li>
+        <li>CONTENTdm results pages never mark their page-number links as navigation or flag the current page;
+          DSpace does both on 9 of 10 sites.</li>
+        <li>The type of institution (academic, public, museum…) explains far less than the platform it runs on.</li>
+        <li>Digital Commons search results sit behind a bot check, and most sites listed as Islandora couldn't be
+          verified, so the report makes no claims about those.</li>
+      </ul>
+      <p><a href="signals/">Read the full report</a>, including how each finding was tested.</p>
+    </section>
+
+    <section aria-labelledby="data">
+      <h2 id="data">Data</h2>
+      <p class="prose">Spreadsheets open in Excel, Numbers or Google Sheets. One row per site or per test.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th scope="col">File</th><th scope="col">What it holds</th></tr></thead>
+        <tbody>
+          <tr><td><a href="signals/data/site_metrics_run4.csv">site_metrics_run4.csv</a></td>
+            <td>Every measure for each of the 132 sites in the October crawl (one row per site)</td></tr>
+          <tr><td><a href="signals/data/tests.csv">tests.csv</a></td>
+            <td>Every statistical test: measure, comparison, significance, effect size, tier</td></tr>
+          <tr><td><a href="signals/data/platform_labels.csv">platform_labels.csv</a></td>
+            <td>Each site's listed platform and what its own pages say it runs</td></tr>
+          <tr><td><a href="signals/data/manual_review_candidates.csv">manual_review_candidates.csv</a></td>
+            <td>Checks that still need a person, with the number of sites and findings</td></tr>
+          <tr><td><a href="signals/data/site_metrics_run1.csv">site_metrics_run1.csv</a></td>
+            <td>The same measures from the earlier desktop crawl, used to replicate the findings</td></tr>
+          <tr><td><a href="https://github.com/alibama/mdlaug/releases/tag/data-2026-10">October 2026 database</a></td>
+            <td>Everything the crawler recorded, for the crawler's app. The training shows how to load it with one command.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="prose" aria-labelledby="h-more">
+      <h2 id="h-more">More</h2>
+      <ul class="findings">
+        <li><a href="https://github.com/alibama/mdlaug/blob/main/mdlaug-crawler/TRAINING.md">Training guide</a>: install,
+          explore the results, run a test crawl, review findings, make the report.</li>
+        <li><a href="https://github.com/alibama/mdlaug/blob/main/mdlaug-crawler/AUTOMATION.md">What's automated and
+          what's next</a>: what the crawler can decide by itself, what needs a person, and the tools worth adding.</li>
+        <li><a href="https://github.com/alibama/mdlaug/blob/main/mdlaug-crawler/README.md">How the crawler works</a>:
+          the technical reference.</li>
+        <li><a href="https://github.com/alibama/mdlaug">Source code on GitHub</a>, including the mDLAUG Repair browser
+          extension.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    mDLAUG crawler · results from the October 2026 crawl (iPhone 13 emulation). Findings use automated evidence only.
+  </footer>
+</div>
+</body>
+</html>

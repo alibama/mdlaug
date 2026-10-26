@@ -60,6 +60,14 @@ def txt(v):
     return v if isinstance(v, str) and v.strip() else None
 
 
+def short_path(p):
+    """A path relative to the crawler folder when it's inside it (shorter, and no home-folder names)."""
+    try:
+        return str(Path(p).resolve().relative_to(Path(__file__).resolve().parent))
+    except ValueError:
+        return str(p)
+
+
 def file_ok(v):
     v = txt(v)
     return v if v and Path(v).exists() else None
@@ -98,9 +106,15 @@ if runs.empty:
     run_id = None
     st.sidebar.info("No runs yet — start one in **Run crawl**.")
 else:
+    nsites = {int(r["run_id"]): int(r["n"]) for r in store.query(
+        "SELECT run_id, COUNT(DISTINCT site_id) n FROM pages GROUP BY run_id")}
     labels = {int(r.id): f"#{r.id} · {time.strftime('%Y-%m-%d %H:%M', time.localtime(r.started))} · {r.status}"
-              + (f" · {r.note}" if r.note else "") for r in runs.itertuples()}
-    run_id = st.sidebar.selectbox("Run", list(labels), format_func=labels.get)
+              f" · {nsites.get(int(r.id), 0)} sites" + (f" · {r.note}" if r.note else "") for r in runs.itertuples()}
+    # open on the latest full crawl, not a small trial or patch run that happens to be newer
+    big = [i for i in labels if nsites.get(i, 0) >= 0.5 * max(nsites.values() or [0])
+           and not str(runs.set_index("id").loc[i, "note"] or "").lower().startswith(("patch of run", "trial"))]
+    default = max(big) if big else list(labels)[0]
+    run_id = st.sidebar.selectbox("Run", list(labels), index=list(labels).index(default), format_func=labels.get)
 reviewer = st.sidebar.text_input("Reviewer name", value=st.session_state.get("reviewer", ""), key="reviewer")
 
 
@@ -137,7 +151,7 @@ else:
         store.set_setting("llm:shadow", model_b, reviewer or "")
 cfg.ollama_model = model_a
 st.sidebar.caption(f"Using **{model_a}**" + (f", comparing with **{model_b}**" if model_b else "") +
-                   f"  \nDB: `{cfg.db_path}`")
+                   f"  \nDB: `{short_path(cfg.db_path)}`")
 
 tab_over, tab_list, tab_sites, tab_review, tab_checks, tab_flow, tab_run = st.tabs(
     ["📊 Overview", "🗂 Site list", "🏛 Sites", "👁 Review queue", "⚙ Checks", "🛠 Workflow & logs", "▶ Run crawl"])
@@ -685,7 +699,7 @@ with tab_flow:
             rl = st.session_state.get("replay_log")
             if rl and Path(rl).exists():
                 st.button("Refresh progress", key="rl_refresh")
-                st.code(Path(rl).read_text()[-1500:] or "(starting…)")
+                st.code(Path(rl).read_text(errors="replace")[-1500:] or "(starting…)")
         else:
             st.caption("Pick a second model under **Compare with** in the sidebar to compare.")
         if not n_replayable:
@@ -788,4 +802,4 @@ with tab_run:
         if st.button("Refresh console"):
             pass
         if lf.exists():
-            st.code(lf.read_text()[-4000:] or "(starting…)")
+            st.code(lf.read_text(errors="replace")[-4000:] or "(starting…)")

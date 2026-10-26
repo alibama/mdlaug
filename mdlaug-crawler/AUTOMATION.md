@@ -29,6 +29,10 @@ Run 4 (all 169 sites, iPhone 13), patched by runs 5–6 after the fixes below:
   GSU), which the DOM probe couldn't see. All four now have regression tests, and the
   affected 20 sites were re-crawled (runs 5–6). Its remaining flags after dismissal (28) are
   mostly share bars, chat buttons and sticky headers it calls "cookie banners".
+* **Two more detector fixes came from preparing the training material:** CookieConsent wraps
+  its modal in a zero-size fixed container, which hid it, and an in-page search form marked
+  `role="dialog"` was counted as an overlay. Both are fixed with regression tests. Neither
+  site is in the vendor comparisons.
 * **The spreadsheet's platform column needs the fingerprint.** Only 90 of 132 crawled sites
   could be verified as running the listed platform. Of the 16 listed as Islandora, 2 carry
   Islandora markers; the rest are custom Drupal or museum systems, Primo or Preservica.

@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vendor Accessibility Signals</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~44rem) for prose; finding cards in a 2-up grid that stacks on phones. */
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --ink: #14181f; --ink-2: #4a5160; --ink-3: #6b7280;
+  --rule: #dde1e8; --accent: #2a78d6; --accent-soft: #c9dbf3; --track: #eceff4;
+  --strong: #0f6b47; --moderate: #8a5a00; --tentative: #6b7280;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151b; --surface: #1a1e26; --ink: #eef0f4; --ink-2: #b7bdc9; --ink-3: #8e95a3;
+  --rule: #2c323d; --accent: #3987e5; --accent-soft: #2a3f5c; --track: #252a34;
+  --strong: #4fc495; --moderate: #e0a83a; --tentative: #9aa1ad; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12151b; --surface: #1a1e26; --ink: #eef0f4; --ink-2: #b7bdc9; --ink-3: #8e95a3;
+  --rule: #2c323d; --accent: #3987e5; --accent-soft: #2a3f5c; --track: #252a34;
+  --strong: #4fc495; --moderate: #e0a83a; --tentative: #9aa1ad; color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); }
+.wrap { max-width: 64rem; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.prose { max-width: 44rem; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.2; margin: 0; }
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.6rem; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.15rem; }
+p { margin: 12px 0 0; }
+.eyebrow { font: 500 0.78rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.lede { font-size: 1.15rem; color: var(--ink-2); }
+.bottom { display: grid; gap: 12px; margin-top: 24px; padding: 20px 24px; background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 6px; }
+.bottom p { margin: 0; }
+.num, .stats dd, .bar-val, .n { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 28rem), 1fr)); gap: 20px; margin-top: 24px; }
+.finding { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 20px; min-width: 0;
+  display: flex; flex-direction: column; gap: 4px; }
+.finding header { display: grid; gap: 4px; }
+.tier { font: 600 0.72rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.tier-assert .tier { color: var(--strong); } .tier-supporting .tier { color: var(--moderate); }
+h3.family { margin-top: 32px; font-size: 1.25rem; }
+.unit { margin: 0; font-size: 0.85rem; color: var(--ink-3); }
+.finding p { font-size: 0.95rem; }
+.ask { padding: 10px 12px; background: var(--bg); border-radius: 4px; }
+
+.bars { display: grid; gap: 6px; margin-top: 14px; }
+.bar-row { display: grid; grid-template-columns: 9.5rem 1fr 3rem 4rem; align-items: center; gap: 8px; font-size: 0.85rem; }
+.bar-label { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.n { color: var(--ink-3); font-size: 0.75rem; }
+.bar-track { height: 12px; background: var(--track); border-radius: 0 4px 4px 0; }
+.bar { display: block; height: 100%; background: var(--accent-soft); border-radius: 0 4px 4px 0; }
+.flag .bar { background: var(--accent); }
+.flag .bar-label { color: var(--ink); font-weight: 600; }
+.bar-val { text-align: right; }
+.chip { font: 500 0.68rem var(--mono); text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 3px; padding: 1px 5px; }
+@media (max-width: 480px) { .bar-row { grid-template-columns: 7rem 1fr 2.6rem 3.6rem; } }
+
+.stats { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--rule); }
+.stats div { display: grid; }
+.stats dt { font-size: 0.72rem; color: var(--ink-3); }
+.stats dd { margin: 0; font-size: 0.9rem; }
+
+.table-wrap { overflow-x: auto; margin-top: 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; background: var(--surface); }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 0.78rem; color: var(--ink-3); font-weight: 600; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+ol.steps { padding-left: 1.3rem; } ol.steps li { margin-top: 10px; }
+code { font-family: var(--mono); font-size: 0.88em; }
+a { color: var(--accent); }
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="prose">
+    <p class="eyebrow">mDLAUG crawl · statistical review · run 4 (iPhone 13) · October 2026</p>
+    <h1>Vendor Accessibility Signals</h1>
+    <p class="lede">What an automated, phone-sized crawl of 132 digital-library sites can show with statistical
+      confidence, broken down by platform vendor (90 sites whose own markup confirms the platform) and by
+      type of institution. Anything the crawl could not determine
+      automatically is left out of the findings and listed at the end as manual work.</p>
+  </header>
+
+  <section class="bottom prose">
+    <p><strong>Consent overlays are a vendor default, not a local choice.</strong> Every Digital Commons site opens a OneTrust cookie banner that Escape doesn't close. It isn't exposed as a dialog, and its only button is “Accept all cookies”: there is no way to reject or close it. 16 of 17 DSpace sites open the Klaro consent notice that ships with DSpace 7+. Escape doesn't close that one either, and on a third of those sites a keyboard user can't reach it within 10 Tab presses. No Omeka site and one CONTENTdm site (an institution's own content notice) open anything over the page.</p>
+    <p><strong>Results pages split cleanly by vendor.</strong> None of 16 CONTENTdm results pages wraps its paging in a navigation landmark or marks the current page. DSpace does both on 9 of 10, and Omeka uses the landmark but never marks the current page. Search boxes sit in a search landmark on most CONTENTdm, Omeka and Samvera sites but on no DSpace or Digital Commons site. 7 of 17 DSpace home pages are wider than a phone screen.</p>
+    <p><strong>Institution type still shows almost nothing.</strong> Public-library sites have more unnamed links, which is the one difference that holds up. The platform explains far more.</p>
+    <p><strong>What we can't say yet.</strong> Digital Commons search results sit behind a Cloudflare bot check on 25 of 26 sites, so its results pages are unmeasured. Only 2 of the 16 sites listed as Islandora could be verified as running Islandora, so there are no Islandora claims. All findings use automated evidence only; no reviewer has checked the LLM judgments yet.</p>
+  </section>
+
+  <h2 id="findings">Platform differences</h2>
+  <div class="prose">
+    <p>Each card shows the site-level value for each platform, from a phone-sized crawl (iPhone 13 emulation).
+      A highlighted bar marked <span class="chip">differs</span> means that platform differs from the others
+      at FDR q &lt; 0.05. A finding is tiered <strong>Assert now</strong> when it passes every check:</p>
+    <ul>
+      <li>significant after false-discovery correction across all 62 tests;</li>
+      <li>significant when platforms are compared only within the same type of institution;</li>
+      <li>still significant without Digital Commons, unless the claim is about Digital Commons itself;</li>
+      <li>the same platform ordering appears in run 1, an earlier desktop crawl of 125 sites (Spearman ρ ≥ 0.6); where that run has no such measure, q &lt; 0.01 instead.</li>
+    </ul>
+    <p>Anything significant that fails a check is shown as <strong>Supporting</strong>, with the failed check named.
+      12 findings are tiered "Assert now" and 1 "Supporting".</p>
+  </div>
+  <h3 class="family">Overlays met on load</h3><div class="grid">
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>An overlay (consent banner, modal, promo) covers the home page on load</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>overlay_on_load</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 5% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:5.0%"></span></span><span class="bar-val">5%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 94% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:94.1%"></span></span><span class="bar-val">94%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Digital commons: 100% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:100.0%"></span></span><span class="bar-val">100%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 0% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Samvera: 10% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:10.0%"></span></span><span class="bar-val">10%</span><span class="chip-slot"><span class=chip>differs</span></span></div></div>
+  <p>Digital commons 100% vs 29% for the rest; Omeka 0% vs 60% for the rest; CONTENTdm 5% vs 62% for the rest; DSpace 94% vs 38% for the rest; Samvera 10% vs 54% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace, Digital commons: don&#x27;t open a pop-up over the page on load; if a consent notice is required, make it a non-blocking banner.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.93</dd></div>
+    <div><dt>Replication ρ</dt><dd>0.87</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>A cookie/consent banner covers the home page on load</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>consent_overlay_on_load</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 0% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 94% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:94.1%"></span></span><span class="bar-val">94%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Digital commons: 100% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:100.0%"></span></span><span class="bar-val">100%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 0% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Samvera: 10% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:10.0%"></span></span><span class="bar-val">10%</span><span class="chip-slot"><span class=chip>differs</span></span></div></div>
+  <p>Digital commons 100% vs 27% for the rest; CONTENTdm 0% vs 62% for the rest; Omeka 0% vs 58% for the rest; DSpace 94% vs 37% for the rest; Samvera 10% vs 53% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace, Digital commons: make the consent notice a non-blocking banner, not a layer over the page.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.96</dd></div>
+    <div><dt>Replication ρ</dt><dd>–</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>An overlay is open on load and Escape does not close it</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>overlay_escape_fails</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 0% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 94% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:94.1%"></span></span><span class="bar-val">94%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Digital commons: 100% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:100.0%"></span></span><span class="bar-val">100%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 0% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Samvera: 10% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:10.0%"></span></span><span class="bar-val">10%</span><span class="chip-slot"><span class=chip>differs</span></span></div></div>
+  <p>Digital commons 100% vs 27% for the rest; CONTENTdm 0% vs 62% for the rest; Omeka 0% vs 58% for the rest; DSpace 94% vs 37% for the rest; Samvera 10% vs 53% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace, Digital commons: close the consent dialog/banner with Escape and return focus to the page.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.96</dd></div>
+    <div><dt>Replication ρ</dt><dd>1.00</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · Digital Commons</span><h3>An overlay on load has no named reject/close control</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>overlay_no_named_dismiss</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 0% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 0% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Digital commons: 100% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:100.0%"></span></span><span class="bar-val">100%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 0% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Samvera: 0% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div></div>
+  <p>Digital commons 100% vs 0% for the rest; CONTENTdm 0% vs 37% for the rest; DSpace 0% vs 35% for the rest; Omeka 0% vs 35% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> Digital commons: give the consent banner a visible, named &#x27;Reject all&#x27; or &#x27;Close&#x27; control next to &#x27;Accept&#x27;.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd>–</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>1.00</dd></div>
+    <div><dt>Replication ρ</dt><dd>–</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>An overlay on load is not exposed as a dialog to assistive technology</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>overlay_not_exposed_as_dialog</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 0% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 65% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:64.7%"></span></span><span class="bar-val">65%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Digital commons: 100% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:100.0%"></span></span><span class="bar-val">100%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 0% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Samvera: 0% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div></div>
+  <p>Digital commons 100% vs 17% for the rest; CONTENTdm 0% vs 53% for the rest; Omeka 0% vs 50% for the rest; Samvera 0% vs 46% for the rest; DSpace 65% vs 35% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace, Digital commons: expose the overlay as role=dialog (aria-modal when it blocks the page) with a name.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.90</dd></div>
+    <div><dt>Replication ρ</dt><dd>–</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>An overlay on load can&#x27;t be reached within 10 Tab presses</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>overlay_not_reachable_by_tab</code></p></header>
+  <div class="bars"><div class="bar-row" title="CONTENTdm: 0% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div><div class="bar-row flag" title="DSpace: 35% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:35.3%"></span></span><span class="bar-val">35%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Digital commons: 0% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div><div class="bar-row" title="Omeka: 0% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div><div class="bar-row" title="Samvera: 0% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div></div>
+  <p>DSpace 35% vs 0% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace: put the overlay first in focus order, or move focus into it when it opens.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd>0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.55</dd></div>
+    <div><dt>Replication ρ</dt><dd>–</dd></div>
+  </dl>
+</article></div><h3 class="family">Home page</h3><div class="grid">
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>Home page does not fit a phone screen (WCAG 1.4.10)</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>reflow_fail_1.4.10</code></p></header>
+  <div class="bars"><div class="bar-row" title="CONTENTdm: 0% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div><div class="bar-row flag" title="DSpace: 41% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:41.2%"></span></span><span class="bar-val">41%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Digital commons: 0% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div><div class="bar-row" title="Omeka: 0% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div><div class="bar-row" title="Samvera: 0% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div></div>
+  <p>DSpace 41% vs 0% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace: make the default theme fit a 320 px wide screen without sideways scrolling.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.60</dd></div>
+    <div><dt>Replication ρ</dt><dd>–</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>Search box is inside a search landmark</h3>
+  <p class="unit">share of sites by platform · higher is better · <code>search_in_landmark</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 75% (n=20)"><span class="bar-label">CONTENTdm <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:75.0%"></span></span><span class="bar-val">75%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 0% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Digital commons: 0% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 62% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:62.5%"></span></span><span class="bar-val">62%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Samvera: 70% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:70.0%"></span></span><span class="bar-val">70%</span><span class="chip-slot"><span class=chip>differs</span></span></div></div>
+  <p>Digital commons 0% vs 51% for the rest; CONTENTdm 75% vs 25% for the rest; DSpace 0% vs 45% for the rest; Samvera 70% vs 32% for the rest; Omeka 62% vs 31% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace, Digital commons: wrap the global search form in role=search (or &lt;search&gt;) so screen-reader users can jump to it.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.73</dd></div>
+    <div><dt>Replication ρ</dt><dd>0.87</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>Expand/collapse controls expose their state (mDLAUG ACC5 engine score, 1–7)</h3>
+  <p class="unit">median by platform · higher is better · <code>mDLAUG ACC5</code></p></header>
+  <div class="bars"><div class="bar-row" title="CONTENTdm: 4 (n=19)"><span class="bar-label">CONTENTdm <span class="n">n=19</span></span><span class="bar-track"><span class="bar" style="width:57.1%"></span></span><span class="bar-val">4</span><span class="chip-slot"></span></div><div class="bar-row flag" title="DSpace: 3 (n=16)"><span class="bar-label">DSpace <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:42.9%"></span></span><span class="bar-val">3</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Digital commons: 4 (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:57.1%"></span></span><span class="bar-val">4</span><span class="chip-slot"></span></div><div class="bar-row flag" title="Omeka: 7 (n=11)"><span class="bar-label">Omeka <span class="n">n=11</span></span><span class="bar-track"><span class="bar" style="width:100.0%"></span></span><span class="bar-val">7</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Samvera: 3 (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:42.9%"></span></span><span class="bar-val">3</span><span class="chip-slot"></span></div></div>
+  <p>Omeka median 7 vs 4 for the rest; DSpace median 3 vs 4 for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> DSpace: give menu, accordion and other expand/collapse controls aria-expanded (and aria-controls).</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>epsilon²</dt><dd>0.27</dd></div>
+    <div><dt>Replication ρ</dt><dd>1.00</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>axe rule &#x27;link-in-text-block&#x27; fails on the home page</h3>
+  <p class="unit">share of sites by platform · lower is better · <code>axe link-in-text-block</code></p></header>
+  <div class="bars"><div class="bar-row" title="CONTENTdm: 5% (n=19)"><span class="bar-label">CONTENTdm <span class="n">n=19</span></span><span class="bar-track"><span class="bar" style="width:5.3%"></span></span><span class="bar-val">5%</span><span class="chip-slot"></span></div><div class="bar-row" title="DSpace: 12% (n=17)"><span class="bar-label">DSpace <span class="n">n=17</span></span><span class="bar-track"><span class="bar" style="width:11.8%"></span></span><span class="bar-val">12%</span><span class="chip-slot"></span></div><div class="bar-row" title="Digital commons: 4% (n=25)"><span class="bar-label">Digital commons <span class="n">n=25</span></span><span class="bar-track"><span class="bar" style="width:4.0%"></span></span><span class="bar-val">4%</span><span class="chip-slot"></span></div><div class="bar-row flag" title="Omeka: 50% (n=16)"><span class="bar-label">Omeka <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:50.0%"></span></span><span class="bar-val">50%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Samvera: 0% (n=10)"><span class="bar-label">Samvera <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"></span></div></div>
+  <p>Omeka 50% vs 6% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> Omeka: keep underlines (or another non-colour cue) on links inside text.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd>0.002</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.51</dd></div>
+    <div><dt>Replication ρ</dt><dd>0.97</dd></div>
+  </dl>
+</article></div><h3 class="family">Search results page</h3><div class="grid">
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>Results pagination is a navigation landmark</h3>
+  <p class="unit">share of sites by platform · higher is better · <code>pagination_landmark</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 0% (n=16)"><span class="bar-label">CONTENTdm <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 90% (n=10)"><span class="bar-label">DSpace <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:90.0%"></span></span><span class="bar-val">90%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 100% (n=11)"><span class="bar-label">Omeka <span class="n">n=11</span></span><span class="bar-track"><span class="bar" style="width:100.0%"></span></span><span class="bar-val">100%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Samvera: 40% (n=5)"><span class="bar-label">Samvera <span class="n">n=5</span></span><span class="bar-track"><span class="bar" style="width:40.0%"></span></span><span class="bar-val">40%</span><span class="chip-slot"></span></div></div>
+  <p>CONTENTdm 0% vs 85% for the rest; Omeka 100% vs 35% for the rest; DSpace 90% vs 41% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> CONTENTdm: wrap results paging in &lt;nav aria-label=&#x27;Pagination&#x27;&gt;.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.89</dd></div>
+    <div><dt>Replication ρ</dt><dd>1.00</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now · several vendors</span><h3>Results pagination marks the current page (aria-current)</h3>
+  <p class="unit">share of sites by platform · higher is better · <code>pagination_current_page</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 0% (n=16)"><span class="bar-label">CONTENTdm <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 90% (n=10)"><span class="bar-label">DSpace <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:90.0%"></span></span><span class="bar-val">90%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 0% (n=11)"><span class="bar-label">Omeka <span class="n">n=11</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Samvera: 60% (n=5)"><span class="bar-label">Samvera <span class="n">n=5</span></span><span class="bar-track"><span class="bar" style="width:60.0%"></span></span><span class="bar-val">60%</span><span class="chip-slot"></span></div></div>
+  <p>DSpace 90% vs 9% for the rest; CONTENTdm 0% vs 46% for the rest; Omeka 0% vs 39% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> CONTENTdm, Omeka: mark the current page link with aria-current=&#x27;page&#x27;.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.87</dd></div>
+    <div><dt>Replication ρ</dt><dd>1.00</dd></div>
+  </dl>
+</article>
+<article class="finding tier-supporting">
+  <header><span class="tier">Supporting · several vendors</span><h3>Focus moves to results, or a skip-to-results link exists</h3>
+  <p class="unit">share of sites by platform · higher is better · <code>focus_or_skip_to_results</code></p><p class="unit">Not "assert" because: weak replication (ρ 0.50)</p></header>
+  <div class="bars"><div class="bar-row flag" title="CONTENTdm: 0% (n=16)"><span class="bar-label">CONTENTdm <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="DSpace: 0% (n=10)"><span class="bar-label">DSpace <span class="n">n=10</span></span><span class="bar-track"><span class="bar" style="width:0.5%"></span></span><span class="bar-val">0%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Omeka: 85% (n=13)"><span class="bar-label">Omeka <span class="n">n=13</span></span><span class="bar-track"><span class="bar" style="width:84.6%"></span></span><span class="bar-val">85%</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row flag" title="Samvera: 83% (n=6)"><span class="bar-label">Samvera <span class="n">n=6</span></span><span class="bar-track"><span class="bar" style="width:83.3%"></span></span><span class="bar-val">83%</span><span class="chip-slot"><span class=chip>differs</span></span></div></div>
+  <p>Omeka 85% vs 16% for the rest; CONTENTdm 0% vs 55% for the rest; Samvera 83% vs 28% for the rest; DSpace 0% vs 46% for the rest.</p>
+  <p class="ask"><strong>Vendor ask.</strong> CONTENTdm, DSpace: move focus to the results heading after a search, or add a skip-to-results link.</p>
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd><0.001</dd></div>
+    <div><dt>p, within library type</dt><dd><0.001</dd></div>
+    <div><dt>p, without Digital Commons</dt><dd><0.001</dd></div>
+    <div><dt>Cramér&#x27;s V</dt><dd>0.87</dd></div>
+    <div><dt>Replication ρ</dt><dd>0.50</dd></div>
+  </dl>
+</article></div>
+
+  <h2 id="institutions">Institution type</h2>
+  <div class="prose">
+    <p>The same tests by library type (academic, public, museum, organizational, large-scale/consortium).
+      Platform separated sites more strongly than institution type on 20 of 24 measures.
+      The last column is a bootstrap estimate of the sites per group needed for 80% power at the observed effect.</p>
+  </div>
+  <div class="grid">
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now</span><h3>Expand/collapse controls expose their state (mDLAUG ACC5 engine score, 1–7)</h3>
+  <p class="unit">median by library type · higher is better · <code>mDLAUG ACC5</code></p></header>
+  <div class="bars"><div class="bar-row flag" title="Academic library: 3 (n=34)"><span class="bar-label">Academic library <span class="n">n=34</span></span><span class="bar-track"><span class="bar" style="width:42.9%"></span></span><span class="bar-val">3</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Large-scale library / consortium: 3.5 (n=22)"><span class="bar-label">Large-scale library / consortium <span class="n">n=22</span></span><span class="bar-track"><span class="bar" style="width:50.0%"></span></span><span class="bar-val">3.5</span><span class="chip-slot"></span></div><div class="bar-row flag" title="Museum: 4 (n=22)"><span class="bar-label">Museum <span class="n">n=22</span></span><span class="bar-track"><span class="bar" style="width:57.1%"></span></span><span class="bar-val">4</span><span class="chip-slot"><span class=chip>differs</span></span></div><div class="bar-row" title="Organizational library: 4 (n=20)"><span class="bar-label">Organizational library <span class="n">n=20</span></span><span class="bar-track"><span class="bar" style="width:57.1%"></span></span><span class="bar-val">4</span><span class="chip-slot"></span></div><div class="bar-row" title="Public library: 4 (n=16)"><span class="bar-label">Public library <span class="n">n=16</span></span><span class="bar-track"><span class="bar" style="width:57.1%"></span></span><span class="bar-val">4</span><span class="chip-slot"></span></div></div>
+  <p>Academic library median 3 vs 4 for the rest; Museum median 4 vs 4 for the rest.</p>
+  
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd>0.008</dd></div>
+    <div><dt>p, within platform</dt><dd>0.006</dd></div>
+    
+    <div><dt>epsilon²</dt><dd>0.11</dd></div>
+    <div><dt>Replication ρ</dt><dd>0.97</dd></div>
+  </dl>
+</article>
+<article class="finding tier-assert">
+  <header><span class="tier">Assert now</span><h3>axe rule &#x27;link-name&#x27; fails on the home page</h3>
+  <p class="unit">share of sites by library type · lower is better · <code>axe link-name</code></p></header>
+  <div class="bars"><div class="bar-row" title="Academic library: 22% (n=37)"><span class="bar-label">Academic library <span class="n">n=37</span></span><span class="bar-track"><span class="bar" style="width:21.6%"></span></span><span class="bar-val">22%</span><span class="chip-slot"></span></div><div class="bar-row" title="Large-scale library / consortium: 35% (n=26)"><span class="bar-label">Large-scale library / consortium <span class="n">n=26</span></span><span class="bar-track"><span class="bar" style="width:34.6%"></span></span><span class="bar-val">35%</span><span class="chip-slot"></span></div><div class="bar-row" title="Museum: 26% (n=23)"><span class="bar-label">Museum <span class="n">n=23</span></span><span class="bar-track"><span class="bar" style="width:26.1%"></span></span><span class="bar-val">26%</span><span class="chip-slot"></span></div><div class="bar-row" title="Organizational library: 15% (n=27)"><span class="bar-label">Organizational library <span class="n">n=27</span></span><span class="bar-track"><span class="bar" style="width:14.8%"></span></span><span class="bar-val">15%</span><span class="chip-slot"></span></div><div class="bar-row flag" title="Public library: 61% (n=18)"><span class="bar-label">Public library <span class="n">n=18</span></span><span class="bar-track"><span class="bar" style="width:61.1%"></span></span><span class="bar-val">61%</span><span class="chip-slot"><span class=chip>differs</span></span></div></div>
+  <p>Public library 61% vs 24% for the rest.</p>
+  
+  <dl class="stats">
+    <div><dt>FDR q</dt><dd>0.029</dd></div>
+    <div><dt>p, within platform</dt><dd>0.019</dd></div>
+    
+    <div><dt>Cramér&#x27;s V</dt><dd>0.32</dd></div>
+    <div><dt>Replication ρ</dt><dd>1.00</dd></div>
+  </dl>
+</article></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Measure</th><th class="num">FDR q</th><th class="num">Effect</th><th class="num">Sites/group for 80% power</th></tr></thead>
+    <tbody><tr><td>mDLAUG ACC5 engine score on the home page (1–7, higher is better)</td><td class=num>0.008</td><td class=num>0.11</td><td class=num>20.0</td></tr><tr><td>axe rule &#x27;link-name&#x27; fails on the home page</td><td class=num>0.029</td><td class=num>0.32</td><td class=num>20.0</td></tr><tr><td>axe rule &#x27;select-name&#x27; fails on the home page</td><td class=num>0.052</td><td class=num>0.30</td><td class=num>30.0</td></tr><tr><td>Results pagination marks the current page (aria-current)</td><td class=num>0.069</td><td class=num>0.44</td><td class=num>15.0</td></tr><tr><td>Tap targets under 24×24 px on the home page (WCAG 2.5.8)</td><td class=num>0.076</td><td class=num>0.05</td><td class=num>30.0</td></tr><tr><td>axe rule &#x27;color-contrast&#x27; fails on the home page</td><td class=num>0.102</td><td class=num>0.28</td><td class=num>40.0</td></tr><tr><td>Search box is labelled only by placeholder text</td><td class=num>0.136</td><td class=num>0.25</td><td class=num>60.0</td></tr><tr><td>Focus moves to results, or a skip-to-results link exists</td><td class=num>0.262</td><td class=num>0.32</td><td class=num>20.0</td></tr><tr><td>WCAG 2.2 A/AA rules failed on the home page (axe-core)</td><td class=num>0.269</td><td class=num>0.02</td><td class=num>60.0</td></tr><tr><td>An overlay on load can&#x27;t be reached within 10 Tab presses</td><td class=num>0.532</td><td class=num>0.19</td><td class=num>60.0</td></tr><tr><td>Search box is inside a search landmark</td><td class=num>0.581</td><td class=num>0.18</td><td class=num>nan</td></tr><tr><td>Results pagination is a navigation landmark</td><td class=num>0.602</td><td class=num>0.27</td><td class=num>30.0</td></tr><tr><td>Home page does not fit a phone screen (WCAG 1.4.10)</td><td class=num>0.702</td><td class=num>0.16</td><td class=num>nan</td></tr><tr><td>Results are marked up as a list or table</td><td class=num>0.702</td><td class=num>0.24</td><td class=num>40.0</td></tr><tr><td>axe rule &#x27;target-size&#x27; fails on the home page</td><td class=num>0.702</td><td class=num>0.16</td><td class=num>nan</td></tr><tr><td>axe rule &#x27;image-alt&#x27; fails on the home page</td><td class=num>0.702</td><td class=num>0.16</td><td class=num>nan</td></tr><tr><td>axe rule &#x27;link-in-text-block&#x27; fails on the home page</td><td class=num>0.702</td><td class=num>0.16</td><td class=num>nan</td></tr><tr><td>mDLAUG COM1 engine score on the home page (1–7, higher is better)</td><td class=num>0.708</td><td class=num>0.00</td><td class=num>nan</td></tr><tr><td>An overlay on load is not exposed as a dialog to assistive technology</td><td class=num>0.796</td><td class=num>0.13</td><td class=num>nan</td></tr><tr><td>An overlay (consent banner, modal, promo) covers the home page on load</td><td class=num>0.796</td><td class=num>0.13</td><td class=num>nan</td></tr><tr><td>A cookie/consent banner covers the home page on load</td><td class=num>0.817</td><td class=num>0.13</td><td class=num>nan</td></tr><tr><td>An overlay is open on load and Escape does not close it</td><td class=num>0.849</td><td class=num>0.11</td><td class=num>nan</td></tr><tr><td>An overlay on load has no named reject/close control</td><td class=num>0.849</td><td class=num>0.12</td><td class=num>nan</td></tr><tr><td>WCAG 2.2 A/AA rules failed on the results page (axe-core)</td><td class=num>0.849</td><td class=num>0.00</td><td class=num>nan</td></tr><tr><td>Result count is in a live/status region (announced)</td><td class=num>1.000</td><td class=num>0.17</td><td class=num>nan</td></tr></tbody></table></div>
+
+  <h2 id="coverage">What the crawl reached</h2>
+  <div class="prose">
+    <p>Search results were reached on 77 sites: through the site's search box where possible, otherwise
+      through the platform's own search URL. On 33 sites, a bot-protection challenge (Cloudflare and similar)
+      answered instead of the results. Those were recorded and never solved. The overlay column lists what covered
+      each platform's home pages on load.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Platform</th><th class="num">Listed</th><th class="num">Crawled</th><th class="num">Results via search box</th>
+      <th class="num">Results via platform URL</th><th class="num">Bot check</th><th>Overlays on load (sites)</th></tr></thead>
+    <tbody><tr><td>CONTENTdm</td><td class=num>29</td><td class=num>20</td><td class=num>20</td><td class=num>0</td><td class=num>0</td><td>dialog (3), consent (2), CookieYes (1)</td></tr><tr><td>DSpace</td><td class=num>30</td><td class=num>17</td><td class=num>17</td><td class=num>1</td><td class=num>0</td><td>Klaro (11), consent (5), CookieConsent (1)</td></tr><tr><td>Digital commons</td><td class=num>28</td><td class=num>25</td><td class=num>1</td><td class=num>0</td><td class=num>25</td><td>OneTrust (25), app_banner (25), Klaro (1)</td></tr><tr><td>Islandora</td><td class=num>32</td><td class=num>2</td><td class=num>7</td><td class=num>2</td><td class=num>3</td><td>CookieYes (1), Osano (1), CookieConsent (1), consent (1)</td></tr><tr><td>Omeka</td><td class=num>22</td><td class=num>16</td><td class=num>11</td><td class=num>3</td><td class=num>0</td><td>–</td></tr><tr><td>Samvera</td><td class=num>28</td><td class=num>10</td><td class=num>14</td><td class=num>1</td><td class=num>5</td><td>CookieYes (2), consent (2), OneTrust (1)</td></tr></tbody></table></div>
+  <div class="prose">
+    <p>Platform labels were checked against each site's own markup. Vendor comparisons use only the 90
+      sites the check confirms. The 47 below were moved to the platform they actually run, or left out of
+      vendor comparisons because their markup shows other software or no platform at all. They still count in the
+      institution-type tests.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Institution</th><th>Listed as</th><th>Fingerprint</th></tr></thead>
+    <tbody><tr><td>Wisconsin Historical Society (WHS Digital Collections)</td><td>CONTENTdm</td><td>other software: Preservica</td></tr><tr><td>University of Southern California (USC Digital Library)</td><td>CONTENTdm</td><td>unverified</td></tr><tr><td>Denver Public Library (Denver Public Digital Collections)</td><td>CONTENTdm</td><td>unverified</td></tr><tr><td>The Newberry Library</td><td>CONTENTdm</td><td>unverified</td></tr><tr><td>The Historic New Orlean collection</td><td>CONTENTdm</td><td>unverified</td></tr><tr><td>The National WWII Museum (Digital Collections)</td><td>CONTENTdm</td><td>unverified (Drupal)</td></tr><tr><td>Duke University Libraries</td><td>CONTENTdm</td><td>unverified (Samvera)</td></tr><tr><td>National Library of Medicine (NLM Digital Collections)</td><td>CONTENTdm</td><td>unverified (Samvera)</td></tr><tr><td>West Texas Digital Archives</td><td>DSpace</td><td>unverified</td></tr><tr><td>Duke University (DukeSpace)</td><td>DSpace</td><td>unverified</td></tr><tr><td>University of Illinois Urbana-Champaign (IDEALS)</td><td>DSpace</td><td>unverified</td></tr><tr><td>Society of Fire Protection Engineers (SFPE)</td><td>DSpace</td><td>unverified</td></tr><tr><td>National Evolutionary Synthesis Center (Dryad project)</td><td>DSpace</td><td>unverified</td></tr><tr><td>Cottonwood Research Foundation (Digital Library)</td><td>DSpace</td><td>unverified (WordPress)</td></tr><tr><td>Bangor Public Library, Maine (Bangor Community: Digital Commons@bpl)</td><td>Digital commons</td><td>relabeled (listed Digital commons)</td></tr><tr><td>University of California, Berkeley</td><td>Digital commons</td><td>unverified</td></tr><tr><td>University of Rochester (RBSCP Digital Collections)</td><td>Islandora</td><td>other software: Preservica</td></tr><tr><td>University of Neveda Digital Archives</td><td>Islandora</td><td>other software: Primo</td></tr><tr><td>Smithsonian Institution (Smithsonian Libraries &amp; Archives)</td><td>Islandora</td><td>other software: Primo</td></tr><tr><td>American University</td><td>Islandora</td><td>other software: Quartex</td></tr><tr><td>Keystone library network</td><td>Islandora</td><td>relabeled (listed Islandora)</td></tr><tr><td>Virginia Commonwealth University Library</td><td>Islandora</td><td>relabeled (listed Islandora)</td></tr><tr><td>Georgia State University</td><td>Islandora</td><td>relabeled (listed Islandora)</td></tr><tr><td>Villanova University</td><td>Islandora</td><td>unverified</td></tr><tr><td>University of Oklahoma Libraries</td><td>Islandora</td><td>unverified</td></tr><tr><td>Massachusetts Historical Society (MHS Digital Collections)</td><td>Islandora</td><td>unverified</td></tr><tr><td>Art Institute of Chicago (Archival &amp; Digital Collections)</td><td>Islandora</td><td>unverified (CONTENTdm)</td></tr><tr><td>Arizona State University (KEEP Digital Repository)</td><td>Islandora</td><td>unverified (Drupal)</td></tr><tr><td>Smithsonian National Museum of American History</td><td>Islandora</td><td>unverified (Drupal)</td></tr><tr><td>Yale Center for British Art (YCBA Collections)</td><td>Islandora</td><td>unverified (Drupal)</td></tr><tr><td>National Gallery of Art (NGA Digital Images)</td><td>Islandora</td><td>unverified (Drupal)</td></tr><tr><td>Digital Commonwealth Consortium (Digital Commonwealth)</td><td>Islandora</td><td>unverified (Samvera)</td></tr><tr><td>Science History Institute (Science History Digital Collections)</td><td>Islandora</td><td>unverified (Samvera)</td></tr><tr><td>Papers of the War Department 1784–1800</td><td>Omeka</td><td>unverified</td></tr><tr><td>Internet Archive &amp; Partner Orgs (Archive-It Collections)</td><td>Samvera</td><td>other software: Archive-It</td></tr><tr><td>National Agricultural Library - USDA (PubAg Digital Repository)</td><td>Samvera</td><td>other software: Primo</td></tr><tr><td>The Getty Research Institute Research collections</td><td>Samvera</td><td>other software: Primo</td></tr><tr><td>The Getty Research Institute Museum</td><td>Samvera</td><td>other software: Primo</td></tr><tr><td>Northwestern University (Northwestern Digital Collections)</td><td>Samvera</td><td>unverified</td></tr><tr><td>University of Utah</td><td>Samvera</td><td>unverified</td></tr><tr><td>Rock and Roll Hall of Fame (Rock Hall Library &amp; Archives)</td><td>Samvera</td><td>unverified</td></tr><tr><td>Whitney Museum of American Art (Whitney Digital Assets)</td><td>Samvera</td><td>unverified</td></tr><tr><td>Museum of Modern Art - MoMA (MoMA Exhibition Records &amp; Archives)</td><td>Samvera</td><td>unverified</td></tr><tr><td>Cleveland Museum of Art (CMA Collection Online)</td><td>Samvera</td><td>unverified</td></tr><tr><td>University of Virginia</td><td>Samvera</td><td>unverified (WordPress)</td></tr><tr><td>Science History Institute (Science History Collections)</td><td>Samvera</td><td>unverified (WordPress)</td></tr><tr><td>Solomon R. Guggenheim Museum (Guggenheim Collection Online)</td><td>Samvera</td><td>unverified (WordPress)</td></tr></tbody></table></div>
+  <div class="prose">
+    <p><strong>Screenshot check.</strong> A local vision model looked at 132 home pages. It and the DOM
+      overlay detector agreed that an overlay was present on 56 and absent on 61. Only the
+      detector saw one on 1, only the vision model on 14. After dismissal, the vision model still
+      saw something floating on 28 pages. Spot checks show it calls floating share bars and similar
+      widgets "cookie banners", so this check is advisory and doesn't remove data.</p>
+  </div>
+
+  <h2 id="dropped">What we cannot assert automatically</h2>
+  <div class="prose">
+    <p>These measures were tested but are kept out of the findings, for the reason given.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Measure</th><th>Why it was left out</th></tr></thead><tbody><tr><td><code>axe_failing_elements</code></td><td>element counts scale with page length; axe_rules_violated is the comparable measure</td></tr><tr><td><code>mDLAUG ACC2/COM3</code></td><td>nearly every site scores 7; differences are a few outliers, not a usable claim</td></tr><tr><td><code>mDLAUG EXE2</code></td><td>engine counts consent-manager dialog markup left in the page after dismissal; the overlay measures cover this directly</td></tr><tr><td><code>mDLAUG INT1</code></td><td>duplicate of the EXE2 engine score (same engine findings)</td></tr><tr><td><code>mDLAUG RED1</code></td><td>results-status situation scored on home pages</td></tr><tr><td><code>axe aria-hidden-focus</code></td><td>appears on Digital Commons only after the crawler rejects cookies through OneTrust&#x27;s API; may not match what a user&#x27;s click leaves behind</td></tr></tbody></table></div>
+  <div class="prose">
+    <p>These mDLAUG situations need a person, either by design (assistive-technology behaviour, content quality) or
+      because their LLM or probe judgments haven't been checked by a reviewer yet. The database has 0
+      reviews so far. This is where manual labor would add new claims.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Situation</th><th class="num">Sites</th><th class="num">Findings</th><th>Why it needs a person</th></tr></thead>
+    <tbody><tr><td>COM1</td><td class=num>134</td><td class=num>206</td><td>LLM judgment (not validated by reviewers yet); crawler flagged the result for review</td></tr><tr><td>USE1</td><td class=num>131</td><td class=num>399</td><td>always needs a person (AT / content quality)</td></tr><tr><td>ACC2/COM3</td><td class=num>120</td><td class=num>264</td><td>LLM judgment (not validated by reviewers yet); crawler flagged the result for review</td></tr><tr><td>EXE1</td><td class=num>102</td><td class=num>102</td><td>crawler flagged the result for review</td></tr><tr><td>FIL1</td><td class=num>101</td><td class=num>189</td><td>crawler flagged the result for review</td></tr><tr><td>FIL3/HEP1</td><td class=num>95</td><td class=num>334</td><td>always needs a person (AT / content quality)</td></tr><tr><td>EVA1</td><td class=num>72</td><td class=num>72</td><td>LLM judgment (not validated by reviewers yet)</td></tr><tr><td>RED4</td><td class=num>64</td><td class=num>156</td><td>always needs a person (AT / content quality)</td></tr><tr><td>COM2/NAV1</td><td class=num>54</td><td class=num>54</td><td>crawler flagged the result for review</td></tr><tr><td>RED1</td><td class=num>53</td><td class=num>55</td><td>crawler flagged the result for review</td></tr><tr><td>RED2</td><td class=num>28</td><td class=num>28</td><td>crawler flagged the result for review</td></tr><tr><td>FIL2/RED3</td><td class=num>23</td><td class=num>24</td><td>crawler flagged the result for review</td></tr><tr><td>ACC3/COM4</td><td class=num>19</td><td class=num>27</td><td>always needs a person (AT / content quality)</td></tr></tbody></table></div>
+
+  <h2 id="next">What would add the most</h2>
+  <ol class="steps prose">
+    <li><strong>Ask Elsevier/bepress to let the research crawler through.</strong> Digital Commons search is behind Cloudflare on 25 of 26 sites. An allowlist for the crawler's user agent, or a crawl from a university network, would make its results pages measurable. We won't solve or evade bot checks.</li>
+    <li><strong>Fix the Islandora sample.</strong> 14 of 16 listed “Islandora” sites carry no Islandora markers (many are custom Drupal or museum systems). A list of confirmed Islandora sites from the Islandora community would make that group usable.</li>
+    <li><strong>Calibrate the LLM checks with reviewers.</strong> Two people confirming about 30 findings each for alt-text quality, page structure and help pages would show which of those checks can be trusted. Each covers 50–130 sites.</li>
+    <li><strong>Try a larger local vision model for the screenshot check.</strong> It caught real crawler gaps in this run (a closed-shadow-DOM content notice and three bot-check pages, all fixed and re-crawled). It also calls share bars and chat buttons “cookie banners” (28 flags after dismissal, mostly those). A 12B model should cut the noise.</li>
+    <li><strong>Answer the institution question with pairs, not volume.</strong> The observed institution-type effects would need 40–60 sites per type. Comparing the same platform across institution types answers it more cheaply.</li>
+  </ol>
+
+  <h2 id="method">Method</h2>
+  <div class="prose">
+    <p>Unit of analysis: one site. Primary sample: crawl run 4 (iPhone 13 emulation, 132 sites
+      with a loaded home page; 90 of them vendor-verified). After crawler fixes, 20 sites were re-crawled (runs 5, 6) and those results replace run 4's for them. Replication sample: run 1 (desktop, 125 sites, 115 in both runs). Because the two runs mostly cover the same sites, replication shows the result isn't an artifact of the device or crawler version. It is not an independent sample.
+      Pages that turned out to be bot-protection challenges are left out.</p>
+    <p>Evidence used: axe-core WCAG 2.2 A/AA rules, deterministic probes, and mDLAUG engine scorecards with confidence ≥ 0.7,
+      not flagged for review, and not in an always-review situation (USE1, ACC3/COM4, FIL3/HEP1, RED4). LLM judgments
+      were left out. Overlay measures come from the crawler's overlay pass, taken before each overlay was dismissed.
+      Results-page measures cover only sites whose search reached results.</p>
+    <p>Tests: permutation Kruskal–Wallis (counts and scores) or chi-square (yes/no), 5000 permutations; a stratified
+      permutation that shuffles platform only within library type (and the reverse); and, for platform, the same test
+      without Digital Commons. Benjamini–Hochberg FDR runs across all 62 tests. Per-platform "differs" flags
+      come from one-vs-rest Mann–Whitney or Fisher tests with their own FDR. Effect sizes are ε² (Kruskal–Wallis)
+      or Cramér's V.</p>
+    <p>Reproduce with <code>python scripts/significance.py</code> then <code>python scripts/significance_report.py</code>.
+      Per-site tables and every test are in <code>data/significance/</code>.</p>
+  </div>
+</div>
+</body>
+</html>

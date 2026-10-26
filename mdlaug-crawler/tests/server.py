@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent / "fixture_site"
 ROUTES = {"/": "index.html", "/search": "results.html", "/help": "help.html", "/browse": "browse.html",
           "/robots.txt": "robots.txt", "/consent/": "consent.html", "/onetrust/": "onetrust.html", "/onetrust-accept-only/": "onetrust_accept_only.html",
-          "/slow-results": "slow_results.html", "/guarded/": "guarded.html", "/notice/": "notice.html", "/notice-closed/": "notice_closed.html", "/notbot/": "notbot.html", "/guarded-search": "challenge.html"}
+          "/slow-results": "slow_results.html", "/guarded/": "guarded.html", "/notice/": "notice.html", "/ccv2/": "ccv2.html", "/notice-closed/": "notice_closed.html", "/notbot/": "notbot.html", "/guarded-search": "challenge.html"}
 
 class H(http.server.BaseHTTPRequestHandler):
     def do_GET(self):

@@ -225,17 +225,27 @@
   var CONSENT_TXT = /cookie|consent|gdpr|ccpa|tracking technolog|personal (data|information)|privacy (policy|preferences|settings)|we use|do not sell/i;
   var PROMO_TXT = /newsletter|subscribe|sign ?up|survey|feedback|donat|membership|join us|mailing list/i;
   var APP_TXT = /switch to (the )?(desktop|mobile|full|classic) (view|site|version)|desktop view|(get|download|open in) (the|our) app|open in app/i;
-  var DISMISS = [/reject all|decline all|deny all|refuse all|reject|decline|deny|refuse|necessary only|only necessary|essential only|only essential|necessary cookies only|continue without/i,
+  var DISMISS = [/reject all|decline all|deny all|refuse all|reject|decline|deny|refuse|necessary only|only necessary|essential only|only essential|necessary cookies only|accept (only )?(the )?(necessary|essential)|continue without/i,
                  /^(×|✕|✖|x)$|^close|close (this|dialog|banner|window|notice|pop)|dismiss|no,? thanks|not now|maybe later|^skip$|hide/i,
                  /^ok$|okay|got it|i understand|understood|continue|accept all|accept|agree|allow all|allow|that'?s ok/i];
   var BTN_SEL = "button, a[href], [role=button], input[type=button], input[type=submit]";
 
-  function fixedRoot(el) {   // outermost fixed-position ancestor (what actually floats over the page)
-    var best = null;
+  function fixedRoot(el) {   // outermost fixed-position ancestor with a size (what actually floats over the page)
+    var best = null, zeroFixed = null, chain = [];
     for (var p = el; p && p !== document.body && p !== document.documentElement; p = p.parentElement) {
-      if (getComputedStyle(p).position === "fixed") best = p;
+      chain.push(p);
+      if (getComputedStyle(p).position === "fixed") {
+        var r = p.getBoundingClientRect();
+        if (r.width * r.height > 0) best = p; else zeroFixed = p;
+      }
     }
-    return best;
+    if (best) return best;
+    if (zeroFixed) {   // consent libraries often wrap the dialog in a zero-size fixed container: use its sized child
+      for (var j = chain.indexOf(zeroFixed) - 1; j >= 0; j--) {
+        var rr = chain[j].getBoundingClientRect(); if (rr.width * rr.height > 0) return chain[j];
+      }
+    }
+    return null;
   }
   function coverage(el) {
     var r = el.getBoundingClientRect();
@@ -293,7 +303,12 @@
     $$(DIALOG_SEL).filter(visible).forEach(function (el) {
       var cov = coverage(el), t = txt(el).slice(0, 600);
       var modal = el.getAttribute("aria-modal") === "true" || (el.tagName === "DIALOG" && el.matches(":modal"));
-      if (cov > 0.01 && (modal || cov >= 0.15 || CONSENT_TXT.test(t) || PROMO_TXT.test(t) || APP_TXT.test(t))) add(fixedRoot(el) || el);
+      // a dialog sitting in the page flow (a search form marked role=dialog) isn't floating over anything
+      var floats = !!fixedRoot(el) || getComputedStyle(el).position === "absolute";
+      var inChrome = !modal && !!el.closest("header, nav, [role=banner], [role=navigation]") && !CONSENT_TXT.test(t);
+      if (inChrome) return;      // a search panel or menu in the site header, not a layer over the page
+      if (cov > 0.01 && (modal || cov >= 0.5 || (floats && (cov >= 0.15 || CONSENT_TXT.test(t) || PROMO_TXT.test(t) || APP_TXT.test(t)))))
+        add(fixedRoot(el) || el);
     });
     // sample the viewport: what floats on top of the page?
     for (var gx = 1; gx <= 5; gx++) for (var gy = 1; gy <= 7; gy++) {

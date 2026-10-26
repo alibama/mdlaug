@@ -227,6 +227,20 @@ def test_closed_shadow_root_overlay_detected_and_hidden(tmp_path):
     assert ev["criteria"]["exposed_as_dialog"] is None and ev["criteria"]["escape_closes"] is False
 
 
+def test_zero_size_consent_wrapper_and_header_dialog(tmp_path):
+    """Regression (HNOC): CookieConsent wraps its modal in a zero-size fixed container, which hid it from the
+    probe, while a search form marked role=dialog in the fixed header was counted as an overlay."""
+    srv, base = server.serve()
+    try:
+        st, rid = _crawl_one(tmp_path, base + "ccv2/", platform="CONTENTdm", name="cc")
+    finally:
+        srv.shutdown()
+    ov = st.query("SELECT evidence FROM findings WHERE run_id=? AND check_id='probe.overlay' AND code='INT1'", (rid,))
+    assert len(ov) == 1, [json.loads(o["evidence"])["el"] for o in ov]
+    ev = json.loads(ov[0]["evidence"])
+    assert ev["cmp"] == "CookieConsent" and ev["dismissal"]["label"] == "Accept necessary" and not ev["still_visible"]
+
+
 def test_failed_browser_check_page_is_a_bot_challenge(tmp_path):
     srv, base = server.serve()
     try:

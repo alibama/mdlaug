@@ -158,8 +158,11 @@ def main():
     ap = argparse.ArgumentParser()
     here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ap.add_argument("--dir", default=os.path.join(here, "data", "significance"))
+    ap.add_argument("--out", help="where to write the page (default: <dir>/report.html)")
+    ap.add_argument("--fragment", action="store_true",
+                    help="write the page body only, for hosts that add their own <html>/<head> (claude.ai artifacts)")
     a = ap.parse_args()
-    d = json.load(open(os.path.join(a.dir, "results.json")))
+    d = json.load(open(os.path.join(a.dir, "results.json"), encoding="utf-8"))
     cov = d["coverage"]
     rep = {(r["metric"], r["factor"]): r for r in d["replication"]}
     prim = [r for r in d["primary"] if r.get("final_review", True)]
@@ -219,8 +222,16 @@ def main():
                        f"(run{'s' if len(cov.get('patches', [])) > 1 else ''} "
                        f"{', '.join(str(x['id']) for x in cov.get('patches', []))}) and those results replace run "
                        f"{cov['run']['id']}'s for them." if cov.get("patches") else ""),
-        "RUN_ID": cov["run"]["id"], "RUN_DEVICE": cov["run"]["device"], "REP_ID": cov["replicate"]["id"],
-        "REP_DEVICE": cov["replicate"]["device"], "N_ASSERT": n_assert, "N_SUPPORT": n_support,
+        "RUN_ID": cov["run"]["id"], "RUN_DEVICE": cov["run"]["device"], "N_ASSERT": n_assert, "N_SUPPORT": n_support,
+        "REP_RULE": (f"the same platform ordering appears in run {cov['replicate']['id']}, an earlier "
+                     f"{cov['replicate']['device']} crawl of {cov['n_replicate']} sites (Spearman ρ ≥ 0.6); where that "
+                     "run has no such measure, q &lt; 0.01 instead." if cov["replicate"]["id"] else
+                     "q &lt; 0.01, since this database has no second run to replicate against."),
+        "REP_METHOD": (f"Replication sample: run {cov['replicate']['id']} ({cov['replicate']['device']}, "
+                       f"{cov['n_replicate']} sites, {cov['n_both']} in both runs). Because the two runs mostly cover "
+                       "the same sites, replication shows the result isn't an artifact of the device or crawler "
+                       "version. It is not an independent sample." if cov["replicate"]["id"] else
+                       "There is no replication run in this database."),
         "N_TESTS": len(d["primary"]), "N_PERM": d["n_perm"], "PLAT_WINS": plat_wins, "PV_N": len(pv),
         "SECTIONS": "".join(sections), "LT_CARDS": lt_cards or "<p>No institution-type difference passed the checks.</p>",
         "LT_ROWS": lt_rows, "DROP_ROWS": drop_rows, "MAN_ROWS": man_rows, "COV_ROWS": cov_rows,
@@ -232,14 +243,23 @@ def main():
     }
     # the narrative (bottom line, next steps) is written by a person after reading the results
     narr_path = os.path.join(os.path.dirname(__file__), "significance_narrative.json")
-    narr = json.load(open(narr_path)) if os.path.exists(narr_path) else {}
-    subs["BOTTOM_LINE"] = narr.get("bottom_line", "<p>Summary not written yet.</p>")
-    subs["NEXT_STEPS"] = narr.get("next_steps", "")
-    out = open(os.path.join(os.path.dirname(__file__), "significance_report_template.html")).read()
+    narr = json.load(open(narr_path, encoding="utf-8")) if os.path.exists(narr_path) else {}
+    if narr.get("run") != cov["run"]["id"]:          # written about another run: don't reuse it
+        narr = {}
+    subs["BOTTOM_LINE"] = narr.get("bottom_line", "    <p>The summary for this run hasn't been written yet. The findings "
+                                                  "below are generated from the data.</p>")
+    subs["NEXT_STEPS"] = narr.get("next_steps", "    <li>See AUTOMATION.md for ranked next steps.</li>")
+    out = open(os.path.join(os.path.dirname(__file__), "significance_report_template.html"), encoding="utf-8").read()
     for k, v in subs.items():
         out = out.replace("{{" + k + "}}", str(v))
-    path = os.path.join(a.dir, "report.html")
-    open(path, "w").write(out)
+    if not a.fragment:                 # a complete page that opens anywhere (browser, GitHub Pages)
+        head, body = out.split('<div class="wrap">', 1)
+        out = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+               '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+               + head + '<style>body{margin:0}</style>\n</head>\n<body>\n<div class="wrap">' + body + "</body>\n</html>\n")
+    path = a.out or os.path.join(a.dir, "report.html")
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(out)
     print(path)
 
 

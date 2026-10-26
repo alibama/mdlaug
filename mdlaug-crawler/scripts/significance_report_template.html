@@ -99,8 +99,7 @@ a { color: var(--accent); }
       <li>significant after false-discovery correction across all {{N_TESTS}} tests;</li>
       <li>significant when platforms are compared only within the same type of institution;</li>
       <li>still significant without Digital Commons, unless the claim is about Digital Commons itself;</li>
-      <li>the same platform ordering appears in run {{REP_ID}}, an earlier {{REP_DEVICE}} crawl of
-        {{N_REPLICATE}} sites (Spearman ρ ≥ 0.6); where that run has no such measure, q &lt; 0.01 instead.</li>
+      <li>{{REP_RULE}}</li>
     </ul>
     <p>Anything significant that fails a check is shown as <strong>Supporting</strong>, with the failed check named.
       {{N_ASSERT}} findings are tiered "Assert now" and {{N_SUPPORT}} "Supporting".</p>
@@ -169,9 +168,7 @@ a { color: var(--accent); }
   <h2 id="method">Method</h2>
   <div class="prose">
     <p>Unit of analysis: one site. Primary sample: crawl run {{RUN_ID}} ({{RUN_DEVICE}} emulation, {{N_PRIMARY}} sites
-      with a loaded home page; {{N_VERIFIED}} of them vendor-verified). {{PATCH_NOTE}} Replication sample: run {{REP_ID}}
-      ({{REP_DEVICE}}, {{N_REPLICATE}} sites, {{N_BOTH}} in both runs). Because the two runs mostly cover the same sites,
-      replication shows the result isn't an artifact of the device or crawler version. It is not an independent sample.
+      with a loaded home page; {{N_VERIFIED}} of them vendor-verified). {{PATCH_NOTE}} {{REP_METHOD}}
       Pages that turned out to be bot-protection challenges are left out.</p>
     <p>Evidence used: axe-core WCAG 2.2 A/AA rules, deterministic probes, and mDLAUG engine scorecards with confidence ≥ 0.7,
       not flagged for review, and not in an always-review situation (USE1, ACC3/COM4, FIL3/HEP1, RED4). LLM judgments

@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Library with a cookie modal</title>
+<style>header{position:fixed;top:0;left:0;right:0;background:#eee;height:120px}
+main{margin-top:140px}
+#cc--main{position:fixed;top:0;left:0;width:0;height:0;z-index:1000}
+#cm{position:absolute;top:30vh;left:5vw;width:90vw;background:#fff;border:1px solid #333;padding:12px}</style></head><body>
+<header><div role="dialog" aria-label="Search the library collection"><form action="/search">
+<label for="q">Search query</label><input id="q" name="q" type="search"><button type="submit">Search</button></form></div></header>
+<main><h1>Digital Collections</h1><p>Historical materials.</p></main>
+<div id="cc--main"><div id="cm" role="dialog" aria-labelledby="c-ttl"><div id="c-ttl" role="heading">Cookies</div>
+<p>This website uses cookies to store information on your computer.</p>
+<button id="c-p-bn" onclick="document.getElementById('cc--main').remove()">Accept all</button>
+<button id="c-s-bn" onclick="window.necessary=1;document.getElementById('cc--main').remove()">Accept necessary</button></div></div>
+</body></html>

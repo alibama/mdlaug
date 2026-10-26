@@ -1,8 +1,9 @@
 """Which accessibility differences between vendors (platform) and institution types
 (library_type) can we assert from automated crawl data alone?
 
-Usage:  python scripts/significance.py [--db data/mdlaug_crawl.db] [--run N] [--replicate 1]
+Usage:  python scripts/significance.py [--db data/mdlaug_crawl.db] [--run N] [--patch N] [--replicate N]
                                        [--out data/significance]
+        (with no options it picks the runs itself; see pick_runs)
 
 Design choices (see the report for the reasoning):
 * Unit of analysis = site. Primary sample = one run in one configuration (default: the
@@ -34,6 +35,7 @@ import json
 import os
 import re
 import sqlite3
+import sys
 from collections import defaultdict
 
 import numpy as np
@@ -235,7 +237,8 @@ def site_metrics(run, sites, pages, f, ev, labels):
         if ad.get("_ok"):
             rows[sid]["qa_vision_residual_overlay"] = int(bool(ad.get("overlay_visible")) and (ad.get("confidence") or 0) >= 0.7)
 
-    df = pd.DataFrame(rows.values()).merge(sites, on="site_id").merge(labels, on="site_id", how="left")
+    df = pd.DataFrame(list(rows.values()), columns=None if rows else ["site_id"])
+    df = df.merge(sites, on="site_id").merge(labels, on="site_id", how="left")
     for rid, ss in rules.items():
         df[f"axe:{rid}"] = df.site_id.isin(ss).astype(int)
     return df
@@ -537,9 +540,39 @@ def manual_candidates(f, run):
 
 
 def run_info(runs, run):
+    if run is None:
+        return {"id": None, "status": None, "note": "", "device": ""}
     r = runs[runs.id == run].iloc[0]
     cfg = jl(r.config)
     return {"id": int(run), "status": r.status, "note": r.note, "device": cfg.get("device") or "desktop"}
+
+
+PATCH_RE = re.compile(r"^patch of run (\d+)", re.I)
+
+
+def pick_runs(runs, pages, run=None, replicate=None, patches=None):
+    """Sensible defaults so the report works on anyone's database. Primary: the latest large run
+    (at least half as many sites as the largest) that isn't a patch or a trial. Patches: runs whose
+    note starts "patch of run <primary>". Replicate: the largest other large run, preferring one
+    crawled on a different device; none if there isn't one."""
+    size = pages.groupby("run_id").site_id.nunique()
+    info = runs.set_index("id")
+    known = [int(i) for i in size.index if i in info.index]
+    if not known:
+        return run, patches or [], replicate
+    note = lambda i: str(info.loc[i, "note"] or "")          # noqa: E731
+    device = lambda i: jl(info.loc[i, "config"]).get("device") or "desktop"   # noqa: E731
+    patch_of = lambda i: int(PATCH_RE.match(note(i)).group(1)) if PATCH_RE.match(note(i)) else None  # noqa: E731
+    big = [i for i in known if size[i] >= 0.5 * size.max() and patch_of(i) is None and note(i).lower() != "trial"]
+    if run is None:
+        run = max(big) if big else max(known, key=lambda i: (size[i], i))
+    if not patches:
+        patches = sorted(i for i in known if patch_of(i) == run)
+    if replicate is None:
+        others = [i for i in big if i != run and patch_of(i) is None]
+        pool = [i for i in others if device(i) != device(run)] or others
+        replicate = max(pool, key=lambda i: (size[i], i)) if pool else None
+    return run, patches, replicate
 
 
 def main():
@@ -547,21 +580,27 @@ def main():
     here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ap.add_argument("--db", default=os.path.join(here, "data", "mdlaug_crawl.db"))
     ap.add_argument("--out", default=os.path.join(here, "data", "significance"))
-    ap.add_argument("--run", type=int, help="primary run (default: latest finished run)")
-    ap.add_argument("--replicate", type=int, default=1, help="replication run (default: 1, the desktop crawl)")
+    ap.add_argument("--run", type=int, help="primary run (default: the latest large run)")
+    ap.add_argument("--replicate", type=int, help="replication run (default: the largest other run, "
+                                                  "preferably on another device)")
     ap.add_argument("--patch", type=int, action="append", default=[],
-                    help="a later run that re-crawled some sites with a fixed crawler; its rows replace the primary's")
+                    help="a later run that re-crawled some sites with a fixed crawler; its rows replace the "
+                         "primary's (default: runs whose note starts 'patch of run <primary>')")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     sites, pages, f, ev, runs = load(a.db)
-    run = a.run or int(runs[runs.status == "done"].id.max())
+    run, a.patch, a.replicate = pick_runs(runs, pages, a.run, a.replicate, a.patch)
+    if run is None:
+        sys.exit("No crawl runs in this database yet.")
+    print(f"primary run {run}" + (f", patched by {a.patch}" if a.patch else "") +
+          (f", replication run {a.replicate}" if a.replicate else ", no replication run"), flush=True)
     labels = platform_labels(run, sites, pages)
     p = site_metrics(run, sites, pages, f, ev, labels).assign(source_run=run)
     for pr_ in a.patch:                 # re-crawled sites replace their rows from the primary run
         pp = site_metrics(pr_, sites, pages, f, ev, labels).assign(source_run=pr_)
         redo = set(pages[(pages.run_id == pr_)].site_id)
         p = pd.concat([p[~p.site_id.isin(redo)], pp], ignore_index=True)
-    r = site_metrics(a.replicate, sites, pages, f, ev, labels)
+    r = site_metrics(a.replicate, sites, pages, f, ev, labels) if a.replicate else p.iloc[0:0].copy()
     res = analyse(p, f"run {run}")
     rep = replication(r, res)
     res = assign_tiers(res, rep)
@@ -607,11 +646,12 @@ def main():
         }
 
     p.to_csv(os.path.join(a.out, f"site_metrics_run{run}.csv"), index=False)
-    r.to_csv(os.path.join(a.out, f"site_metrics_run{a.replicate}.csv"), index=False)
+    if a.replicate:
+        r.to_csv(os.path.join(a.out, f"site_metrics_run{a.replicate}.csv"), index=False)
     res.drop(columns=["by_group", "posthoc"]).to_csv(os.path.join(a.out, "tests.csv"), index=False)
     man.to_csv(os.path.join(a.out, "manual_review_candidates.csv"), index=False)
     labels.merge(sites, on="site_id").to_csv(os.path.join(a.out, "platform_labels.csv"), index=False)
-    with open(os.path.join(a.out, "results.json"), "w") as fh:
+    with open(os.path.join(a.out, "results.json"), "w", encoding="utf-8") as fh:
         json.dump({"coverage": cov, "primary": res.to_dict("records"), "replication": list(rep.values()),
                    "manual": man.to_dict("records"), "n_perm": N_PERM}, fh, indent=1,
                   default=lambda o: o.item() if hasattr(o, "item") else (sorted(o) if isinstance(o, set) else str(o)))
