@@ -1,22 +1,15 @@
 {
   "manifest_version": 3,
   "name": "mDLAUG Repair \u2014 digital library accessibility",
-  "version": "0.9.10",
+  "version": "0.10.0",
   "description": "Repairs the 24 mDLAUG screen-reader barriers on any page and converts PDF/DOCX to accessible formats, all client-side.",
+  "homepage_url": "https://alibama.github.io/mdlaug/",
   "permissions": [
     "activeTab",
     "scripting",
-    "storage",
-    "tabs"
-  ],
-  "optional_host_permissions": [
-    "*://*/*"
+    "storage"
   ],
   "host_permissions": [
-    "https://*.turso.io/*",
-    "http://127.0.0.1:8080/*",
-    "http://localhost:8080/*",
-    "https://*.workers.dev/*",
     "<all_urls>"
   ],
   "action": {

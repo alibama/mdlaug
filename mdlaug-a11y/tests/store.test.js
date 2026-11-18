@@ -51,3 +51,24 @@ test("resolve('turso-local') yields a same-interface store pointed at 127.0.0.1"
   assert.equal(typeof t.saveAssessment, "function");
   assert.match(t.label, /127\.0\.0\.1:8080/);
 });
+
+test("defaultConfig(): central by default unless the build asks for opt-in", () => {
+  const saved = global.MDLAUG_CONFIG;
+  try {
+    global.MDLAUG_CONFIG = {};
+    assert.equal(S.defaultConfig().storage, "local");
+    assert.equal(S.centralConfig(), null);
+
+    global.MDLAUG_CONFIG = { centralUrl: "https://relay.example", centralToken: "k" };
+    assert.equal(S.defaultConfig().storage, "turso-cloud");
+
+    global.MDLAUG_CONFIG = { centralUrl: "https://relay.example", centralToken: "k", centralOptIn: true };
+    assert.equal(S.defaultConfig().storage, "local");
+    assert.deepEqual(S.centralConfig(), { storage: "turso-cloud", tursoUrl: "https://relay.example", tursoToken: "k" });
+  } finally { global.MDLAUG_CONFIG = saved; }
+});
+
+test("shipped config.js keeps the project database opt-in (store policy)", () => {
+  const src = require("fs").readFileSync(require("path").join(__dirname, "../extension/config.js"), "utf8");
+  assert.match(src, /centralOptIn:\s*true/);
+});

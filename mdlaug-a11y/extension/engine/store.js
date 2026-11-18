@@ -171,14 +171,22 @@
   }
 
   // The default storage config for this deployment: central (Turso via relay) if
-  // config.js sets MDLAUG_CONFIG.centralUrl, otherwise a private local database.
+  // config.js sets MDLAUG_CONFIG.centralUrl and does not ask for opt-in,
+  // otherwise a private local database.
   function defaultConfig() {
     var c = (root.MDLAUG_CONFIG) || {};
-    if (c.centralUrl) return { storage: "turso-cloud", tursoUrl: c.centralUrl, tursoToken: c.centralToken || "" };
+    if (c.centralUrl && !c.centralOptIn) return { storage: "turso-cloud", tursoUrl: c.centralUrl, tursoToken: c.centralToken || "" };
     return { storage: "local", tursoUrl: "", tursoToken: "" };
   }
 
-  var api = { LocalStore: LocalStore, resolve: resolve, defaultConfig: defaultConfig, SCHEMA_VERSION: SCHEMA_VERSION, uuid: uuid, version: "0.9.0" };
+  // The project's shared database, if this build offers one (for the Options
+  // "Share with the mDLAUG project database" button). Null when none is set.
+  function centralConfig() {
+    var c = (root.MDLAUG_CONFIG) || {};
+    return c.centralUrl ? { storage: "turso-cloud", tursoUrl: c.centralUrl, tursoToken: c.centralToken || "" } : null;
+  }
+
+  var api = { LocalStore: LocalStore, resolve: resolve, defaultConfig: defaultConfig, centralConfig: centralConfig, SCHEMA_VERSION: SCHEMA_VERSION, uuid: uuid, version: "0.9.0" };
   root.mDLAUG = root.mDLAUG || {};
   root.mDLAUG.store = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;

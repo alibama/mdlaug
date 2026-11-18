@@ -15,6 +15,10 @@ options, simplest first for your situation.
 
 ## B. Share a single file
 
+Every release attaches a zip, and
+<https://github.com/alibama/mdlaug/releases/download/extension-latest/mdlaug-repair-extension.zip>
+is always the newest one. To build one yourself:
+
 ```bash
 npm run pack        # -> dist/mdlaug-repair-extension-v<version>.zip
 ```
@@ -37,9 +41,13 @@ policy (`ExtensionInstallForcelist` + a self-hosted `update.xml`) or on some
 Chromium/Edge configurations. For a handful of trusted machines, option A/B is
 less hassle.
 
-## D. True one-click for anyone: the Web Store
+## D. One-click install: the Chrome Web Store and Edge Add-ons
 
-Publishing to the **Chrome Web Store** (a listing can be *unlisted*, not public)
-or **Edge Add-ons** is the only way to get a click-to-add install for arbitrary
-users. It needs a one-time developer account and a review. Worth it once the tool
-is past the initial trusted-tester phase.
+This is how most people should get it. The extension is submitted to both stores
+from the release workflow (see [RELEASING.md](RELEASING.md)); store links are on
+the [project site](https://alibama.github.io/mdlaug/#extension) once approved.
+Store installs update themselves automatically.
+
+Organisations can push the store version to managed machines with Chrome or Edge
+policy (`ExtensionInstallForcelist`, using the store extension ID). That is the
+easiest way to roll it out across a library or campus.

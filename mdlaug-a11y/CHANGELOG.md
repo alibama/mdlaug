@@ -17,6 +17,21 @@
 All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versioning is pre-1.0 and may shift.
 
+## [0.10.0] - 2026-11-18
+### Changed
+- Ready for the Chrome Web Store and Edge Add-ons. Dropped the unused `tabs`
+  permission and the dev-only localhost/Turso host entries. The converter no longer
+  has CDN fallbacks; it only loads the bundled pdf.js and mammoth.
+- Sharing assessments with the mDLAUG project database is now **opt-in**: new
+  installs save locally, and Options → Assessment storage has a one-click
+  "Share with the mDLAUG project database" button. Self-hosted deployments can
+  keep central-by-default with `centralOptIn: false` in `config.js`.
+### Added
+- Tag-driven releases (`ext-v*`): tests, a store-policy lint, a GitHub Release, a
+  stable download link, and Chrome Web Store and Edge submission. See `RELEASING.md`.
+- Privacy policy at https://alibama.github.io/mdlaug/privacy/ and paste-ready store
+  listing copy in `store/LISTING.md`.
+
 ## [0.9.10] - 2026
 ### Added
 - The on-page button can be dismissed with an × (persists), since it can
