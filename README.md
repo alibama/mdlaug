@@ -20,10 +20,8 @@ people, based on the [Mobile Digital Library Accessibility and Usability Guideli
 | Folder | What it is |
 |---|---|
 | [`mdlaug-crawler/`](mdlaug-crawler/) | The **crawler**. It visits digital-library sites like a phone does, checks them against mDLAUG, and works out which problems come from the platform vendor. Includes a review app and the statistics behind the report. |
-| [`mdlaug-repair-extension/`](mdlaug-repair-extension/) | The **mDLAUG Repair** browser extension, ready to load. Its [README](mdlaug-repair-extension/README.md) is the full manual. |
-| [`mdlaug-a11y/`](mdlaug-a11y/) | The extension's development project: tests, the analytics dashboard, the relay, and docs. |
+| [`mdlaug-a11y/`](mdlaug-a11y/) | The **mDLAUG Repair** browser extension. The extension itself is in [`mdlaug-a11y/extension/`](mdlaug-a11y/extension/) (its [README](mdlaug-a11y/extension/README.md) is the full manual), alongside its tests, the analytics dashboard, the relay and the [release guide](mdlaug-a11y/RELEASING.md). |
 | [`docs/`](docs/) | The project website (served by GitHub Pages). |
-| `mdlaug-repair-extension.zip` | The extension, zipped for easy download. |
 
 ## What the October 2026 crawl found
 
@@ -42,7 +40,8 @@ tested and what it doesn't cover.
 
 The extension repairs common problems on the page you're looking at (missing labels, unlabelled
 buttons, dialogs you can't escape, PDFs that silently download) and can show any page in a consistent,
-screen-reader-first **Reading Room**. Everything runs in your browser; nothing is uploaded.
+screen-reader-first **Reading Room**. Everything runs in your browser. Nothing is uploaded unless you
+choose to share an assessment ([privacy policy](https://alibama.github.io/mdlaug/privacy/)).
 
 **Before:** a document that is only a link to a file on another server.<br>
 <img width="345" height="245" alt="Before: a digital-library page where the document is only a link to a file hosted elsewhere" src="https://github.com/user-attachments/assets/a49ad538-377c-4f12-9c5c-82e644db5c74" />
@@ -52,16 +51,21 @@ screen-reader-first **Reading Room**. Everything runs in your browser; nothing i
 
 **Install it in Chrome or Edge**
 
-1. Download **[mdlaug-repair-extension.zip](https://github.com/alibama/mdlaug/raw/main/mdlaug-repair-extension.zip)** and unzip it.
+Chrome Web Store and Edge Add-ons listings are in review. Until they're approved:
+
+1. Download **[mdlaug-repair-extension.zip](https://github.com/alibama/mdlaug/releases/download/extension-latest/mdlaug-repair-extension.zip)** (always the newest version) and unzip it.
 2. Open `chrome://extensions` (or `edge://extensions`) and switch on **Developer mode**.
-3. Click **Load unpacked** and choose the unzipped **`mdlaug-repair-extension`** folder.
+3. Click **Load unpacked** and choose the unzipped folder.
 
 Then click the extension's icon on any page and choose **Repair this page**. The
-[full manual](mdlaug-repair-extension/README.md) covers the Reading Room, the conversion studio,
+[full manual](mdlaug-a11y/extension/README.md) covers the Reading Room, the conversion studio,
 assessment mode and all 24 mDLAUG situations. [Other ways to install](mdlaug-a11y/INSTALL.md).
 
-Assessments saved from the extension can be shared to a central database and browsed in the
-[open analytics app](https://mdlaug.streamlit.app/).
+Assessments saved from the extension can be shared to the project database (turn it on in the extension's
+Options) and browsed in the [open analytics app](https://mdlaug.streamlit.app/).
+
+New versions ship continuously: see the [release guide](mdlaug-a11y/RELEASING.md) and the
+[releases page](https://github.com/alibama/mdlaug/releases).
 
 ## License
 

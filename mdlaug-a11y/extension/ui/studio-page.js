@@ -11,6 +11,16 @@
       syncFields();
     });
   }catch(e){ st.textContent="Available inside the extension only."; }
+  var central = window.mDLAUG && window.mDLAUG.store.centralConfig && window.mDLAUG.store.centralConfig();
+  if (central) {
+    $("central-offer").hidden = false;
+    $("central-use").addEventListener("click", function(){
+      var radio = document.querySelector('input[name="storage"][value="turso-cloud"]'); if (radio) radio.checked = true;
+      $("t-url").value = central.tursoUrl; $("t-token").value = central.tursoToken; syncFields();
+      try{ chrome.storage.local.set({mdlaug_store: current()}, function(){ st.textContent="Saved — new assessments will go to the mDLAUG project database. Switch back to \"This browser\" any time."; }); }
+      catch(e){ st.textContent="Could not save: "+e.message; }
+    });
+  }
   function current(){ return { storage:mode(), tursoUrl:$("t-url").value.trim(), tursoToken:$("t-token").value.trim(), assessor:$("t-assessor").value.trim() }; }
   $("t-save").addEventListener("click", function(){
     try{ chrome.storage.local.set({mdlaug_store: current()}, function(){ st.textContent="Saved. Reopen the assessment page to apply."; }); }

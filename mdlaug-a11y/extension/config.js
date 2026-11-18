@@ -1,16 +1,24 @@
 /*
  * mDLAUG central deployment config.
  *
- * Leave centralUrl empty and every install defaults to a private local
- * in-browser database (zero setup). Set centralUrl to your Cloudflare relay
- * URL (see relay/) and every install DEFAULTS to writing to your shared Turso
- * database — "central by default" — while individual users can still override
- * the backend in Options → Assessment storage.
+ * centralUrl / centralToken point at the project's shared assessment database
+ * (a Cloudflare relay in front of Turso; see relay/). Leave centralUrl empty to
+ * offer no central database at all.
  *
- * centralToken is the optional AUTH_KEY you set on the relay; the extension
- * sends it as a bearer token so only your relay accepts the writes.
+ * centralOptIn decides what a fresh install does:
+ *   true  (store builds) – every install starts on a private, local in-browser
+ *         database. Options -> Assessment storage shows a one-click "Share with
+ *         the mDLAUG project database" button; nothing is sent until the user
+ *         chooses it.
+ *   false (self-hosted team deployments) – installs default to writing to the
+ *         central database ("central by default"); users can still switch back.
+ *
+ * centralToken is the optional AUTH_KEY set on the relay; the extension sends
+ * it as a bearer token. It ships inside the extension, so treat it as a light
+ * spam filter, not a secret.
  */
 window.MDLAUG_CONFIG = {
-  centralUrl: "",     // e.g. "https://mdlaug-relay.YOURNAME.workers.dev"
-  centralToken: ""    // e.g. a shared key matching the relay's AUTH_KEY (optional)
+  centralUrl: "https://mdlaug-relay.adp6j.workers.dev",
+  centralToken: "testingauth",
+  centralOptIn: true
 };

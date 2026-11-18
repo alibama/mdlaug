@@ -90,6 +90,11 @@
     <h2 id="store-h" style="font-size:18px">Assessment storage</h2>
     <p class="hint">Assessments save with <strong>no setup by default</strong> — straight to a local database in this browser, using the same schema as Turso. Point it at a Turso database only when you want to centralize or share results; nothing else changes.</p>
 
+    <div id="central-offer" hidden style="margin:12px 0;padding:12px;border:1px solid #bcccc6;border-radius:8px">
+      <p style="margin:0 0 8px"><strong>Contribute to the mDLAUG project database.</strong> Assessments you save will be sent to the shared research database (the page address and title, your scores, notes and any evidence screenshots you attach, the assessor name below, and your browser version) and appear in the <a href="https://mdlaug.streamlit.app/" target="_blank" rel="noopener">open analytics app</a>. Repairs and conversions are never sent. See the <a href="https://alibama.github.io/mdlaug/privacy/" target="_blank" rel="noopener">privacy policy</a>.</p>
+      <button id="central-use">Share with the mDLAUG project database</button>
+    </div>
+
     <div role="radiogroup" aria-labelledby="store-h" style="display:flex;flex-direction:column;gap:8px;margin:12px 0">
       <label><input type="radio" name="storage" value="local" checked> <strong>This browser (local)</strong> — zero setup, private to you. <span class="hint">Recommended default.</span></label>
       <label><input type="radio" name="storage" value="turso-local"> <strong>Turso local dev</strong> — a <code>turso dev</code> server on your machine.</label>

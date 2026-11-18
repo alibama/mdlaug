@@ -1,0 +1,26 @@
+name: Extension CI
+on:
+  push:
+    branches: [ main ]
+    paths: [ "mdlaug-a11y/**", ".github/workflows/**" ]
+  pull_request:
+    paths: [ "mdlaug-a11y/**", ".github/workflows/**" ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mdlaug-a11y
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check
+      - run: npm test
+      - name: Store-policy lint
+        run: bash scripts/store-lint.sh

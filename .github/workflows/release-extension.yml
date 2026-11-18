@@ -1,0 +1,125 @@
+name: Release extension
+# Push a tag like ext-v0.10.1 (matching extension/manifest.json) to ship a release:
+#   test -> build zip -> GitHub Release -> Chrome Web Store -> Edge Add-ons.
+# Store steps run only once their secrets exist (see mdlaug-a11y/RELEASING.md),
+# so this is safe to use before the store accounts are set up.
+# "Run workflow" by hand (workflow_dispatch) builds the zip as a dry run.
+on:
+  push:
+    tags: [ "ext-v*" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-extension
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mdlaug-a11y
+    env:
+      CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+      CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+      CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+      CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+      CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+      EDGE_PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
+      EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+      EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Version
+        id: v
+        run: |
+          V=$(node -p "require('./extension/manifest.json').version")
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "zip=mdlaug-a11y/dist/mdlaug-repair-extension-v$V.zip" >> "$GITHUB_OUTPUT"
+          if [ "${GITHUB_REF_TYPE}" = "tag" ] && [ "${GITHUB_REF_NAME}" != "ext-v$V" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match manifest version $V (expected ext-v$V)"; exit 1
+          fi
+          if [ "$(node -p "require('./package.json').version")" != "$V" ]; then
+            echo "::error::package.json version differs from manifest.json ($V)"; exit 1
+          fi
+
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check
+      - run: npm test
+      - run: bash scripts/store-lint.sh
+      - run: npm run pack
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mdlaug-repair-extension-v${{ steps.v.outputs.version }}
+          path: ${{ steps.v.outputs.zip }}
+
+      - name: GitHub Release
+        if: github.ref_type == 'tag'
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+          V: ${{ steps.v.outputs.version }}
+          ZIP: ${{ steps.v.outputs.zip }}
+        run: |
+          # Release notes = this version's section of CHANGELOG.md (if present).
+          awk -v v="$V" '$0 ~ "^## \\[" v "\\]" {f=1; next} f && /^## / {exit} f' mdlaug-a11y/CHANGELOG.md > notes.md
+          [ -s notes.md ] || echo "mDLAUG Repair $V" > notes.md
+          printf '\n---\nInstall from the Chrome Web Store or Edge Add-ons (links on https://alibama.github.io/mdlaug/#extension), or unzip the attached file and use **Load unpacked**.\n' >> notes.md
+          gh release create "$GITHUB_REF_NAME" "$ZIP" --title "mDLAUG Repair v$V" --notes-file notes.md --latest=false
+
+      - name: Update the stable download link (extension-latest)
+        if: github.ref_type == 'tag'
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+          V: ${{ steps.v.outputs.version }}
+          ZIP: ${{ steps.v.outputs.zip }}
+        # https://github.com/alibama/mdlaug/releases/download/extension-latest/mdlaug-repair-extension.zip
+        # always serves the newest build, for the README and site.
+        run: |
+          cp "$ZIP" mdlaug-repair-extension.zip
+          gh release view extension-latest >/dev/null 2>&1 || \
+            gh release create extension-latest --target "$GITHUB_SHA" --latest=false \
+              --title "mDLAUG Repair (latest build)" \
+              --notes "Always the newest mDLAUG Repair build. Unzip and use Load unpacked, or install from the browser store."
+          gh release upload extension-latest mdlaug-repair-extension.zip --clobber
+          gh release edit extension-latest --notes "Always the newest mDLAUG Repair build (currently v$V). Unzip and use Load unpacked, or install from the browser store."
+
+      - name: Chrome Web Store
+        if: github.ref_type == 'tag' && env.CWS_EXTENSION_ID != '' && env.CWS_REFRESH_TOKEN != ''
+        working-directory: .
+        env:
+          EXTENSION_ID: ${{ env.CWS_EXTENSION_ID }}
+          PUBLISHER_ID: ${{ env.CWS_PUBLISHER_ID }}
+          CLIENT_ID: ${{ env.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ env.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ env.CWS_REFRESH_TOKEN }}
+        # Uploads and submits for review; Google publishes automatically once approved.
+        run: npx --yes chrome-webstore-upload-cli@4.0.2 --source "${{ steps.v.outputs.zip }}"
+
+      - name: Edge Add-ons
+        if: github.ref_type == 'tag' && env.EDGE_PRODUCT_ID != '' && env.EDGE_API_KEY != ''
+        uses: wdzeng/edge-addon@9881f57720358040d079eaa06a4596dc9c273eb6 # v2.1.1
+        with:
+          product-id: ${{ env.EDGE_PRODUCT_ID }}
+          zip-path: ${{ steps.v.outputs.zip }}
+          client-id: ${{ env.EDGE_CLIENT_ID }}
+          api-key: ${{ env.EDGE_API_KEY }}
+
+      - name: Summary
+        if: always()
+        working-directory: .
+        run: |
+          {
+            echo "### mDLAUG Repair v${{ steps.v.outputs.version }}"
+            echo "- Chrome Web Store: $([ -n "$CWS_REFRESH_TOKEN" ] && echo attempted || echo 'skipped (no CWS_* secrets yet)')"
+            echo "- Edge Add-ons: $([ -n "$EDGE_API_KEY" ] && echo attempted || echo 'skipped (no EDGE_* secrets yet)')"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -11,8 +11,10 @@
  *
  * pdf.js and mammoth are heavy; they are injected rather than bundled:
  *   mDLAUG.converter.configure({ pdfjsLib, mammoth })
- * If not injected, the engine tries a dynamic ESM import from a configurable
- * CDN base (see CONFIG.pdfjsUrl / CONFIG.mammothUrl).
+ * If not injected, the engine imports them from CONFIG.pdfjsUrl /
+ * CONFIG.mammothUrl, which the extension points at its own bundled vendor/
+ * copies. There is deliberately no remote (CDN) default: store-published
+ * extensions may not load code from the network.
  *
  * Honest scope note: PDF text extraction is layout-heuristic, not a full tagged-
  * PDF reader; scanned/image-only PDFs need OCR (hook: CONFIG.ocr). DOCX->PDF is
@@ -25,9 +27,9 @@
   var CONFIG = {
     pdfjsLib: (root.pdfjsLib || null),
     mammoth: (root.mammoth || null),
-    pdfjsUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.149/pdf.min.mjs",
-    pdfWorkerUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.149/pdf.worker.min.mjs",
-    mammothUrl: "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.min.js",
+    pdfjsUrl: null,      // set via configure(); the extension uses vendor/pdf.min.mjs
+    pdfWorkerUrl: null,
+    mammothUrl: null,
     ocr: null // optional async fn(imageData) -> text
   };
 
@@ -35,6 +37,7 @@
 
   async function getPdfjs() {
     if (CONFIG.pdfjsLib) return CONFIG.pdfjsLib;
+    if (!CONFIG.pdfjsUrl) throw new Error("PDF converter (pdf.js) is not configured");
     var mod = await import(/* webpackIgnore: true */ CONFIG.pdfjsUrl);
     mod.GlobalWorkerOptions.workerSrc = CONFIG.pdfWorkerUrl;
     CONFIG.pdfjsLib = mod;
@@ -170,7 +173,7 @@
       if (root.mammoth) return root.mammoth;
     }
     // Fallback (e.g. the standalone demo, no extension APIs): load into the page.
-    try { await loadScript(CONFIG.mammothUrl); } catch (e) {}
+    if (CONFIG.mammothUrl) { try { await loadScript(CONFIG.mammothUrl); } catch (e) {} }
     return CONFIG.mammoth || root.mammoth;
   }
   async function docxToHtml(source) {
